@@ -24,6 +24,35 @@
                 </a>
             </li>
 
+            <li class="menu-item hs-accordion">
+                <a href="javascript:void(0)"
+                    class="hs-accordion-toggle group flex items-center gap-x-4 rounded-md px-3 py-2 text-sm font-medium text-default-700 transition-all hover:bg-default-900/5 hs-accordion-active:bg-default-900/5 hs-accordion-active:text-default-700">
+                    <i data-lucide="component" class="size-5"></i>
+                    <span class="menu-text"> Item Menu </span>
+                    <span
+                        class="i-tabler-chevron-right ms-auto text-sm transition-all hs-accordion-active:rotate-90"></span>
+                </a>
+
+                <div class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300">
+                    <ul class="mt-2 space-y-2">
+                        <li class="menu-item">
+                            <a class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5"
+                                href="{{ route('admin.item-category') }}">
+                                <i class="i-tabler-circle-filled scale-25 text-lg opacity-75"></i>
+                                Item Category
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5"
+                                href="ui-alerts.html">
+                                <i class="i-tabler-circle-filled scale-25 text-lg opacity-75"></i>
+                                Alert
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
             <li class="px-5 py-2 text-sm font-medium text-default-600">Elements</li>
 
             <li class="menu-item hs-accordion">

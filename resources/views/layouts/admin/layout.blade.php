@@ -58,6 +58,7 @@
 
     </div>
 
+    @stack('alerts')
     <x-admin.footer-js />
 
 </body>

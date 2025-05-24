@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MenuCategoryController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
@@ -15,4 +16,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         // Add other admin routes here
     });
+    Route::get('item-category', [MenuCategoryController::class, 'index'])->name('item-category');
+    Route::post('item-category', [MenuCategoryController::class, 'store'])->name('item-category.store');
 });
