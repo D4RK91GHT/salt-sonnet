@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             MenuCatecorySeeder::class,
             MenuItemSeeder::class,
+            GstSlabSeeder::class,
         ]);
     }
 }

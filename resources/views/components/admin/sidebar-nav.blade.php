@@ -44,9 +44,16 @@
                         </li>
                         <li class="menu-item">
                             <a class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5"
-                                href="ui-alerts.html">
+                                href="{{ route('admin.gst-slabs') }}">
                                 <i class="i-tabler-circle-filled scale-25 text-lg opacity-75"></i>
-                                Alert
+                                GST Slabs
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5"
+                                href="{{ route('admin.menu-items') }}">
+                                <i class="i-tabler-circle-filled scale-25 text-lg opacity-75"></i>
+                                Menu Items
                             </a>
                         </li>
                     </ul>

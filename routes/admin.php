@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuCategoryController;
+use App\Http\Controllers\Admin\GSTSlabController;
+use App\Http\Controllers\Admin\MenuItemController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
@@ -18,4 +20,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
     Route::get('item-category', [MenuCategoryController::class, 'index'])->name('item-category');
     Route::post('item-category', [MenuCategoryController::class, 'store'])->name('item-category.store');
+    
+    Route::get('gst-slabs', [GSTSlabController::class, 'index'])->name('gst-slabs');
+    Route::post('gst-slabs', [GSTSlabController::class, 'store'])->name('gst-slabs.store');
+
+    Route::get('menu-items', [MenuItemController::class, 'index'])->name('menu-items');
+    Route::post('menu-items', [MenuItemController::class, 'store'])->name('menu-items.store');
 });

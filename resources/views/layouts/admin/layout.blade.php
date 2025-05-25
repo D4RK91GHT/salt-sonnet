@@ -59,6 +59,9 @@
     </div>
 
     @stack('alerts')
+
+    @yield('js')
+    
     <x-admin.footer-js />
 
 </body>
