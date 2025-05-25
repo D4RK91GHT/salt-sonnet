@@ -3,12 +3,15 @@
     .preview-item {
         transition: opacity 0.2s;
     }
+
     .preview-item:hover {
         opacity: 0.9;
     }
+
     .preview-item img {
         transition: transform 0.3s ease;
     }
+
     .preview-item:hover img {
         transform: scale(1.05);
     }
@@ -203,79 +206,77 @@
             </div>
 
         </div>
-        <div class="card">
-            <div class="p-2">
-                <div class="overflow-hidden border rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200 responsive-table">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    SL No</th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Image
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Name
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Category
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    MRP
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Discount
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Rate
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    GST
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Price
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Is Available
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-end text-sm text-default-500">
-                                    Action</th>
+        <div>
+            <div class="overflow-hidden border rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200 responsive-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                SL No</th>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                Image
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                Name
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                Category
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                MRP
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                Discount
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                Rate
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                GST
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                Price
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
+                                Is Available
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-end text-sm text-default-500">
+                                Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach ($menuItems as $menuItem)
+                            <tr class="hover:bg-gray-100">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                    {{ $loop->iteration }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
+                                    <img src="{{ asset('storage/' . $menuItem->image) }}" alt="Image"
+                                        class="w-16 h-16 object-cover">
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
+                                    {{ $menuItem->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                    {{ $menuItem->category_id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                    {{ $menuItem->mrp }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                    {{ $menuItem->discount }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                    {{ $menuItem->rate }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                    {{ $menuItem->gst }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                    {{ $menuItem->price }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                    {{ $menuItem->is_available }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                    <a class="text-primary hover:text-sky-700" href="#">Delete</a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            @foreach ($menuItems as $menuItem)
-                                <tr class="hover:bg-gray-100">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        {{ $loop->iteration }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
-                                        <img src="{{ asset('storage/' . $menuItem->image) }}" alt="Image"
-                                            class="w-16 h-16 object-cover">
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
-                                        {{ $menuItem->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        {{ $menuItem->category_id }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        {{ $menuItem->mrp }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        {{ $menuItem->discount }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        {{ $menuItem->rate }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        {{ $menuItem->gst }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        {{ $menuItem->price }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        {{ $menuItem->is_available }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                        <a class="text-primary hover:text-sky-700" href="#">Delete</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -284,9 +285,7 @@
 
 @push('alerts')
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <x-admin.alert type="success" :message="session('success')" />
     @endif
 @endpush
 

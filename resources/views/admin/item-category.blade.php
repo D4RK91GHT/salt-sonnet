@@ -101,8 +101,6 @@
 
 @push('alerts')
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <x-admin.alert type="success" :message="session('success')" />
     @endif
 @endpush
