@@ -1,3 +1,5 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* @import "{{ asset('assets/admin/css/app.css') }}"; */

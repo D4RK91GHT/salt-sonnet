@@ -8,4 +8,7 @@
 <link href="{{ admin_asset('css/icons.min.css') }}" rel="stylesheet" type="text/css">
 
 <!-- App css  (Mandatory in All Pages) -->
-<link href="{{ admin_asset('css/app.min.css') }}" rel="stylesheet" type="text/css">
+{{-- <link href="{{ admin_asset('css/app.min.css') }}" rel="stylesheet" type="text/css"> --}}
+<link href="{{ admin_asset('css/app.css') }}" rel="stylesheet" type="text/css">
+
+@vite(['resources/css/app.css'])

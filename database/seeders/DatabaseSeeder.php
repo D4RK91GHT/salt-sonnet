@@ -6,6 +6,8 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\MenuCatecorySeeder;
+use Database\Seeders\MenuItemSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +23,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $this->call(AdminSeeder::class);
+        $this->call([
+            AdminSeeder::class,
+            MenuCatecorySeeder::class,
+            MenuItemSeeder::class,
+        ]);
     }
 }
