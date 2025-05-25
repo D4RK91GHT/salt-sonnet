@@ -308,6 +308,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="mt-4">
+                {{ $menuItems->onEachSide(1)->links('pagination::tailwind') }}
+            </div>
         </div>
     </div>
 @endsection;

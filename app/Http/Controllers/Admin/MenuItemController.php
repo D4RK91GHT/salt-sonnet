@@ -17,10 +17,12 @@ class MenuItemController extends Controller
         $menuItems = MenuItem::with('images')
         ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
         ->select('menu_items.*', 'menu_categories.name as category_name')
-        ->get();
-        
+        ->paginate(10);
+
+        // dd($menuItems);
         $categories = MenuCategory::all();
         $gstSlabs = GSTSlab::all();
+
         return view('admin.menu-items', compact('menuItems', 'categories', 'gstSlabs'));
     }
 
