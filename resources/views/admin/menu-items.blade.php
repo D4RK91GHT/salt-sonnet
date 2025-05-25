@@ -42,7 +42,7 @@
                                         <div class="relative mb-4">
                                             <input type="text" id="name" name="name"
                                                 class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('name') border-red-500 @enderror"
-                                                placeholder=" " value="{{ old('name') }}"/>
+                                                placeholder=" " value="{{ old('name') }}" />
                                             <label for="name"
                                                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Item
                                                 Name</label>
@@ -72,7 +72,8 @@
                                                 class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('category') border-red-500 @enderror">
                                                 <option value="" selected disabled>Select Category</option>
                                                 @foreach ($categories as $category)
-                                                    <option {{ old('category') == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    <option {{ old('category') == $category->id ? 'selected' : '' }}
+                                                        value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
                                             <label for="category"
@@ -101,7 +102,8 @@
                                     <!-- MRP Field -->
                                     <div>
                                         <div class="relative mb-1">
-                                            <input type="number" id="mrp" name="mrp" step="0.01" min="0" max="9999999.99" required
+                                            <input type="number" id="mrp" name="mrp" step="0.01"
+                                                min="0" max="9999999.99" required
                                                 class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('mrp') border-red-500 @enderror"
                                                 placeholder=" " oninput="calculatePrice()" value="{{ old('mrp') }}" />
                                             <label for="mrp"
@@ -111,21 +113,24 @@
                                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                
+
                                     <!-- Discount Field -->
                                     <div>
                                         <div class="relative mb-1">
-                                            <input type="number" id="discount" name="discount" step="0.01" min="0" max="100" 
+                                            <input type="number" id="discount" name="discount" step="0.01"
+                                                min="0" max="100"
                                                 class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('discount') border-red-500 @enderror"
-                                                placeholder=" " oninput="calculatePrice()" value="{{ old('discount', 0) }}" />
+                                                placeholder=" " oninput="calculatePrice()"
+                                                value="{{ old('discount', 0) }}" />
                                             <label for="discount"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Discount %</label>
+                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Discount
+                                                %</label>
                                         </div>
                                         @error('discount')
                                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                
+
                                     <!-- Rate Field -->
                                     <div>
                                         <div class="relative mb-1">
@@ -139,7 +144,7 @@
                                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                
+
                                     <!-- GST Field -->
                                     <div>
                                         <div class="relative mb-1">
@@ -147,7 +152,9 @@
                                                 class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('gst') border-red-500 @enderror">
                                                 <option value="" selected disabled>Select GST</option>
                                                 @foreach ($gstSlabs as $gstSlab)
-                                                    <option value="{{ $gstSlab->percentage }}" {{ old('gst') == $gstSlab->percentage ? 'selected' : '' }}>{{ $gstSlab->percentage }}%</option>
+                                                    <option value="{{ $gstSlab->percentage }}"
+                                                        {{ old('gst') == $gstSlab->percentage ? 'selected' : '' }}>
+                                                        {{ $gstSlab->percentage }}%</option>
                                                 @endforeach
                                             </select>
                                             <label for="gst"
@@ -157,7 +164,7 @@
                                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                
+
                                     <!-- Price Field -->
                                     <div>
                                         <div class="relative mb-1">
@@ -269,15 +276,31 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     {{ $loop->iteration }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
+                                {{-- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
                                     <div class="flex space-x-2">
-                                        @foreach($menuItem->images->take(3) as $image)
+                                        @foreach ($menuItem->images->take(3) as $image)
                                             <img src="{{ asset('storage/' . $image->image_path) }}" 
                                                  alt="Menu item image" 
-                                                 class="w-12 h-12 object-cover rounded">
+                                                 class="w-12 h-12 object-cover rounded-full ">
                                         @endforeach
                                     </div>
+                                </td> --}}
+
+                                <td
+                                    class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                    <div class="flex">
+                                        @if ($menuItem->images->count() > 0)
+                                        @foreach ($menuItem->images->take(3) as $image)
+                                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="..." class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow @if (!$loop->first) -ml-4 @endif">
+                                        @endforeach
+                                        @else
+                                            <img src="{{ asset('assets/placeholder/Item-300x300.jpg') }}" alt="..." class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow">
+                                            <img src="{{ asset('assets/placeholder/Item-300x300.jpg') }}" alt="..." class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow -ml-4">
+                                            <img src="{{ asset('assets/placeholder/Item-300x300.jpg') }}" alt="..." class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow -ml-4">
+                                        @endif
+                                    </div>
                                 </td>
+
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
                                     {{ $menuItem->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
@@ -295,10 +318,12 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     {{ $menuItem->is_available }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                    <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST" class="inline">
+                                    <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST"
+                                        class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded">
+                                        <button type="submit"
+                                            class="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded">
                                             Delete
                                         </button>
                                     </form>
@@ -438,20 +463,20 @@
 @endsection
 
 @push('scripts')
-<script>
-function calculatePrice() {
-    const mrp = parseFloat(document.getElementById('mrp').value) || 0;
-    const discount = parseFloat(document.getElementById('discount').value) || 0;
-    const gstPercentage = parseFloat(document.getElementById('gst').value) || 0;
-    
-    // Calculate rate (MRP - (MRP * (discount/100)))
-    const rate = mrp - (mrp * (discount / 100));
-    document.getElementById('rate').value = rate.toFixed(2);
-    
-    // Calculate price (LEAST(rate + (rate * (gst/100)), mrp))
-    const priceWithGst = rate + (rate * (gstPercentage / 100));
-    const finalPrice = Math.min(priceWithGst, mrp);
-    document.getElementById('price').value = finalPrice.toFixed(2);
-}
-</script>
+    <script>
+        function calculatePrice() {
+            const mrp = parseFloat(document.getElementById('mrp').value) || 0;
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            const gstPercentage = parseFloat(document.getElementById('gst').value) || 0;
+
+            // Calculate rate (MRP - (MRP * (discount/100)))
+            const rate = mrp - (mrp * (discount / 100));
+            document.getElementById('rate').value = rate.toFixed(2);
+
+            // Calculate price (LEAST(rate + (rate * (gst/100)), mrp))
+            const priceWithGst = rate + (rate * (gstPercentage / 100));
+            const finalPrice = Math.min(priceWithGst, mrp);
+            document.getElementById('price').value = finalPrice.toFixed(2);
+        }
+    </script>
 @endpush
