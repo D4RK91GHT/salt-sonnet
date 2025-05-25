@@ -243,10 +243,7 @@
                                 Image
                             </th>
                             <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                Name
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                Category
+                                Item
                             </th>
                             <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
                                 MRP
@@ -266,7 +263,7 @@
                             <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
                                 Is Available
                             </th>
-                            <th scope="col" class="px-6 py-3 text-end text-sm text-default-500">
+                            <th scope="col" class="px-6 py-3 text-center text-sm text-default-500">
                                 Action</th>
                         </tr>
                     </thead>
@@ -276,15 +273,6 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     {{ $loop->iteration }}
                                 </td>
-                                {{-- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
-                                    <div class="flex space-x-2">
-                                        @foreach ($menuItem->images->take(3) as $image)
-                                            <img src="{{ asset('storage/' . $image->image_path) }}" 
-                                                 alt="Menu item image" 
-                                                 class="w-12 h-12 object-cover rounded-full ">
-                                        @endforeach
-                                    </div>
-                                </td> --}}
 
                                 <td
                                     class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -302,9 +290,9 @@
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
-                                    {{ $menuItem->name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                    {{ $menuItem->category_name }}</td>
+                                    <p class="font-semibold">{{ $menuItem->name }}</p>
+                                    <p class="text-xs text-gray-500">{{ $menuItem->category_name }}</p>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     {{ $menuItem->mrp }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
@@ -316,8 +304,23 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     {{ $menuItem->price }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                    {{ $menuItem->is_available }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                    @if ($menuItem->is_available)
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Available
+                                        </span>
+                                    @else
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500 text-white">
+                                            Out Of Stock
+                                        </span>
+                                    @endif
+
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <button type="button"
+                                            class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded">
+                                            Edit
+                                    </button>
+
                                     <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST"
                                         class="inline">
                                         @csrf
