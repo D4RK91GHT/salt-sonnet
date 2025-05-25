@@ -17,4 +17,14 @@ class MenuItem extends Model
     {
         return $this->belongsTo(MenuCategory::class, 'category_id');
     }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, 'item_id');
+    }
+
+    public function primaryImage()
+    {
+        return $this->hasOne(ProductImage::class, 'item_id')->where('is_primary', true);
+    }
 }

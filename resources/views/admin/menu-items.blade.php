@@ -34,128 +34,144 @@
                             <h3 class="text-lg font-semibold">Add New Menu Item</h3>
                             <button @click="open = false" class="text-gray-500 hover:text-gray-700">&times;</button>
                         </div>
-                        <form action="{{ route('admin.menu-items.store') }}" method="POST">
+                        <form action="{{ route('admin.menu-items.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="px-6 py-4">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <div class="relative mb-4">
                                             <input type="text" id="name" name="name"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                placeholder=" " />
+                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('name') border-red-500 @enderror"
+                                                placeholder=" " value="{{ old('name') }}"/>
                                             <label for="name"
                                                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Item
                                                 Name</label>
                                         </div>
+                                        @error('name')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <div>
                                         <div class="relative mb-4">
                                             <textarea id="includes" name="includes"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                placeholder=" " maxlength="255"></textarea>
+                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('includes') border-red-500 @enderror"
+                                                placeholder=" " maxlength="355" value="{{ old('includes') }}"></textarea>
                                             <label for="includes"
                                                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Includes</label>
                                         </div>
+                                        @error('includes')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                                     <div>
                                         <div class="relative mb-4">
-                                            <input type="text" id="category" name="category"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                placeholder=" " />
+                                            <select name="category" id="category"
+                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('category') border-red-500 @enderror">
+                                                <option value="" selected disabled>Select Category</option>
+                                                @foreach ($categories as $category)
+                                                    <option {{ old('category') == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
                                             <label for="category"
                                                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Category</label>
                                         </div>
+                                        @error('category')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
 
                                     <div>
                                         <div class="relative mb-4">
                                             <textarea id="description" name="description"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                placeholder="" maxlength="555"></textarea>
+                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('description') border-red-500 @enderror"
+                                                placeholder="" maxlength="555" value="{{ old('description') }}"></textarea>
                                             <label for="description"
                                                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Description</label>
                                         </div>
+                                        @error('description')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
 
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-
+                                    <!-- MRP Field -->
                                     <div>
-                                        <div class="relative mb-4">
-                                            <input type="text" id="mrp" name="mrp"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                placeholder=" " />
+                                        <div class="relative mb-1">
+                                            <input type="number" id="mrp" name="mrp" step="0.01" min="0" max="9999999.99" required
+                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('mrp') border-red-500 @enderror"
+                                                placeholder=" " oninput="calculatePrice()" value="{{ old('mrp') }}" />
                                             <label for="mrp"
                                                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">MRP</label>
                                         </div>
+                                        @error('mrp')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
-
+                                
+                                    <!-- Discount Field -->
                                     <div>
-                                        <div class="relative mb-4">
-                                            <input type="text" id="discount" name="discount"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                placeholder=" " />
+                                        <div class="relative mb-1">
+                                            <input type="number" id="discount" name="discount" step="0.01" min="0" max="100" 
+                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('discount') border-red-500 @enderror"
+                                                placeholder=" " oninput="calculatePrice()" value="{{ old('discount', 0) }}" />
                                             <label for="discount"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Discount</label>
+                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Discount %</label>
                                         </div>
+                                        @error('discount')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
+                                
+                                    <!-- Rate Field -->
                                     <div>
-                                        <div class="relative mb-4">
-                                            <input type="text" id="rate" name="rate"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                placeholder=" " />
+                                        <div class="relative mb-1">
+                                            <input type="number" id="rate" name="rate" step="0.01" readonly
+                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('rate') border-red-500 @enderror"
+                                                placeholder=" " value="{{ old('rate') }}" />
                                             <label for="rate"
                                                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Rate</label>
                                         </div>
+                                        @error('rate')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
-
-                                    <div class="relative mb-4">
-                                        <input type="text" id="gst" name="gst"
-                                            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " />
-                                        <label for="gst"
-                                            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">GST</label>
-                                    </div>
+                                
+                                    <!-- GST Field -->
                                     <div>
-                                        <div class="relative mb-4">
-                                            <input type="text" id="price" name="price"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                placeholder=" " />
+                                        <div class="relative mb-1">
+                                            <select name="gst" id="gst" onchange="calculatePrice()"
+                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('gst') border-red-500 @enderror">
+                                                <option value="" selected disabled>Select GST</option>
+                                                @foreach ($gstSlabs as $gstSlab)
+                                                    <option value="{{ $gstSlab->percentage }}" {{ old('gst') == $gstSlab->percentage ? 'selected' : '' }}>{{ $gstSlab->percentage }}%</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="gst"
+                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">GST</label>
+                                        </div>
+                                        @error('gst')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                
+                                    <!-- Price Field -->
+                                    <div>
+                                        <div class="relative mb-1">
+                                            <input type="number" id="price" name="price" step="0.01" readonly
+                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('price') border-red-500 @enderror"
+                                                placeholder=" " value="{{ old('price') }}" />
                                             <label for="price"
                                                 class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Price</label>
                                         </div>
+                                        @error('price')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
-
-
-                                {{-- <div class="col-span-full">
-                                    <label for="cover-photo" class="block text-sm/6 font-medium text-gray-900">Cover
-                                        photo</label>
-                                    <div
-                                        class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                                        <div class="text-center">
-                                            <svg class="mx-auto size-12 text-gray-300" viewBox="0 0 24 24"
-                                                fill="currentColor" aria-hidden="true" data-slot="icon">
-                                                <path fill-rule="evenodd"
-                                                    d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            <div class="mt-4 flex text-sm/6 text-gray-600">
-                                                <label for="file-upload"
-                                                    class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:outline-hidden hover:text-indigo-500">
-                                                    <span>Upload a file</span>
-                                                    <input id="file-upload" name="file-upload" type="file"
-                                                        class="sr-only">
-                                                </label>
-                                                <p class="pl-1">or drag and drop</p>
-                                            </div>
-                                            <p class="text-xs/5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
-                                        </div>
-                                    </div>
-                                </div> --}}
 
                                 <div class="col-span-full">
                                     <label for="image-upload" class="block text-sm font-medium text-gray-900">Upload
@@ -190,6 +206,9 @@
                                                 <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB each</p>
                                             </div>
                                         </div>
+                                        @error('images')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -251,13 +270,18 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
-                                    <img src="{{ asset('storage/' . $menuItem->image) }}" alt="Image"
-                                        class="w-16 h-16 object-cover">
+                                    <div class="flex space-x-2">
+                                        @foreach($menuItem->images->take(3) as $image)
+                                            <img src="{{ asset('storage/' . $image->image_path) }}" 
+                                                 alt="Menu item image" 
+                                                 class="w-12 h-12 object-cover rounded">
+                                        @endforeach
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
                                     {{ $menuItem->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                    {{ $menuItem->category_id }}</td>
+                                    {{ $menuItem->category_name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     {{ $menuItem->mrp }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
@@ -265,13 +289,19 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     {{ $menuItem->rate }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                    {{ $menuItem->gst }}</td>
+                                    {{ $menuItem->gst }}%</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     {{ $menuItem->price }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     {{ $menuItem->is_available }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                    <a class="text-primary hover:text-sky-700" href="#">Delete</a>
+                                    <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -282,10 +312,12 @@
     </div>
 @endsection;
 
-
 @push('alerts')
     @if (session('success'))
         <x-admin.alert type="success" :message="session('success')" />
+    @endif
+    @if (session('error'))
+        <x-admin.alert type="error" :message="session('error')" />
     @endif
 @endpush
 
@@ -401,3 +433,22 @@
         });
     </script>
 @endsection
+
+@push('scripts')
+<script>
+function calculatePrice() {
+    const mrp = parseFloat(document.getElementById('mrp').value) || 0;
+    const discount = parseFloat(document.getElementById('discount').value) || 0;
+    const gstPercentage = parseFloat(document.getElementById('gst').value) || 0;
+    
+    // Calculate rate (MRP - (MRP * (discount/100)))
+    const rate = mrp - (mrp * (discount / 100));
+    document.getElementById('rate').value = rate.toFixed(2);
+    
+    // Calculate price (LEAST(rate + (rate * (gst/100)), mrp))
+    const priceWithGst = rate + (rate * (gstPercentage / 100));
+    const finalPrice = Math.min(priceWithGst, mrp);
+    document.getElementById('price').value = finalPrice.toFixed(2);
+}
+</script>
+@endpush

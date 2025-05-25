@@ -26,4 +26,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('menu-items', [MenuItemController::class, 'index'])->name('menu-items');
     Route::post('menu-items', [MenuItemController::class, 'store'])->name('menu-items.store');
+    Route::put('menu-items/{menuItem}', [MenuItemController::class, 'update'])->name('menu-items.update');
+    Route::delete('menu-items/{menuItem}', [MenuItemController::class, 'destroy'])->name('menu-items.destroy');
 });
