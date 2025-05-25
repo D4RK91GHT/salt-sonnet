@@ -22,7 +22,7 @@
         <div class="flex items-center justify-between mb-4">
             <h4 class="card-title mb-4">Menu Items</h4>
             <div x-data="{ open: false }" class="inline">
-                <button class="btn bg-primary text-white hover:bg-indigo-600" @click="open = true">Add New Item</button>
+                <x-tailwind.primary-button @click="open = true" type="button">Add New Item</x-tailwind.primary-button>
                 <!-- Modal -->
                 <div x-show="open"
                     class="fixed inset-0 flex items-center justify-center z-50 overflow-x-hidden overflow-y-auto"
