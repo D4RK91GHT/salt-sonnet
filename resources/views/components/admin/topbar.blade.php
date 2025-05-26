@@ -176,11 +176,9 @@
                         href="#"> --}}
                         <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
-                            <x-responsive-nav-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-responsive-nav-link>
+                            <x-tailwind.primary-button class="w-full" onclick="event.preventDefault(); this.closest('form').submit();">
+                                Log Out
+                            </x-tailwind.primary-button>
                         </form>
                     {{-- </a> --}}
                 </div>
