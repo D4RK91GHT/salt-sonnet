@@ -39,65 +39,24 @@
                             <div class="px-6 py-4">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <div class="relative mb-4">
-                                            <input type="text" id="name" name="name"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('name') border-red-500 @enderror"
-                                                placeholder=" " value="{{ old('name') }}" />
-                                            <label for="name"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Item
-                                                Name</label>
-                                        </div>
-                                        @error('name')
-                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                                        @enderror
+                                        <x-tailwind.floating.text-input name="name" label="Item Name" />
                                     </div>
+
                                     <div>
-                                        <div class="relative mb-4">
-                                            <textarea id="includes" name="includes"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('includes') border-red-500 @enderror"
-                                                placeholder=" " maxlength="355" value="{{ old('includes') }}"></textarea>
-                                            <label for="includes"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Includes</label>
-                                        </div>
-                                        @error('includes')
-                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                                        @enderror
+                                        <x-tailwind.floating.textarea name="includes" label="Includes" />
                                     </div>
                                 </div>
+                                
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
                                     <div>
-                                        <div class="relative mb-4">
-                                            <select name="category" id="category"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('category') border-red-500 @enderror">
-                                                <option value="" selected disabled>Select Category</option>
-                                                @foreach ($categories as $category)
-                                                    <option {{ old('category') == $category->id ? 'selected' : '' }}
-                                                        value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            <label for="category"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Category</label>
-                                        </div>
-                                        @error('category')
-                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                                        @enderror
+                                        <x-tailwind.floating.dropdown name="category" label="Category" :listArray="$categories" listValue="id" listLabel="name" />
                                     </div>
 
                                     <div>
-                                        <div class="relative mb-4">
-                                            <textarea id="description" name="description"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('description') border-red-500 @enderror"
-                                                placeholder="" maxlength="555" value="{{ old('description') }}"></textarea>
-                                            <label for="description"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Description</label>
-                                        </div>
-                                        @error('description')
-                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                                        @enderror
+                                        <x-tailwind.floating.textarea name="description" label="Description" />
                                     </div>
-
                                 </div>
+
                                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                                     <!-- MRP Field -->
                                     <div>
@@ -271,20 +230,24 @@
                         @foreach ($menuItems as $menuItem)
                             <tr class="hover:bg-gray-100">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                    {{ $loop->iteration }}
+                                    {{ ($menuItems->currentPage() - 1) * $menuItems->perPage() + $loop->index + 1 }}
                                 </td>
 
                                 <td
                                     class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                     <div class="flex">
                                         @if ($menuItem->images->count() > 0)
-                                        @foreach ($menuItem->images->take(3) as $image)
-                                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="..." class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow @if (!$loop->first) -ml-4 @endif">
-                                        @endforeach
+                                            @foreach ($menuItem->images->take(3) as $image)
+                                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="..."
+                                                    class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow @if (!$loop->first) -ml-4 @endif">
+                                            @endforeach
                                         @else
-                                            <img src="{{ asset('assets/placeholder/Item-300x300.jpg') }}" alt="..." class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow">
-                                            <img src="{{ asset('assets/placeholder/Item-300x300.jpg') }}" alt="..." class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow -ml-4">
-                                            <img src="{{ asset('assets/placeholder/Item-300x300.jpg') }}" alt="..." class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow -ml-4">
+                                            <img src="{{ asset('assets/placeholder/Item-300x300.jpg') }}" alt="..."
+                                                class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow">
+                                            <img src="{{ asset('assets/placeholder/Item-300x300.jpg') }}" alt="..."
+                                                class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow -ml-4">
+                                            <img src="{{ asset('assets/placeholder/Item-300x300.jpg') }}" alt="..."
+                                                class="w-14 h-14 rounded-full border-2 border-blueGray-50 shadow -ml-4">
                                         @endif
                                     </div>
                                 </td>
@@ -305,20 +268,22 @@
                                     {{ $menuItem->price }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
                                     @if ($menuItem->is_available)
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                             Available
                                         </span>
                                     @else
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500 text-white">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-500 text-white">
                                             Out Of Stock
                                         </span>
                                     @endif
 
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                    <button type="button"
-                                            class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded">
-                                            Edit
+                                    <button x-data @click="$dispatch('toggle-drawer')" type="button"
+                                        class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded">
+                                        Edit
                                     </button>
 
                                     <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST"
@@ -341,6 +306,12 @@
             </div>
         </div>
     </div>
+@endsection;
+
+@section('offcanvas')
+
+<x-tailwind.offcanvas />
+
 @endsection;
 
 @push('alerts')

@@ -52,6 +52,7 @@
                     
                 </div>
             </main>
+            @yield('offcanvas')
 
         </div>
         <!-- End Page content -->
