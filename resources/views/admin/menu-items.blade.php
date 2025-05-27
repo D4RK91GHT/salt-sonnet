@@ -39,35 +39,40 @@
                             <div class="px-6 py-4">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <x-tailwind.floating.text-input name="name" label="Item Name" />
+                                        <x-tailwind.floating.text-input name="name" label="Item Name" maxLength="255"/>
+                                        @error('name')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
 
                                     <div>
-                                        <x-tailwind.floating.textarea name="includes" label="Includes" />
+                                        <x-tailwind.floating.textarea name="includes" label="Includes" maxLength="355"/>
+                                        @error('includes')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
-                                
+
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <x-tailwind.floating.dropdown name="category" label="Category" :listArray="$categories" listValue="id" listLabel="name" />
+                                        @error('category')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
 
                                     <div>
                                         <x-tailwind.floating.textarea name="description" label="Description" />
+                                        @error('description')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                                     <!-- MRP Field -->
                                     <div>
-                                        <div class="relative mb-1">
-                                            <input type="number" id="mrp" name="mrp" step="0.01"
-                                                min="0" max="9999999.99" required
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('mrp') border-red-500 @enderror"
-                                                placeholder=" " oninput="calculatePrice()" value="{{ old('mrp') }}" />
-                                            <label for="mrp"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">MRP</label>
-                                        </div>
+                                        <x-tailwind.floating.text-input name="mrp" id="mrp" label="MRP" type="number" step="0.01" min="0" max="9999999.99" required oninput="calculatePrice()"/>
                                         @error('mrp')
                                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                         @enderror
@@ -75,16 +80,7 @@
 
                                     <!-- Discount Field -->
                                     <div>
-                                        <div class="relative mb-1">
-                                            <input type="number" id="discount" name="discount" step="0.01"
-                                                min="0" max="100"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('discount') border-red-500 @enderror"
-                                                placeholder=" " oninput="calculatePrice()"
-                                                value="{{ old('discount', 0) }}" />
-                                            <label for="discount"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Discount
-                                                %</label>
-                                        </div>
+                                        <x-tailwind.floating.text-input name="discount" id="discount" label="Discount" type="number" step="0.01" min="0" max="100" required oninput="calculatePrice()"/>
                                         @error('discount')
                                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                         @enderror
@@ -92,13 +88,7 @@
 
                                     <!-- Rate Field -->
                                     <div>
-                                        <div class="relative mb-1">
-                                            <input type="number" id="rate" name="rate" step="0.01" readonly
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('rate') border-red-500 @enderror"
-                                                placeholder=" " value="{{ old('rate') }}" />
-                                            <label for="rate"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Rate</label>
-                                        </div>
+                                        <x-tailwind.floating.text-input name="rate" id="rate" label="Rate" type="number" step="0.01" readonly/>
                                         @error('rate')
                                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                         @enderror
@@ -106,19 +96,7 @@
 
                                     <!-- GST Field -->
                                     <div>
-                                        <div class="relative mb-1">
-                                            <select name="gst" id="gst" onchange="calculatePrice()"
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('gst') border-red-500 @enderror">
-                                                <option value="" selected disabled>Select GST</option>
-                                                @foreach ($gstSlabs as $gstSlab)
-                                                    <option value="{{ $gstSlab->percentage }}"
-                                                        {{ old('gst') == $gstSlab->percentage ? 'selected' : '' }}>
-                                                        {{ $gstSlab->percentage }}%</option>
-                                                @endforeach
-                                            </select>
-                                            <label for="gst"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">GST</label>
-                                        </div>
+                                        <x-tailwind.floating.dropdown name="gst" label="GST" :listArray="$gstSlabs" listValue="percentage" listLabel="percentage" onchange="calculatePrice()" />
                                         @error('gst')
                                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                         @enderror
@@ -126,13 +104,7 @@
 
                                     <!-- Price Field -->
                                     <div>
-                                        <div class="relative mb-1">
-                                            <input type="number" id="price" name="price" step="0.01" readonly
-                                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer @error('price') border-red-500 @enderror"
-                                                placeholder=" " value="{{ old('price') }}" />
-                                            <label for="price"
-                                                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Price</label>
-                                        </div>
+                                        <x-tailwind.floating.text-input name="price" id="price" label="Price" type="number" step="0.01" readonly/>
                                         @error('price')
                                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                         @enderror
@@ -291,7 +263,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded">
+                                            class="text-white bg-red-600 hover:bg-red-500 px-2 py-1 rounded">
                                             Delete
                                         </button>
                                     </form>
@@ -432,25 +404,22 @@
                 const event = new Event('change');
                 fileInput.dispatchEvent(event);
             }
+
+            const calculatePrice = () => {
+                const mrp = parseFloat(document.getElementById('mrp').value) || 0;
+                const discount = parseFloat(document.getElementById('discount').value) || 0;
+                const gstPercentage = parseFloat(document.getElementById('gst').value) || 0;
+
+                // Calculate rate (MRP - (MRP * (discount/100)))
+                const rate = mrp - (mrp * (discount / 100));
+                document.getElementById('rate').value = rate.toFixed(2);
+
+                // Calculate price (LEAST(rate + (rate * (gst/100)), mrp))
+                const priceWithGst = rate + (rate * (gstPercentage / 100));
+                const finalPrice = Math.min(priceWithGst, mrp);
+                document.getElementById('price').value = finalPrice.toFixed(2);
+            }
         });
+
     </script>
 @endsection
-
-@push('scripts')
-    <script>
-        function calculatePrice() {
-            const mrp = parseFloat(document.getElementById('mrp').value) || 0;
-            const discount = parseFloat(document.getElementById('discount').value) || 0;
-            const gstPercentage = parseFloat(document.getElementById('gst').value) || 0;
-
-            // Calculate rate (MRP - (MRP * (discount/100)))
-            const rate = mrp - (mrp * (discount / 100));
-            document.getElementById('rate').value = rate.toFixed(2);
-
-            // Calculate price (LEAST(rate + (rate * (gst/100)), mrp))
-            const priceWithGst = rate + (rate * (gstPercentage / 100));
-            const finalPrice = Math.min(priceWithGst, mrp);
-            document.getElementById('price').value = finalPrice.toFixed(2);
-        }
-    </script>
-@endpush
