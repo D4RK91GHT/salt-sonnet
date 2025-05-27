@@ -29,8 +29,8 @@
                     style="display: none;">
                     <div class="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity" @click="open = false"></div>
                     <div
-                        class="bg-white rounded-lg shadow-lg w-full max-w-[50%] mx-auto z-50 overflow-x-hidden overflow-y-auto">
-                        <div class="flex justify-between items-center px-6 py-4 border-b">
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-[50%] mx-auto z-50 overflow-x-hidden overflow-y-auto">
+                        <div class="flex justify-between items-center px-6 py-4">
                             <h3 class="text-lg font-semibold">Add New Menu Item</h3>
                             <button @click="open = false" class="text-gray-500 hover:text-gray-700">&times;</button>
                         </div>
@@ -123,7 +123,7 @@
 
                                         <!-- Upload area -->
                                         <div
-                                            class="mt-1 flex justify-center rounded-lg border-2 border-dashed border-gray-300 px-6 pt-5 pb-6 hover:border-indigo-500 hover:bg-gray-50 transition-colors">
+                                            class="mt-1 flex justify-center rounded-lg border-2 border-dashed border-gray-300 px-6 pt-5 pb-6 hover:border-indigo-500 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                                             <div class="space-y-1 text-center">
                                                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor"
                                                     fill="none" viewBox="0 0 48 48" aria-hidden="true">
@@ -132,16 +132,16 @@
                                                         stroke-width="2" stroke-linecap="round"
                                                         stroke-linejoin="round" />
                                                 </svg>
-                                                <div class="flex text-sm text-gray-600">
+                                                <div class="flex text-sm text-gray-600 dark:text-gray-400">
                                                     <label for="image-upload"
-                                                        class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none hover:text-indigo-500">
+                                                        class="relative cursor-pointer rounded-md font-medium text-indigo-600 focus-within:outline-none hover:text-indigo-500 dark:hover:text-indigo-500">
                                                         <span>Upload files</span>
                                                         <input id="image-upload" name="images[]" type="file"
                                                             class="sr-only" multiple accept="image/*">
                                                     </label>
                                                     <p class="pl-1">or drag and drop</p>
                                                 </div>
-                                                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB each</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF up to 10MB each</p>
                                             </div>
                                         </div>
                                         @error('images')
@@ -151,7 +151,7 @@
                                 </div>
 
                             </div>
-                            <div class="flex justify-end px-6 py-4 border-t">
+                            <div class="flex justify-end px-6 py-4">
                                 <button type="button" @click="open = false"
                                     class="mr-2 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Cancel</button>
                                 <button type="submit"
@@ -282,7 +282,132 @@
 
 @section('offcanvas')
 
-<x-tailwind.offcanvas />
+<x-tailwind.offcanvas title="Edit Menu Item">
+    <form action="{{ route('admin.menu-items.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="px-6 py-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <x-tailwind.floating.text-input name="name" label="Item Name" maxLength="255"/>
+                    @error('name')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <x-tailwind.floating.textarea name="includes" label="Includes" maxLength="355"/>
+                    @error('includes')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <x-tailwind.floating.dropdown name="category" label="Category" :listArray="$categories" listValue="id" listLabel="name" />
+                    @error('category')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <x-tailwind.floating.textarea name="description" label="Description" />
+                    @error('description')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <!-- MRP Field -->
+                <div>
+                    <x-tailwind.floating.text-input name="mrp" id="mrp" label="MRP" type="number" step="0.01" min="0" max="9999999.99" required oninput="calculatePrice()"/>
+                    @error('mrp')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Discount Field -->
+                <div>
+                    <x-tailwind.floating.text-input name="discount" id="discount" label="Discount" type="number" step="0.01" min="0" max="100" required oninput="calculatePrice()"/>
+                    @error('discount')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Rate Field -->
+                <div>
+                    <x-tailwind.floating.text-input name="rate" id="rate" label="Rate" type="number" step="0.01" readonly/>
+                    @error('rate')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- GST Field -->
+                <div>
+                    <x-tailwind.floating.dropdown name="gst" label="GST" :listArray="$gstSlabs" listValue="percentage" listLabel="percentage" listLabelPostfix="%" onchange="calculatePrice()" />
+                    @error('gst')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Price Field -->
+                <div>
+                    <x-tailwind.floating.text-input name="price" id="price" label="Price" type="number" step="0.01" readonly/>
+                    @error('price')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="col-span-full">
+                <label for="image-upload" class="block text-sm font-medium text-gray-900 dark:text-gray-300">Upload
+                    Images</label>
+                <div class="mt-2 flex flex-col space-y-4">
+                    <!-- Image preview container -->
+                    <div id="image-preview"
+                        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        <!-- Preview items will be added here dynamically -->
+                    </div>
+
+                    <!-- Upload area -->
+                    <div
+                        class="mt-1 flex justify-center rounded-lg border-2 border-dashed border-gray-300 px-6 pt-5 pb-6 hover:border-indigo-500 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor"
+                                fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path
+                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                    stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <div class="flex text-sm text-gray-600 dark:text-gray-400">
+                                <label for="image-upload"
+                                    class="relative cursor-pointer rounded-md font-medium text-indigo-600 focus-within:outline-none hover:text-indigo-500 dark:hover:text-indigo-500">
+                                    <span>Upload files</span>
+                                    <input id="image-upload" name="images[]" type="file"
+                                        class="sr-only" multiple accept="image/*">
+                                </label>
+                                <p class="pl-1">or drag and drop</p>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF up to 10MB each</p>
+                        </div>
+                    </div>
+                    @error('images')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+        </div>
+        <div class="flex justify-end px-6 py-4">
+            <button type="button" @click="open = false"
+                class="mr-2 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Cancel</button>
+            <button type="submit"
+                class="px-4 py-2 bg-primary text-white rounded hover:bg-indigo-600">Save Item</button>
+        </div>
+    </form>
+</x-tailwind.offcanvas>
 
 @endsection;
 
