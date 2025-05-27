@@ -258,11 +258,21 @@
                                         Edit
                                     </button>
 
-                                    <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST"
+                                    {{-- <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST"
                                         class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
+                                            class="text-white bg-red-600 hover:bg-red-500 px-2 py-1 rounded">
+                                            Delete
+                                        </button>
+                                    </form> --}}
+                                    <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST"
+                                        class="inline delete-form" id="delete-form-{{ $menuItem->id }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" 
+                                            onclick="confirmDelete(event, 'delete-form-{{ $menuItem->id }}')"
                                             class="text-white bg-red-600 hover:bg-red-500 px-2 py-1 rounded">
                                             Delete
                                         </button>
@@ -422,8 +432,7 @@
 
 @section('js')
     <!-- Alpine.js CDN (if not already included) -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
+    {{-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script> --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.getElementById('image-upload');
@@ -530,21 +539,44 @@
                 fileInput.dispatchEvent(event);
             }
 
-            const calculatePrice = () => {
-                const mrp = parseFloat(document.getElementById('mrp').value) || 0;
-                const discount = parseFloat(document.getElementById('discount').value) || 0;
-                const gstPercentage = parseFloat(document.getElementById('gst').value) || 0;
-
-                // Calculate rate (MRP - (MRP * (discount/100)))
-                const rate = mrp - (mrp * (discount / 100));
-                document.getElementById('rate').value = rate.toFixed(2);
-
-                // Calculate price (LEAST(rate + (rate * (gst/100)), mrp))
-                const priceWithGst = rate + (rate * (gstPercentage / 100));
-                const finalPrice = Math.min(priceWithGst, mrp);
-                document.getElementById('price').value = finalPrice.toFixed(2);
-            }
         });
+        const calculatePrice = () => {
+            const mrp = parseFloat(document.getElementById('mrp').value) || 0;
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            const gstPercentage = parseFloat(document.getElementById('gst').value) || 0;
+
+            // Calculate rate (MRP - (MRP * (discount/100)))
+            const rate = mrp - (mrp * (discount / 100));
+            document.getElementById('rate').value = rate.toFixed(2);
+
+            // Calculate price (LEAST(rate + (rate * (gst/100)), mrp))
+            const priceWithGst = rate + (rate * (gstPercentage / 100));
+            const finalPrice = Math.min(priceWithGst, mrp);
+            document.getElementById('price').value = finalPrice.toFixed(2);
+        }
+
+        function confirmDelete(event, formId) {
+            event.preventDefault();
+    
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                customClass: {
+                    confirmButton: 'px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700',
+                    cancelButton: 'px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 ml-2'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                }
+            });
+        }
 
     </script>
 @endsection
