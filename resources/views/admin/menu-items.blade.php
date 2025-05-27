@@ -112,7 +112,7 @@
                                 </div>
 
                                 <div class="col-span-full">
-                                    <label for="image-upload" class="block text-sm font-medium text-gray-900">Upload
+                                    <label for="image-upload" class="block text-sm font-medium text-gray-900 dark:text-gray-300">Upload
                                         Images</label>
                                     <div class="mt-2 flex flex-col space-y-4">
                                         <!-- Image preview container -->
@@ -254,19 +254,10 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                     <button x-data @click="$dispatch('toggle-drawer')" type="button"
-                                        class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded">
+                                        class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded" onclick="showMenuItem({{ $menuItem->id }})">
                                         Edit
                                     </button>
 
-                                    {{-- <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST"
-                                        class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="text-white bg-red-600 hover:bg-red-500 px-2 py-1 rounded">
-                                            Delete
-                                        </button>
-                                    </form> --}}
                                     <form action="{{ route('admin.menu-items.destroy', $menuItem) }}" method="POST"
                                         class="inline delete-form" id="delete-form-{{ $menuItem->id }}">
                                         @csrf
@@ -298,14 +289,14 @@
         <div class="px-6 py-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <x-tailwind.floating.text-input name="name" label="Item Name" maxLength="255"/>
+                    <x-tailwind.floating.text-input name="name" id="edit-name" label="Item Name" maxLength="255"/>
                     @error('name')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <x-tailwind.floating.textarea name="includes" label="Includes" maxLength="355"/>
+                    <x-tailwind.floating.textarea name="includes" id="edit-includes" label="Includes" maxLength="355"/>
                     @error('includes')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
@@ -314,14 +305,14 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <x-tailwind.floating.dropdown name="category" label="Category" :listArray="$categories" listValue="id" listLabel="name" />
+                    <x-tailwind.floating.dropdown name="category" id="edit-category" label="Category" :listArray="$categories" listValue="id" listLabel="name" />
                     @error('category')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <x-tailwind.floating.textarea name="description" label="Description" />
+                    <x-tailwind.floating.textarea name="description" id="edit-description" label="Description" />
                     @error('description')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
@@ -331,7 +322,7 @@
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <!-- MRP Field -->
                 <div>
-                    <x-tailwind.floating.text-input name="mrp" id="mrp" label="MRP" type="number" step="0.01" min="0" max="9999999.99" required oninput="calculatePrice()"/>
+                    <x-tailwind.floating.text-input name="mrp" id="edit-mrp" label="MRP" type="number" step="0.01" min="0" max="9999999.99" required oninput="calculatePrice('edit-')"/>
                     @error('mrp')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
@@ -339,7 +330,7 @@
 
                 <!-- Discount Field -->
                 <div>
-                    <x-tailwind.floating.text-input name="discount" id="discount" label="Discount" type="number" step="0.01" min="0" max="100" required oninput="calculatePrice()"/>
+                    <x-tailwind.floating.text-input name="discount" id="edit-discount" label="Discount" type="number" step="0.01" min="0" max="100" required oninput="calculatePrice('edit-')"/>
                     @error('discount')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
@@ -347,7 +338,7 @@
 
                 <!-- Rate Field -->
                 <div>
-                    <x-tailwind.floating.text-input name="rate" id="rate" label="Rate" type="number" step="0.01" readonly/>
+                    <x-tailwind.floating.text-input name="rate" id="edit-rate" label="Rate" type="number" step="0.01" readonly/>
                     @error('rate')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
@@ -355,7 +346,7 @@
 
                 <!-- GST Field -->
                 <div>
-                    <x-tailwind.floating.dropdown name="gst" label="GST" :listArray="$gstSlabs" listValue="percentage" listLabel="percentage" listLabelPostfix="%" onchange="calculatePrice()" />
+                    <x-tailwind.floating.dropdown name="gst" id="edit-gst" label="GST" :listArray="$gstSlabs" listValue="percentage" listLabel="percentage" listLabelPostfix="%" onchange="calculatePrice('edit-')" />
                     @error('gst')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
@@ -363,7 +354,7 @@
 
                 <!-- Price Field -->
                 <div>
-                    <x-tailwind.floating.text-input name="price" id="price" label="Price" type="number" step="0.01" readonly/>
+                    <x-tailwind.floating.text-input name="price" id="edit-price" label="Price" type="number" step="0.01" readonly/>
                     @error('price')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
@@ -375,7 +366,7 @@
                     Images</label>
                 <div class="mt-2 flex flex-col space-y-4">
                     <!-- Image preview container -->
-                    <div id="image-preview"
+                    <div id="edit-image-preview"
                         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                         <!-- Preview items will be added here dynamically -->
                     </div>
@@ -434,6 +425,22 @@
     <!-- Alpine.js CDN (if not already included) -->
     {{-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script> --}}
     <script>
+        function showMenuItem(id) {
+            fetch(`/admin/menu-items/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the form fields with the fetched data
+                    document.getElementById('edit-name').value = data.name;
+                    document.getElementById('edit-includes').value = data.includes;
+                    document.getElementById('edit-category').value = data.category_id;
+                    document.getElementById('edit-description').value = data.description;
+                    document.getElementById('edit-mrp').value = data.mrp;
+                    document.getElementById('edit-discount').value = data.discount;
+                    document.getElementById('edit-gst').value = data.gst;
+                    console.log(data.images);
+                })
+                .catch(error => console.error('Error fetching menu item:', error));
+        }
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.getElementById('image-upload');
             const previewContainer = document.getElementById('image-preview');
@@ -467,7 +474,7 @@
                         previewItem.innerHTML = `
                                                     <div class="relative aspect-square overflow-hidden rounded-lg border border-gray-200">
                                                         <img src="${e.target.result}" alt="Preview" class="h-full w-full object-cover">
-                                                        <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <button type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                                                             </svg>
@@ -540,19 +547,19 @@
             }
 
         });
-        const calculatePrice = () => {
-            const mrp = parseFloat(document.getElementById('mrp').value) || 0;
-            const discount = parseFloat(document.getElementById('discount').value) || 0;
-            const gstPercentage = parseFloat(document.getElementById('gst').value) || 0;
+        const calculatePrice = (idPrefix = '') => {
+            const mrp = parseFloat(document.getElementById(idPrefix + 'mrp').value) || 0;
+            const discount = parseFloat(document.getElementById(idPrefix + 'discount').value) || 0;
+            const gstPercentage = parseFloat(document.getElementById(idPrefix + 'gst').value) || 0;
 
             // Calculate rate (MRP - (MRP * (discount/100)))
             const rate = mrp - (mrp * (discount / 100));
-            document.getElementById('rate').value = rate.toFixed(2);
+            document.getElementById(idPrefix + 'rate').value = rate.toFixed(2);
 
             // Calculate price (LEAST(rate + (rate * (gst/100)), mrp))
             const priceWithGst = rate + (rate * (gstPercentage / 100));
             const finalPrice = Math.min(priceWithGst, mrp);
-            document.getElementById('price').value = finalPrice.toFixed(2);
+            document.getElementById(idPrefix + 'price').value = finalPrice.toFixed(2);
         }
 
         function confirmDelete(event, formId) {

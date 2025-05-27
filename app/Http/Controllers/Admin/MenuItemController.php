@@ -26,6 +26,17 @@ class MenuItemController extends Controller
         return view('admin.menu-items', compact('menuItems', 'categories', 'gstSlabs'));
     }
 
+    public function show(MenuItem $menuItem)
+    {
+        $menuItem = MenuItem::with('images')
+        ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
+        ->select('menu_items.*', 'menu_categories.name as category_name')->where('menu_items.id', $menuItem->id)
+        ->first();
+
+        // return view('admin.menu-items', compact('menuItem'));
+        return response()->json($menuItem);
+    }
+    
     public function store(Request $request)
     {
         try {
