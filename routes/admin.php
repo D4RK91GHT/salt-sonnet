@@ -29,4 +29,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('menu-items/{menuItem}', [MenuItemController::class, 'show'])->name('menu-items.single');
     Route::put('menu-items/{menuItem}', [MenuItemController::class, 'update'])->name('menu-items.update');
     Route::delete('menu-items/{menuItem}', [MenuItemController::class, 'destroy'])->name('menu-items.destroy');
+    Route::delete('menu-items/images/{image}', [MenuItemController::class, 'destroyImage'])->name('menu-items.destroy-image');
 });

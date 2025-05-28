@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\MenuItem;
+use App\Models\ProductImage;
 use App\Models\MenuCategory;
 use App\Models\GSTSlab;
 
@@ -191,6 +193,25 @@ class MenuItemController extends Controller
         }
     }
 
+
+    public function destroyImage(ProductImage $image)
+    {
+        try {
+            // Delete the file from storage
+            Storage::delete('public/' . $image->image_path);
+            
+            // Delete the image record
+            $image->delete();
+            
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
     public function destroy(MenuItem $menuItem)
     {
         try {

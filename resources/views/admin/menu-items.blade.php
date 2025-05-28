@@ -383,10 +383,10 @@
                                     stroke-linejoin="round" />
                             </svg>
                             <div class="flex text-sm text-gray-600 dark:text-gray-400">
-                                <label for="image-upload"
+                                <label for="edit-image-upload"
                                     class="relative cursor-pointer rounded-md font-medium text-indigo-600 focus-within:outline-none hover:text-indigo-500 dark:hover:text-indigo-500">
                                     <span>Upload files</span>
-                                    <input id="image-upload" name="images[]" type="file"
+                                    <input id="edit-image-upload" name="edit-images[]" type="file"
                                         class="sr-only" multiple accept="image/*">
                                 </label>
                                 <p class="pl-1">or drag and drop</p>
@@ -394,7 +394,7 @@
                             <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF up to 10MB each</p>
                         </div>
                     </div>
-                    @error('images')
+                    @error('edit-images')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
@@ -438,6 +438,84 @@
                     document.getElementById('edit-discount').value = data.discount;
                     document.getElementById('edit-gst').value = data.gst;
                     console.log(data.images);
+
+                    // Update the image preview
+                    const fileInput = document.getElementById('edit-image-upload');
+                    const maxFiles = 10; // Maximum number of files allowed
+                    const previewContainer = document.getElementById('edit-image-preview');
+                    previewContainer.innerHTML = '';
+                    data.images.forEach(image => {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item relative group';
+                        previewItem.innerHTML = `
+                            <img src="${'{{ asset('storage/') }}/' + image.image_path}" class="h-24 w-full object-cover rounded-lg">
+                            <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity" data-dz-remove>
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        `;
+                        previewItem.querySelector('button').addEventListener('click', function() {
+                            previewItem.remove();
+                            const dt = new DataTransfer();
+                            const input = fileInput;
+                            const files = input.files;
+                            for (let i = 0; i < files.length; i++) {
+                                const f = files[i];
+                                if (f !== file) {
+                                    dt.items.add(f);
+                                }
+                            }
+                            input.files = dt.files;
+                        });
+                        previewContainer.appendChild(previewItem);
+                    });
+                    fileInput.addEventListener('change', function(e) {
+                        const files = Array.from(e.target.files);
+                        if (!e.ctrlKey) {
+                            previewContainer.innerHTML = '';
+                        }
+                        const currentFiles = previewContainer.querySelectorAll('.preview-item').length;
+                        if (currentFiles + files.length > maxFiles) {
+                            alert(`You can only upload up to ${maxFiles} images.`);
+                            return;
+                        }
+                        files.forEach(file => {
+                            if (!file.type.startsWith('image/')) {
+                                alert(`Skipped ${file.name}: Not an image file`);
+                                return;
+                            }
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const previewItem = document.createElement('div');
+                                previewItem.className = 'preview-item relative group';
+                                previewItem.innerHTML = `
+                                    <img src="${e.target.result}" class="h-24 w-full object-cover rounded-lg">
+                                    <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity" data-dz-remove>
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                `;
+                                previewItem.querySelector('button').addEventListener('click', function() {
+                                    previewItem.remove();
+                                    const dt = new DataTransfer();
+                                    const input = fileInput;
+                                    const files = input.files;
+                                    for (let i = 0; i < files.length; i++) {
+                                        const f = files[i];
+                                        if (f !== file) {
+                                            dt.items.add(f);
+                                        }
+                                    }
+                                    input.files = dt.files;
+                                });
+                                previewContainer.appendChild(previewItem);
+                            }
+                            reader.readAsDataURL(file);
+                        });
+                    });
+
                 })
                 .catch(error => console.error('Error fetching menu item:', error));
         }
