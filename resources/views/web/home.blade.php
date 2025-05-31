@@ -42,7 +42,7 @@
 @endsection
 
 @section('main')
-    <x-web.home-categories />
+    <x-web.home-categories :categories="$categories"/>
 
     <div class="bg_gray">
         <div class="container margin_60_40">

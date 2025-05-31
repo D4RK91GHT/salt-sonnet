@@ -18,4 +18,4 @@
 
 <!-- YOUR CUSTOM CSS -->
 <link href="{{ asset('assets/web/css/custom.css') }}" rel="stylesheet">
-@vite('resources/css/web-app.css')
+@vite('resources/css/web.css')

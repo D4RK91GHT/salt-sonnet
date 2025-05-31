@@ -2,11 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\HomeController;
+use App\Http\Controllers\HomePageController;
 
-Route::get('/', function () {
-    return view('web.home');
-});
+Route::get('/', [HomePageController::class, 'homePage'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -18,6 +16,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::apiResource('home', App\Http\Controllers\API\HomeController::class);
+// Route::apiResource('home', App\Http\Controllers\API\HomeController::class);
 
 require __DIR__.'/auth.php';

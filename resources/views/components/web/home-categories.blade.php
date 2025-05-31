@@ -2,25 +2,26 @@
     <div class="main_title center">
         <span><em></em></span>
         <h2>Popular Categories</h2>
-        <p>Cum doctus civibus efficiantur in imperdiet deterruisset</p>
+        <p>From starters to desserts—flavor in every category</p>
     </div>
     <!-- /main_title -->
-
     <div class="owl-carousel owl-theme categories_carousel">
+        @foreach ($categories as $category)
         <div class="item_version_2">
             <a href="grid-listing-filterscol.html">
                 <figure>
                     <span>98</span>
-                    <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_pizza.jpg" alt=""
+                    <img src="{{ asset('storage/' . $category->image) }}" data-src="{{ asset('storage/' . $category->image) }}" alt=""
                         class="owl-lazy">
                     <div class="info">
-                        <h3>Pizza</h3>
+                        <h3>{{ $category->name }}</h3>
                         <small>Avg price $40</small>
                     </div>
                 </figure>
             </a>
         </div>
-        <div class="item_version_2">
+        @endforeach
+        {{-- <div class="item_version_2">
             <a href="grid-listing-filterscol.html">
                 <figure>
                     <span>87</span>
@@ -97,7 +98,7 @@
                     </div>
                 </figure>
             </a>
-        </div>
+        </div> --}}
     </div>
     <!-- /carousel -->
 </div>
