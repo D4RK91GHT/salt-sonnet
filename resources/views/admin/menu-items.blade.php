@@ -284,9 +284,11 @@
 @section('offcanvas')
 
 <x-tailwind.offcanvas title="Edit Menu Item">
-    <form action="{{ route('admin.menu-items.store') }}" method="POST" enctype="multipart/form-data">
+    <form id="edit-menu-item-form" action="" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="px-6 py-4">
+            <input type="hidden" name="id" id="edit-id">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <x-tailwind.floating.text-input name="name" id="edit-name" label="Item Name" maxLength="255"/>
@@ -362,7 +364,7 @@
             </div>
 
             <div class="col-span-full">
-                <label for="image-upload" class="block text-sm font-medium text-gray-900 dark:text-gray-300">Upload
+                <label for="edit-image-upload" class="block text-sm font-medium text-gray-900 dark:text-gray-300">Upload
                     Images</label>
                 <div class="mt-2 flex flex-col space-y-4">
                     <!-- Image preview container -->
@@ -388,6 +390,7 @@
                                     <span>Upload files</span>
                                     <input id="edit-image-upload" name="edit-images[]" type="file"
                                         class="sr-only" multiple accept="image/*">
+                                    <input class="hidden" type="file" id="delete-image" name="delete-images[]" multiple accept="image/*">
                                 </label>
                                 <p class="pl-1">or drag and drop</p>
                             </div>
@@ -430,6 +433,9 @@
                 .then(response => response.json())
                 .then(data => {
                     // Update the form fields with the fetched data
+                    document.getElementById('edit-menu-item-form').action = `/admin/menu-items/${data.id}`;
+                    document.getElementById('edit-id').value = data.id;
+
                     document.getElementById('edit-name').value = data.name;
                     document.getElementById('edit-includes').value = data.includes;
                     document.getElementById('edit-category').value = data.category_id;
@@ -441,6 +447,7 @@
 
                     // Update the image preview
                     const fileInput = document.getElementById('edit-image-upload');
+                    const deleteInput = document.getElementById('delete-image');
                     const maxFiles = 10; // Maximum number of files allowed
                     const previewContainer = document.getElementById('edit-image-preview');
                     previewContainer.innerHTML = '';
@@ -456,6 +463,7 @@
                             </button>
                         `;
                         previewItem.querySelector('button').addEventListener('click', function() {
+                            console.log('Removing file:', image.image_path);
                             previewItem.remove();
                             const dt = new DataTransfer();
                             const input = fileInput;
@@ -498,6 +506,7 @@
                                     </button>
                                 `;
                                 previewItem.querySelector('button').addEventListener('click', function() {
+                                    console.log('Removing file:', file.name);
                                     previewItem.remove();
                                     const dt = new DataTransfer();
                                     const input = fileInput;
@@ -519,6 +528,8 @@
                 })
                 .catch(error => console.error('Error fetching menu item:', error));
         }
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.getElementById('image-upload');
             const previewContainer = document.getElementById('image-preview');

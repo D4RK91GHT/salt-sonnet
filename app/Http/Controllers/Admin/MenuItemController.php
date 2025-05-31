@@ -118,6 +118,8 @@ class MenuItemController extends Controller
 
     public function update(Request $request, MenuItem $menuItem)
     {
+
+        dd($request->all());
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
@@ -127,8 +129,6 @@ class MenuItemController extends Controller
                 "mrp" => "required|numeric|min:0",
                 "discount" => "required|numeric|min:0|max:100",
                 "gst" => "required|numeric|min:0|max:100",
-                'images' => 'nullable|array|min:1',
-                'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240'
             ]);
 
             // Start database transaction
@@ -145,12 +145,15 @@ class MenuItemController extends Controller
                     'gst' => $validated['gst'],
                 ]);
 
+                // if ($request->hasFile('edit-images')) {
+                //     $validated['images'] = $request->file('edit-images');
+                // }
                 // Handle image updates
-                if ($request->hasFile('images')) {
+                if ($request->hasFile('edit-images')) {
                     // Delete existing images
                     $menuItem->images()->delete();
 
-                    foreach ($request->file('images') as $key => $image) {
+                    foreach ($request->file('edit-images') as $key => $image) {
                         $path = $image->store('menu-items', 'public');
 
                         $menuItem->images()->create([
