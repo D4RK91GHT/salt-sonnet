@@ -1,4 +1,5 @@
 /* <![CDATA[ */
+
 /// Jquery validate newsletter
 jQuery(document).ready(function(){
 
