@@ -1,4 +1,4 @@
-@vite(['resources/js/app.js'])
+@vite(['resources/js/admin-app.js'])
 
 <!-- Plugin Js (Mandatory in All Pages) -->
 <script src="{{ admin_asset('libs/jquery/jquery.min.js') }}"></script>
