@@ -4,35 +4,34 @@
     <div class="grid lg:grid-cols-2 gap-6 mt-8">
         <div class="card">
             <div class="p-2">
-                <div class="overflow-hidden border rounded-lg shadow-lg">
-                    <table class="min-w-full divide-y divide-gray-200 responsive-table">
+                <div class="overflow-x-auto">
+                    <table class="responsive-table">
                         <thead>
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Name</th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Title
+                                <th scope="col" class="px-4 py-3 text-start text-sm text-default-500">
+                                    Image</th>
+                                <th scope="col" class="px-4 py-3 text-start text-sm text-default-500">
+                                    Name
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-start text-sm text-default-500">
-                                    Email
+                                <th scope="col" class="px-4 py-3 text-start text-sm text-default-500">
+                                    Description
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-end text-sm text-default-500">
+                                <th scope="col" class="px-4 py-3 text-end text-sm text-default-500">
                                     Action</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
+                        <tbody>
                             @foreach ($categories as $category)
                                 <tr class="hover:bg-gray-100">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        <img src="{{ asset('storage/' . $category->image) }}" alt="Category Image"
-                                            class="rounded-full object-cover border border-gray-200"
-                                            style="width: 60px; height: 60px;">
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-default-800">
+                                        <img src="{{ $category->image ? asset('storage/' . $category->image) : asset('assets/placeholder/food-tray.png') }}" alt="Category Image"
+                                            class="rounded-full object-cover w-14 border-2 border-blueGray-50 shadow">
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-default-800">
                                         {{ $category->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
-                                        {{ $category->description }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                    <td class="px-4 py-3 whitespace-wrap text-sm text-default-800">
+                                        {{ substr($category->description, 0, 50) }}...</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-end text-sm font-medium">
                                         <a class="text-primary hover:text-sky-700" href="#">Delete</a>
                                     </td>
                                 </tr>

@@ -4,7 +4,7 @@
     <div class="grid lg:grid-cols-2 gap-6 mt-8">
         <div class="card">
             <div class="p-2">
-                <div class="overflow-hidden border rounded-lg">
+                <div class="overflow-hidden">
                     <table class="min-w-full divide-y divide-gray-200 responsive-table">
                         <thead>
                             <tr>

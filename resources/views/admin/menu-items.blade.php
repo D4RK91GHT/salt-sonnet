@@ -164,7 +164,7 @@
 
         </div>
         <div>
-            <div class="overflow-hidden border rounded-lg">
+            <div class="overflow-x-auto border rounded-lg">
                 <table class="min-w-full divide-y divide-gray-200 responsive-table">
                     <thead>
                         <tr>
