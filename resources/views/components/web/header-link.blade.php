@@ -15,7 +15,7 @@
 <link href="{{ asset('assets/web/css/style.css') }}" rel="stylesheet">
 
 <!-- SPECIFIC CSS -->
-<link href="{{ asset('assets/web/css/home.css') }}" rel="stylesheet">
+{{-- <link href="{{ asset('assets/web/css/home.css') }}" rel="stylesheet"> --}}
 
 <!-- YOUR CUSTOM CSS -->
 <link href="{{ asset('assets/web/css/custom.css') }}" rel="stylesheet">

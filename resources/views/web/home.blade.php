@@ -1,5 +1,7 @@
 @extends('web.web-layout')
-
+@section('header')
+<link href="{{ asset('assets/web/css/home.css') }}" rel="stylesheet">
+@endsection
 @section('main')
     <x-web.home-hero />
 
@@ -127,6 +129,8 @@
             <!-- /row -->
 
             <x-web.first-banner />
+
+            <x-web.large-cards-slider />
 
         </div>
     </div>

@@ -1,7 +1,7 @@
 <header class="header black_nav clearfix element_to_stick">
     <div class="container">
         <div id="logo">
-            <a href="index.html">
+            <a href="{{ route('home') }}">
                 <img src="{{ asset('assets/site/logo.png') }}" width="162" height="35" alt="">
             </a>
         </div>
@@ -10,7 +10,7 @@
             <li><a href="#sign-in-dialog" id="sign-in" class="login">Sign In</a></li>
             <li>
                 <div class="dropdown dropdown-cart">
-                    <a href="order.html" class="cart_bt"><strong>2</strong></a>
+                    <a href="{{ route('checkout') }}" class="cart_bt"><strong>2</strong></a>
                     <div class="dropdown-menu">
                         <ul>
                             <li>
@@ -31,7 +31,8 @@
                         </ul>
                         <div class="total_drop">
                             <div class="clearfix add_bottom_15"><strong>Total</strong><span>$32.00</span></div>
-                            <a href="order.html" class="btn_1 outline">View Cart</a><a href="order.html" class="btn_1">Checkout</a>
+                            <a href="{{ route('checkout') }}" class="btn_1 outline">View Cart</a>
+                            <a href="{{ route('checkout') }}" class="btn_1">Checkout</a>
                         </div>
                     </div>
                 </div>
@@ -125,7 +126,7 @@
                     <li><a href="shortcodes.html">Shortcodes</a></li>
                 </ul>
                 </li>
-                <li><a href="#0">Buy this template</a></li>
+                <li><a href="{{ route('categories') }}">Categories</a></li>
             </ul>
         </nav>
     </div>
