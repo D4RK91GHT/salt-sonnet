@@ -5,15 +5,17 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="box_how">
-                            <figure><img src="img/lazy-placeholder-100-100-white.png" data-src="img/how_1.svg"
-                                    alt="" width="150" height="167" class="lazy"></figure>
+                            <figure><img src="{{ asset('assets/web/img/lazy-placeholder-100-100-white.png') }}"
+                                    data-src="{{ asset('assets/web/img/how_1.svg') }}" alt="" width="150" height="167"
+                                    class="lazy"></figure>
                             <h3>Easly Order</h3>
                             <p>Faucibus ante, in porttitor tellus blandit et. Phasellus tincidunt metus lectus
                                 sollicitudin.</p>
                         </div>
                         <div class="box_how">
-                            <figure><img src="img/lazy-placeholder-100-100-white.png" data-src="img/how_2.svg"
-                                    alt="" width="130" height="145" class="lazy"></figure>
+                            <figure><img src="{{ asset('assets/web/img/lazy-placeholder-100-100-white.png') }}"
+                                    data-src="{{ asset('assets/web/img/how_2.svg') }}" alt="" width="130" height="145"
+                                    class="lazy"></figure>
                             <h3>Quick Delivery</h3>
                             <p>Maecenas pulvinar, risus in facilisis dignissim, quam nisi hendrerit nulla, id
                                 vestibulum.</p>
@@ -21,8 +23,9 @@
                     </div>
                     <div class="col-lg-6 align-self-center">
                         <div class="box_how">
-                            <figure><img src="img/lazy-placeholder-100-100-white.png" data-src="img/how_3.svg"
-                                    alt="" width="150" height="132" class="lazy"></figure>
+                            <figure><img src="{{ asset('assets/web/img/lazy-placeholder-100-100-white.png') }}"
+                                    data-src="{{ asset('assets/web/img/how_3.svg') }}" alt="" width="150" height="132"
+                                    class="lazy"></figure>
                             <h3>Enjoy Food</h3>
                             <p>Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, a feugiat eros.
                             </p>

@@ -1,48 +1,10 @@
 @extends('web.web-layout')
 
-@section('hero')
-    <div class="hero_single version_1">
-        <div class="opacity-mask">
-            <div class="container">
-                <div class="row justify-content-lg-start justify-content-md-center">
-                    <div class="col-xl-6 col-lg-8">
-                        <h1>Delivery or Takeaway Food</h1>
-                        <p>The best restaurants at the best price</p>
-                        <form method="post" action="grid-listing-filterscol.html">
-                            <div class="row g-0 custom-search-input">
-                                <div class="col-lg-10">
-                                    <div class="form-group">
-                                        <input class="form-control no_border_r" type="text" id="autocomplete"
-                                            placeholder="Address, neighborhood...">
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <button class="btn_1 gradient" type="submit">Search</button>
-                                </div>
-                            </div>
-                            <!-- /row -->
-                            <div class="search_trends">
-                                <h5>Trending:</h5>
-                                <ul>
-                                    <li><a href="#0">Sushi</a></li>
-                                    <li><a href="#0">Burgher</a></li>
-                                    <li><a href="#0">Chinese</a></li>
-                                    <li><a href="#0">Pizza</a></li>
-                                </ul>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- /row -->
-            </div>
-        </div>
-        <div class="wave hero"></div>
-    </div>
-    <!-- /hero_single -->
-@endsection
-
 @section('main')
-    <x-web.home-categories :categories="$categories"/>
+    <x-web.home-hero />
+
+
+    <x-web.home-categories :categories="$categories" />
 
     <div class="bg_gray">
         <div class="container margin_60_40">
@@ -163,22 +125,15 @@
                 </div>
             </div>
             <!-- /row -->
-            <div class="banner lazy" data-bg="url(img/banner_bg_desktop.jpg)">
-                <div class="wrapper d-flex align-items-center opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.3)">
-                    <div>
-                        <small>FooYes Delivery</small>
-                        <h3>We Deliver to your Office</h3>
-                        <p>Enjoy a tasty food in minutes!</p>
-                        <a href="grid-listing-filterscol.html" class="btn_1 gradient">Start Now!</a>
-                    </div>
-                </div>
-                <!-- /wrapper -->
-            </div>
-            <!-- /banner -->
+
+            <x-web.first-banner />
+
         </div>
     </div>
     <!-- /bg_gray -->
 
     <x-web.large-banner />
-    <!-- /shape_element_2 -->
+@endsection
+
+@section('custom-js')
 @endsection

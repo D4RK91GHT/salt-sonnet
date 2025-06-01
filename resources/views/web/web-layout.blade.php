@@ -9,17 +9,14 @@
     <title>FooYes - Quality delivery or takeaway food</title>
 
     <x-web.header-link />
+    @yield('header')
 </head>
 
 <body>
-                
-    <x-web.header />
-    <!-- /header -->
-
+    {{-- @yield('navbar') --}}
+    <x-web.navbar />
 
     <main>
-        @yield('hero')
-        
         @yield('main')
 
     </main>
@@ -29,12 +26,13 @@
 
     <div id="toTop"></div><!-- Back to top button -->
     
-<!-- Sign In Modal -->
-<div id="sign-in-dialog" class="zoom-anim-dialog mfp-hide">
-    <div class="modal_header">
-        <h3>Sign In</h3>
-    </div>
-    <form>
+    @yield('elements')
+    <!-- Sign In Modal -->
+    <div id="sign-in-dialog" class="zoom-anim-dialog mfp-hide">
+        <div class="modal_header">
+            <h3>Sign In</h3>
+        </div>
+        <form>
         <div class="sign-in-wrapper">
             <a href="#0" class="social_bt facebook">Login with Facebook</a>
             <a href="#0" class="social_bt google">Login with Google</a>
@@ -77,7 +75,10 @@
 </div>
 <!-- /Sign In Modal -->
 
+<!-- COMMON SCRIPTS -->
 <x-web.footer-js-links />
+
+@yield('custom-js')
 
 <!-- Autocomplete -->
 <script>

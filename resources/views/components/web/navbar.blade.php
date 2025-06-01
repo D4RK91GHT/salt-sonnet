@@ -14,17 +14,17 @@
                     <div class="dropdown-menu">
                         <ul>
                             <li>
-                                <figure><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-1.jpg" alt="" width="50" height="50" class="lazy"></figure>
+                                <figure><img src="img/menu-thumb-placeholder.jpg" data-src="{{ asset('assets/web/img/menu-thumb-1.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
                                 <strong><span>1x Pizza Napoli</span>$12.00</strong>
                                 <a href="#0" class="action"><i class="icon_trash_alt"></i></a>
                             </li>
                              <li>
-                                <figure><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-2.jpg" alt="" width="50" height="50" class="lazy"></figure>
+                                <figure><img src="img/menu-thumb-placeholder.jpg" data-src="{{ asset('assets/web/img/menu-thumb-2.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
                                 <strong><span>1x Hamburgher Maxi</span>$10.00</strong>
                                 <a href="#0" class="action"><i class="icon_trash_alt"></i></a>
                             </li>
                              <li>
-                                <figure><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-3.jpg" alt="" width="50" height="50" class="lazy"></figure>
+                                <figure><img src="img/menu-thumb-placeholder.jpg" data-src="{{ asset('assets/web/img/menu-thumb-3.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
                                 <strong><span>1x Red Wine Bottle</span>$20.00</strong>
                                 <a href="#0" class="action"><i class="icon_trash_alt"></i></a>
                             </li>
@@ -47,7 +47,7 @@
                 <a href="#0" class="open_close">
                     <i class="icon_close"></i><span>Menu</span>
                 </a>
-                <a href="index.html"><img src="img/logo.svg" width="162" height="35" alt=""></a>
+                <a href="index.html"><img src="{{ asset('assets/site/logo.png') }}" width="162" height="35" alt=""></a>
             </div>
             <ul>
                <li class="submenu">
