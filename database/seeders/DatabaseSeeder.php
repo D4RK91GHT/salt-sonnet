@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
 use Database\Seeders\MenuCatecorySeeder;
 use Database\Seeders\MenuItemSeeder;
+use Database\Seeders\UserSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
             MenuCatecorySeeder::class,
             MenuItemSeeder::class,
             GstSlabSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
