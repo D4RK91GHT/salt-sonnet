@@ -39,7 +39,14 @@
                             <a class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5"
                                 href="{{ route('admin.item-category') }}">
                                 <i class="i-tabler-circle-filled scale-25 text-lg opacity-75"></i>
-                                Item Category
+                                Categories
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5"
+                                href="{{ route('admin.item-variation-types') }}">
+                                <i class="i-tabler-circle-filled scale-25 text-lg opacity-75"></i>
+                                Variation Types
                             </a>
                         </li>
                         <li class="menu-item">

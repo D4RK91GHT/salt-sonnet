@@ -29,7 +29,7 @@
             <x-admin.topbar />
             <!-- Topbar End -->
             
-            <main>
+            <main class="bg-white dark:bg-gray-800 dark:text-white">
                 <div class="container py-6">
 
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuCategoryController;
 use App\Http\Controllers\Admin\GSTSlabController;
 use App\Http\Controllers\Admin\MenuItemController;
+use App\Http\Controllers\Admin\ItemVariationTypeController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
@@ -20,6 +21,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
     Route::get('item-category', [MenuCategoryController::class, 'index'])->name('item-category');
     Route::post('item-category', [MenuCategoryController::class, 'store'])->name('item-category.store');
+    
+    Route::get('item-variation-types', [ItemVariationTypeController::class, 'index'])->name('item-variation-types');
+    Route::post('item-variation-types', [ItemVariationTypeController::class, 'store'])->name('item-variation-types.store');
+    Route::put('item-variation-types/{itemVariationType}', [ItemVariationTypeController::class, 'update'])->name('item-variation-types.update');
+    Route::delete('item-variation-types/{itemVariationType}', [ItemVariationTypeController::class, 'destroy'])->name('item-variation-types.destroy');
     
     Route::get('gst-slabs', [GSTSlabController::class, 'index'])->name('gst-slabs');
     Route::post('gst-slabs', [GSTSlabController::class, 'store'])->name('gst-slabs.store');

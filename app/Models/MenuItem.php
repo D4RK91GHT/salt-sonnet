@@ -27,4 +27,9 @@ class MenuItem extends Model
     {
         return $this->hasOne(ProductImage::class, 'item_id')->where('is_primary', true);
     }
+
+    public function variations()
+    {
+        return $this->hasMany(ItemVariation::class);
+    }
 }

@@ -200,8 +200,8 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         @foreach ($menuItems as $menuItem)
-                            <tr class="hover:bg-gray-100">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800 dark:text-white">
                                     {{ ($menuItems->currentPage() - 1) * $menuItems->perPage() + $loop->index + 1 }}
                                 </td>
 
@@ -224,21 +224,21 @@
                                     </div>
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-default-800 dark:text-white">
                                     <p class="font-semibold">{{ $menuItem->name }}</p>
                                     <p class="text-xs text-gray-500">{{ $menuItem->category_name }}</p>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800 dark:text-white">
                                     {{ $menuItem->mrp }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800 dark:text-white">
                                     {{ $menuItem->discount }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800 dark:text-white">
                                     {{ $menuItem->rate }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800 dark:text-white">
                                     {{ $menuItem->gst }}%</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800 dark:text-white">
                                     {{ $menuItem->price }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800 dark:text-white">
                                     @if ($menuItem->is_available)
                                         <span
                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
