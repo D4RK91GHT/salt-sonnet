@@ -24,6 +24,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2)->virtualAs('LEAST(rate + (rate * (gst / 100)), mrp)');
             $table->boolean('is_available')->default(true);
             $table->string('image')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('is_default')->default(false);
             $table->decimal('price', 10, 2)->default(0);
             $table->boolean('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

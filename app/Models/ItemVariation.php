@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ItemVariation extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'variation_type_id',
         'menu_item_id',

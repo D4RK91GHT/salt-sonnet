@@ -111,6 +111,69 @@
                                     </div>
                                 </div>
 
+                                <p class="text-sm font-semibold mb-4 ps-2">Variations</p>
+                                <div id="variation-container">
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <!-- Variation Fields -->
+                                    <div>
+                                        <div>
+
+                                            <x-tailwind.floating.dropdown name="variations[0][variation_type_id]" label="Variation Type" :listArray="$variationTypes" listValue="id" listLabel="name" />
+                                            @error('variations.0.variation_type_id')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <x-tailwind.floating.text-input name="variations[0][name]" id="variation_name_0" label="Variation Name" type="text" required/>
+                                            @error('variations.0.name')
+                                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Description Field -->
+                                    <div>
+                                        <x-tailwind.floating.text-input name="variations[0][description]" id="variation_description_0" label="Variation Description"/>
+                                        @error('variations.0.description')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Price Field -->
+                                    <div>
+                                        <x-tailwind.floating.text-input name="variations[0][price]" id="variation_price_0" label="Price" type="number" step="0.01"/>
+                                        @error('variations.0.price')
+                                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <div>
+                                            
+                                            <label class="inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" name="variations[0][is_active]" value="1" class="sr-only peer">
+                                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Is Active</span>
+                                            </label>
+
+                                        </div>
+                                        <div>
+                                            <label class="inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" name="variations[0][is_default]" value="1" class="sr-only peer">
+                                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                                                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Is Default</span>
+                                            </label>
+                                            @error('variations.0.is_default')
+                                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                                <button type="button" onclick="addVariation()" class="px-6 py-2 bg-blue-500 text-white rounded-lg">Add Variation</button>
+                               
+
                                 <div class="col-span-full">
                                     <label for="image-upload" class="block text-sm font-medium text-gray-900 dark:text-gray-300">Upload
                                         Images</label>
@@ -202,7 +265,8 @@
                         @foreach ($menuItems as $menuItem)
                             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-default-800 dark:text-white">
-                                    {{ ($menuItems->currentPage() - 1) * $menuItems->perPage() + $loop->index + 1 }}
+                                    {{-- {{ ($menuItems->currentPage() - 1) * $menuItems->perPage() + $loop->index + 1 }} --}}
+                                    {{ $menuItem->id }}
                                 </td>
 
                                 <td
@@ -361,6 +425,14 @@
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+            </div>
+
+            <div id="edit-variation-container">
+
+            </div>
+            
+            <div class="text-end">
+                <button type="button" onclick="addVariation('edit-')" class="bg-primary text-white px-4 py-2 rounded-lg">Add Variation</button>
             </div>
 
             <div class="col-span-full">
@@ -674,5 +746,90 @@
             });
         }
 
+        function addVariation(idPrefix = '') {
+            const variationContainer = document.getElementById(idPrefix + 'variation-container');
+            const variationIndex = document.querySelectorAll('#' + idPrefix + 'variation-container > .variation-row').length + 1;
+            
+            const variationTemplate = `
+                <div class="variation-row grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                    <div>
+                        <x-tailwind.floating.dropdown 
+                            name="variations[${variationIndex}][variation_type_id]" 
+                            id="variation_type_${variationIndex}" 
+                            label="Variation Type" 
+                            :listArray="$variationTypes" 
+                            listValue="id" 
+                            listLabel="name" 
+                        />
+                    </div>
+
+                    <div>
+                        <x-tailwind.floating.text-input 
+                            name="variations[${variationIndex}][name]" 
+                            id="variation_name_${variationIndex}" 
+                            label="Variation Name" 
+                            type="text" 
+                            required
+                        />
+                       
+                    </div>
+
+                    <div>
+                        <x-tailwind.floating.text-input 
+                            name="variations[${variationIndex}][description]" 
+                            id="variation_description_${variationIndex}" 
+                            label="Variation Description"
+                        />
+                        
+                    </div>
+
+                    <div>
+                        <x-tailwind.floating.text-input 
+                            name="variations[${variationIndex}][price]" 
+                            id="variation_price_${variationIndex}" 
+                            label="Price" 
+                            type="number" 
+                            step="0.01"
+                        />
+                        
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="w-1/2 flex flex-col gap-1">
+                            <div>            
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="variations[${variationIndex}][is_active]" value="1" class="sr-only peer">
+                                    <div class="relative w-11 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                                    <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Is Active</span>
+                                </label>
+
+                            </div>
+                            <div>
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="variations[${variationIndex}][is_default]" value="1" class="sr-only peer">
+                                    <div class="relative w-11 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                                    <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Is Default</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="w-1/2">
+                            <button type="button" 
+                                class="text-gray-400 bg-transparent rounded-lg border border-red-400 hover:bg-red-400 hover:text-red-600 text-sm p-1.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                onclick="this.closest('.variation-row').remove()">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                    </div>
+                    
+                </div>
+            `;
+            
+            variationContainer.insertAdjacentHTML('beforeend', variationTemplate);
+        }
     </script>
 @endsection

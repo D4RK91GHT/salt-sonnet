@@ -11,6 +11,9 @@ use App\Models\MenuItem;
 use App\Models\ProductImage;
 use App\Models\MenuCategory;
 use App\Models\GSTSlab;
+use App\Models\ItemVariationType;
+use App\Models\ItemVariation;
+use App\Http\Controllers\Admin\ItemVariationController;
 
 class MenuItemController extends Controller
 {
@@ -19,13 +22,15 @@ class MenuItemController extends Controller
         $menuItems = MenuItem::with('images')
         ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
         ->select('menu_items.*', 'menu_categories.name as category_name')
+        ->orderBy('menu_items.id', 'desc')
         ->paginate(10);
 
         // dd($menuItems);
         $categories = MenuCategory::all();
         $gstSlabs = GSTSlab::all();
+        $variationTypes = ItemVariationType::all();
 
-        return view('admin.menu-items', compact('menuItems', 'categories', 'gstSlabs'));
+        return view('admin.menu-items', compact('menuItems', 'categories', 'gstSlabs', 'variationTypes'));
     }
 
     public function show(MenuItem $menuItem)
@@ -41,6 +46,7 @@ class MenuItemController extends Controller
     
     public function store(Request $request)
     {
+        // dd($request->variations);
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
@@ -86,6 +92,22 @@ class MenuItemController extends Controller
                     }
                 }
 
+                foreach ($request->variations as $variation) {
+                    $variation['menu_item_id'] = $menuItem->id;
+                    $itemVariationController = app(ItemVariationController::class);
+                    $itemVariationController->store(new Request($variation));
+
+                    // ItemVariation::create([
+                    //     'variation_type_id' => $variation['type_id'],
+                    //     'menu_item_id' => $menuItem->id,
+                    //     'name' => $variation['name'],
+                    //     'description' => $variation['description'],
+                    //     'price' => $variation['price'],
+                    //     'is_default' => $variation['is_default'],
+                    //     'is_active' => $variation['is_active'],
+                    // ]);
+                }
+
                 DB::commit();
 
                 return redirect()
@@ -101,6 +123,7 @@ class MenuItemController extends Controller
                     ->with('error', 'Failed to create menu item. Please try again. Error: ' . $e->getMessage());
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
+            dd($e->validator->errors());
             return back()
                 ->withErrors($e->validator)
                 ->withInput()
@@ -118,8 +141,6 @@ class MenuItemController extends Controller
 
     public function update(Request $request, MenuItem $menuItem)
     {
-
-        dd($request->all());
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
@@ -219,6 +240,8 @@ class MenuItemController extends Controller
     {
         try {
             $menuItem->delete();
+            $menuItem->images()->delete();
+            $menuItem->variations()->delete();
 
             return redirect()
                 ->route('admin.menu-items')
