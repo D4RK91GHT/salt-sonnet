@@ -343,7 +343,7 @@
             </div>
         </div>
     </div>
-@endsection;
+@endsection
 
 @section('offcanvas')
 
@@ -485,7 +485,7 @@
     </form>
 </x-tailwind.offcanvas>
 
-@endsection;
+@endsection
 
 @push('alerts')
     @if (session('success'))

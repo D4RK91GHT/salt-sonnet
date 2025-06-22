@@ -23,7 +23,7 @@
         <!-- Mobile Nav End -->
 
         <!-- Start Page Content here -->
-        <div class="page-content">
+        <div class="page-content bg-white dark:bg-gray-900 dark:text-white">
 
             <!-- Topbar Start -->
             <x-admin.topbar />

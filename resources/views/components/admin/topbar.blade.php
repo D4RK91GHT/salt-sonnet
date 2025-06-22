@@ -99,7 +99,7 @@
     </div>
 </header>
 
-<header class="hidden md:flex h-16 items-center lg:bg-opacity-10 bg-white backdrop-blur-sm z-[50]" style="z-index: 50;">
+<header class="hidden md:flex h-16 items-center bg-white lg:bg-opacity-10 dark:bg-transparent  backdrop-blur-sm z-[50]" style="z-index: 50;">
     <div class="container flex items-center gap-4">
         <!-- Language Dropdown Button -->
         <div class="ms-auto hs-dropdown relative inline-flex [--placement:bottom-right]">
