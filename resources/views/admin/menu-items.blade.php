@@ -348,141 +348,8 @@
 @section('offcanvas')
 
 <x-tailwind.offcanvas title="Edit Menu Item">
-    <form id="edit-menu-item-form" action="" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-        <div class="px-6 py-4">
-            <input type="hidden" name="id" id="edit-id">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <x-tailwind.floating.text-input name="name" id="edit-name" label="Item Name" maxLength="255"/>
-                    @error('name')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <x-tailwind.floating.textarea name="includes" id="edit-includes" label="Includes" maxLength="355"/>
-                    @error('includes')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <x-tailwind.floating.dropdown name="category" id="edit-category" label="Category" :listArray="$categories" listValue="id" listLabel="name" />
-                    @error('category')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <x-tailwind.floating.textarea name="description" id="edit-description" label="Description" />
-                    @error('description')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <!-- MRP Field -->
-                <div>
-                    <x-tailwind.floating.text-input name="mrp" id="edit-mrp" label="MRP" type="number" step="0.01" min="0" max="9999999.99" required oninput="calculatePrice('edit-')"/>
-                    @error('mrp')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Discount Field -->
-                <div>
-                    <x-tailwind.floating.text-input name="discount" id="edit-discount" label="Discount" type="number" step="0.01" min="0" max="100" required oninput="calculatePrice('edit-')"/>
-                    @error('discount')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Rate Field -->
-                <div>
-                    <x-tailwind.floating.text-input name="rate" id="edit-rate" label="Rate" type="number" step="0.01" readonly/>
-                    @error('rate')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- GST Field -->
-                <div>
-                    <x-tailwind.floating.dropdown name="gst" id="edit-gst" label="GST" :listArray="$gstSlabs" listValue="percentage" listLabel="percentage" listLabelPostfix="%" onchange="calculatePrice('edit-')" />
-                    @error('gst')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Price Field -->
-                <div>
-                    <x-tailwind.floating.text-input name="price" id="edit-price" label="Price" type="number" step="0.01" readonly/>
-                    @error('price')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-
-            <div id="edit-variation-container">
-
-            </div>
-            
-            <div class="text-end">
-                <button type="button" onclick="addVariation('edit-')" class="bg-primary text-white px-4 py-2 rounded-lg">Add Variation</button>
-            </div>
-
-            <div class="col-span-full">
-                <label for="edit-image-upload" class="block text-sm font-medium text-gray-900 dark:text-gray-300">Upload
-                    Images</label>
-                <div class="mt-2 flex flex-col space-y-4">
-                    <!-- Image preview container -->
-                    <div id="edit-image-preview"
-                        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                        <!-- Preview items will be added here dynamically -->
-                    </div>
-
-                    <!-- Upload area -->
-                    <div
-                        class="mt-1 flex justify-center rounded-lg border-2 border-dashed border-gray-300 px-6 pt-5 pb-6 hover:border-indigo-500 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                        <div class="space-y-1 text-center">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor"
-                                fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                <path
-                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                    stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                            <div class="flex text-sm text-gray-600 dark:text-gray-400">
-                                <label for="edit-image-upload"
-                                    class="relative cursor-pointer rounded-md font-medium text-indigo-600 focus-within:outline-none hover:text-indigo-500 dark:hover:text-indigo-500">
-                                    <span>Upload files</span>
-                                    <input id="edit-image-upload" name="edit-images[]" type="file"
-                                        class="sr-only" multiple accept="image/*">
-                                    <input class="hidden" type="file" id="delete-image" name="delete-images[]" multiple accept="image/*">
-                                </label>
-                                <p class="pl-1">or drag and drop</p>
-                            </div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF up to 10MB each</p>
-                        </div>
-                    </div>
-                    @error('edit-images')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-
-        </div>
-        <div class="flex justify-end px-6 py-4">
-            <button type="button" @click="open = false"
-                class="mr-2 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Cancel</button>
-            <button type="submit"
-                class="px-4 py-2 bg-primary text-white rounded hover:bg-indigo-600">Save Item</button>
-        </div>
-    </form>
+    <div id="edit-item-container">
+    </div>
 </x-tailwind.offcanvas>
 
 @endsection
@@ -499,107 +366,143 @@
 @section('js')
     <!-- Alpine.js CDN (if not already included) -->
     {{-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script> --}}
+    <script src="{{ asset('assets/admin/js/item-page.js') }}"></script>
     <script>
-        function showMenuItem(id) {
-            fetch(`/admin/menu-items/${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Update the form fields with the fetched data
-                    document.getElementById('edit-menu-item-form').action = `/admin/menu-items/${data.id}`;
-                    document.getElementById('edit-id').value = data.id;
-
-                    document.getElementById('edit-name').value = data.name;
-                    document.getElementById('edit-includes').value = data.includes;
-                    document.getElementById('edit-category').value = data.category_id;
-                    document.getElementById('edit-description').value = data.description;
-                    document.getElementById('edit-mrp').value = data.mrp;
-                    document.getElementById('edit-discount').value = data.discount;
-                    document.getElementById('edit-gst').value = data.gst;
-                    console.log(data.images);
-
-                    // Update the image preview
-                    const fileInput = document.getElementById('edit-image-upload');
-                    const deleteInput = document.getElementById('delete-image');
-                    const maxFiles = 10; // Maximum number of files allowed
-                    const previewContainer = document.getElementById('edit-image-preview');
-                    previewContainer.innerHTML = '';
-                    data.images.forEach(image => {
-                        const previewItem = document.createElement('div');
-                        previewItem.className = 'preview-item relative group';
-                        previewItem.innerHTML = `
-                            <img src="${'{{ asset('storage/') }}/' + image.image_path}" class="h-24 w-full object-cover rounded-lg">
-                            <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity" data-dz-remove>
-                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        `;
-                        previewItem.querySelector('button').addEventListener('click', function() {
-                            console.log('Removing file:', image.image_path);
-                            previewItem.remove();
-                            const dt = new DataTransfer();
-                            const input = fileInput;
-                            const files = input.files;
-                            for (let i = 0; i < files.length; i++) {
-                                const f = files[i];
-                                if (f !== file) {
-                                    dt.items.add(f);
-                                }
-                            }
-                            input.files = dt.files;
-                        });
-                        previewContainer.appendChild(previewItem);
-                    });
-                    fileInput.addEventListener('change', function(e) {
-                        const files = Array.from(e.target.files);
-                        if (!e.ctrlKey) {
-                            previewContainer.innerHTML = '';
-                        }
-                        const currentFiles = previewContainer.querySelectorAll('.preview-item').length;
-                        if (currentFiles + files.length > maxFiles) {
-                            alert(`You can only upload up to ${maxFiles} images.`);
-                            return;
-                        }
-                        files.forEach(file => {
-                            if (!file.type.startsWith('image/')) {
-                                alert(`Skipped ${file.name}: Not an image file`);
-                                return;
-                            }
-                            const reader = new FileReader();
-                            reader.onload = function(e) {
-                                const previewItem = document.createElement('div');
-                                previewItem.className = 'preview-item relative group';
-                                previewItem.innerHTML = `
-                                    <img src="${e.target.result}" class="h-24 w-full object-cover rounded-lg">
-                                    <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity" data-dz-remove>
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                        </svg>
-                                    </button>
-                                `;
-                                previewItem.querySelector('button').addEventListener('click', function() {
-                                    console.log('Removing file:', file.name);
-                                    previewItem.remove();
-                                    const dt = new DataTransfer();
-                                    const input = fileInput;
-                                    const files = input.files;
-                                    for (let i = 0; i < files.length; i++) {
-                                        const f = files[i];
-                                        if (f !== file) {
-                                            dt.items.add(f);
-                                        }
-                                    }
-                                    input.files = dt.files;
-                                });
-                                previewContainer.appendChild(previewItem);
-                            }
-                            reader.readAsDataURL(file);
-                        });
-                    });
-
-                })
-                .catch(error => console.error('Error fetching menu item:', error));
+        async function showMenuItem(id) {
+            const container = document.getElementById('edit-item-container');
+            container.innerHTML = `
+                <iframe 
+                    id="item-edit-iframe" 
+                    src="/admin/iframe-pages/item-edit-form/${id}" 
+                    class="w-full border-0"
+                    onload="resizeIframe(this)">
+                </iframe>
+            `;
+            
+            // Add event listener for resize messages from iframe
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'setHeight') {
+                    const iframe = document.getElementById('item-edit-iframe');
+                    if (iframe) {
+                        iframe.style.height = event.data.height + 'px';
+                    }
+                }
+            });
         }
+
+        function resizeIframe(iframe) {
+            // Initial resize
+            iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+        }
+
+        // async function showMenuItem(id) {
+        //     const container = document.getElementById('edit-item-container');
+        //     container.innerHTML = `<iframe src="/admin/iframe-pages/item-edit-form/${id}" class="w-full min-h-[60vh]"></iframe>`;
+        //     // const response = await fetch(`/admin/menu-items/${id}`);
+        //     // const data = await response.json();
+        //     // fetch(`/admin/menu-items/${id}`)
+        //     //     .then(response => response.json())
+        //     //     .then(data => {
+        //     //         // Update the form fields with the fetched data
+        //     //         document.getElementById('edit-menu-item-form').action = `/admin/menu-items/${data.id}`;
+        //     //         document.getElementById('edit-id').value = data.id;
+
+        //     //         document.getElementById('edit-name').value = data.name;
+        //     //         document.getElementById('edit-includes').value = data.includes;
+        //     //         document.getElementById('edit-category').value = data.category_id;
+        //     //         document.getElementById('edit-description').value = data.description;
+        //     //         document.getElementById('edit-mrp').value = data.mrp;
+        //     //         document.getElementById('edit-discount').value = data.discount;
+        //     //         document.getElementById('edit-gst').value = data.gst;
+        //     //         // console.log(data.variations.length);
+        //     //         data.variations.forEach(variation => {
+        //     //             // console.log(variation);
+        //     //             addVariation('edit-', variation);
+        //     //         });
+
+        //     //         // Update the image preview
+        //     //         const fileInput = document.getElementById('edit-image-upload');
+        //     //         const deleteInput = document.getElementById('delete-image');
+        //     //         const maxFiles = 10; // Maximum number of files allowed
+        //     //         const previewContainer = document.getElementById('edit-image-preview');
+        //     //         previewContainer.innerHTML = '';
+        //     //         data.images.forEach(image => {
+        //     //             const previewItem = document.createElement('div');
+        //     //             previewItem.className = 'preview-item relative group';
+        //     //             previewItem.innerHTML = `
+        //     //                 <img src="${'{{ asset('storage/') }}/' + image.image_path}" class="h-24 w-full object-cover rounded-lg">
+        //     //                 <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity" data-dz-remove>
+        //     //                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        //     //                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        //     //                     </svg>
+        //     //                 </button>
+        //     //             `;
+        //     //             previewItem.querySelector('button').addEventListener('click', function() {
+        //     //                 console.log('Removing file:', image.image_path);
+        //     //                 previewItem.remove();
+        //     //                 const dt = new DataTransfer();
+        //     //                 const input = fileInput;
+        //     //                 const files = input.files;
+        //     //                 for (let i = 0; i < files.length; i++) {
+        //     //                     const f = files[i];
+        //     //                     if (f !== file) {
+        //     //                         dt.items.add(f);
+        //     //                     }
+        //     //                 }
+        //     //                 input.files = dt.files;
+        //     //             });
+        //     //             previewContainer.appendChild(previewItem);
+        //     //         });
+        //     //         fileInput.addEventListener('change', function(e) {
+        //     //             const files = Array.from(e.target.files);
+        //     //             if (!e.ctrlKey) {
+        //     //                 previewContainer.innerHTML = '';
+        //     //             }
+        //     //             const currentFiles = previewContainer.querySelectorAll('.preview-item').length;
+        //     //             if (currentFiles + files.length > maxFiles) {
+        //     //                 alert(`You can only upload up to ${maxFiles} images.`);
+        //     //                 return;
+        //     //             }
+        //     //             files.forEach(file => {
+        //     //                 if (!file.type.startsWith('image/')) {
+        //     //                     alert(`Skipped ${file.name}: Not an image file`);
+        //     //                     return;
+        //     //                 }
+        //     //                 const reader = new FileReader();
+        //     //                 reader.onload = function(e) {
+        //     //                     const previewItem = document.createElement('div');
+        //     //                     previewItem.className = 'preview-item relative group';
+        //     //                     previewItem.innerHTML = `
+        //     //                         <img src="${e.target.result}" class="h-24 w-full object-cover rounded-lg">
+        //     //                         <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity" data-dz-remove>
+        //     //                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        //     //                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        //     //                             </svg>
+        //     //                         </button>
+        //     //                     `;
+        //     //                     previewItem.querySelector('button').addEventListener('click', function() {
+        //     //                         console.log('Removing file:', file.name);
+        //     //                         previewItem.remove();
+        //     //                         const dt = new DataTransfer();
+        //     //                         const input = fileInput;
+        //     //                         const files = input.files;
+        //     //                         for (let i = 0; i < files.length; i++) {
+        //     //                             const f = files[i];
+        //     //                             if (f !== file) {
+        //     //                                 dt.items.add(f);
+        //     //                             }
+        //     //                         }
+        //     //                         input.files = dt.files;
+        //     //                     });
+        //     //                     previewContainer.appendChild(previewItem);
+        //     //                 }
+        //     //                 reader.readAsDataURL(file);
+        //     //             });
+        //     //         });
+
+        //     //     })
+        //     //     .catch(error => console.error('Error fetching menu item:', error));
+        // }
 
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -746,12 +649,19 @@
             });
         }
 
-        function addVariation(idPrefix = '') {
-            const variationContainer = document.getElementById(idPrefix + 'variation-container');
-            const variationIndex = document.querySelectorAll('#' + idPrefix + 'variation-container > .variation-row').length + 1;
-            
+        function variationTemplate(variationIndex, variationData = {}) {
+            console.log(variationData);
+            const variationId = variationData.id || '';
+            const variationType = variationData.variation_type_id || '';
+            const variationName = variationData.name || '';
+            const variationDescription = variationData.description || '';
+            const variationPrice = variationData.price || '';
+            const variationIsActive = variationData.is_active || '';
+            const variationIsDefault = variationData.is_default || '';
+
             const variationTemplate = `
                 <div class="variation-row grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                <input type="hidden" name="variations[${variationIndex}][id]" value="${variationId}">
                     <div>
                         <x-tailwind.floating.dropdown 
                             name="variations[${variationIndex}][variation_type_id]" 
@@ -760,6 +670,7 @@
                             :listArray="$variationTypes" 
                             listValue="id" 
                             listLabel="name" 
+                            select="${variationType}"
                         />
                     </div>
 
@@ -770,6 +681,7 @@
                             label="Variation Name" 
                             type="text" 
                             required
+                            value="${variationName}"
                         />
                        
                     </div>
@@ -779,6 +691,7 @@
                             name="variations[${variationIndex}][description]" 
                             id="variation_description_${variationIndex}" 
                             label="Variation Description"
+                            value="${variationDescription}"
                         />
                         
                     </div>
@@ -790,6 +703,7 @@
                             label="Price" 
                             type="number" 
                             step="0.01"
+                            value="${variationPrice}"
                         />
                         
                     </div>
@@ -797,7 +711,7 @@
                         <div class="w-1/2 flex flex-col gap-1">
                             <div>            
                                 <label class="inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" name="variations[${variationIndex}][is_active]" value="1" class="sr-only peer">
+                                    <input type="checkbox" name="variations[${variationIndex}][is_active]" value="1" class="sr-only peer" ${variationIsActive ? 'checked' : ''}>
                                     <div class="relative w-11 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
                                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Is Active</span>
                                 </label>
@@ -805,7 +719,7 @@
                             </div>
                             <div>
                                 <label class="inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" name="variations[${variationIndex}][is_default]" value="1" class="sr-only peer">
+                                    <input type="checkbox" name="variations[${variationIndex}][is_default]" value="1" class="sr-only peer" ${variationIsDefault ? 'checked' : ''}>
                                     <div class="relative w-11 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
                                     <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Is Default</span>
                                 </label>
@@ -828,8 +742,17 @@
                     
                 </div>
             `;
+            return variationTemplate;
+        }
+
+        async function addVariation(idPrefix = '', variationData = {}) {
+            const variationContainer = document.getElementById(idPrefix + 'variation-container');
+            const variationIndex = document.querySelectorAll('#' + idPrefix + 'variation-container > .variation-row').length + 1;
+            
+            const variationTemplate = await this.variationTemplate(variationIndex, variationData);
             
             variationContainer.insertAdjacentHTML('beforeend', variationTemplate);
         }
+
     </script>
 @endsection

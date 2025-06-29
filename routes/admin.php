@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\MenuCategoryController;
 use App\Http\Controllers\Admin\GSTSlabController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\ItemVariationTypeController;
+use App\Http\Controllers\Admin\ItemVariationController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
@@ -27,12 +28,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('item-variation-types/{itemVariationType}', [ItemVariationTypeController::class, 'update'])->name('item-variation-types.update');
     Route::delete('item-variation-types/{itemVariationType}', [ItemVariationTypeController::class, 'destroy'])->name('item-variation-types.destroy');
     
+    // Route::get('item-variations', [ItemVariationController::class, 'index'])->name('item-variations');
+    // Route::post('item-variations', [ItemVariationController::class, 'store'])->name('item-variations.store');
+    // Route::put('item-variations/{itemVariation}', [ItemVariationController::class, 'update'])->name('item-variations.update');
+    Route::delete('item-variations/{itemVariation}', [ItemVariationController::class, 'destroy'])->name('item-variations.destroy');
+    
     Route::get('gst-slabs', [GSTSlabController::class, 'index'])->name('gst-slabs');
     Route::post('gst-slabs', [GSTSlabController::class, 'store'])->name('gst-slabs.store');
 
     Route::get('menu-items', [MenuItemController::class, 'index'])->name('menu-items');
     Route::post('menu-items', [MenuItemController::class, 'store'])->name('menu-items.store');
     Route::get('menu-items/{menuItem}', [MenuItemController::class, 'show'])->name('menu-items.single');
+    Route::get('iframe-pages/item-edit-form/{menuItem}', [MenuItemController::class, 'show'])->name('iframe-pages.item-edit-form');
     Route::put('menu-items/{menuItem}', [MenuItemController::class, 'update'])->name('menu-items.update');
     Route::delete('menu-items/{menuItem}', [MenuItemController::class, 'destroy'])->name('menu-items.destroy');
     Route::delete('menu-items/images/{image}', [MenuItemController::class, 'destroyImage'])->name('menu-items.destroy-image');

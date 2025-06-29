@@ -35,13 +35,22 @@ class MenuItemController extends Controller
 
     public function show(MenuItem $menuItem)
     {
-        $menuItem = MenuItem::with('images')
-        ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
-        ->select('menu_items.*', 'menu_categories.name as category_name')->where('menu_items.id', $menuItem->id)
-        ->first();
-
-        // return view('admin.menu-items', compact('menuItem'));
-        return response()->json($menuItem);
+        // dd($menuItem->id);
+        $menuItem = MenuItem::with(['images', 'variations'])
+            ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
+            ->select('menu_items.*', 'menu_categories.name as category_name')
+            ->where('menu_items.id', $menuItem->id)
+            ->first();
+            
+        $categories = MenuCategory::all();
+        $gstSlabs = GSTSlab::all();
+        $variationTypes = ItemVariationType::all();
+        return view('admin.iframe-pages.item-edit-form', [
+            'menuItem' => $menuItem,
+            'categories' => $categories,
+            'gstSlabs' => $gstSlabs,
+            'variationTypes' => $variationTypes,
+        ]);
     }
     
     public function store(Request $request)
@@ -185,10 +194,20 @@ class MenuItemController extends Controller
                     }
                 }
 
+                foreach ($request->variations as $variation) {
+                    $variation['menu_item_id'] = $menuItem->id;
+
+                    if (isset($variation['id']) && $variation['id']) {
+                        ItemVariation::where('id', $variation['id'])->update($variation);
+                    } else {
+                        ItemVariation::create($variation);
+                    }
+                }
+                
                 DB::commit();
 
                 return redirect()
-                    ->route('admin.menu-items')
+                    ->route('admin.iframe-pages.item-edit-form', $menuItem->id)
                     ->with('success', 'Menu item updated successfully!');
             } catch (\Exception $e) {
                 dd($e->getMessage());
@@ -239,9 +258,17 @@ class MenuItemController extends Controller
     public function destroy(MenuItem $menuItem)
     {
         try {
-            $menuItem->delete();
+
+            // dd($menuItem->images);
+            // Delete associated images from storage
+            foreach ($menuItem->images as $image) {
+                Storage::disk('public')->delete($image->image_path);
+            }
+            
+            // Delete the menu item and its relations
             $menuItem->images()->delete();
             $menuItem->variations()->delete();
+            $menuItem->delete();
 
             return redirect()
                 ->route('admin.menu-items')
