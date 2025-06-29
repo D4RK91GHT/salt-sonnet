@@ -32,6 +32,6 @@ class MenuItem extends Model
 
     public function variations()
     {
-        return $this->hasMany(ItemVariation::class);
+        return $this->hasMany(ItemVariation::class, 'menu_item_id');
     }
 }
