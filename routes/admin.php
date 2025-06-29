@@ -32,6 +32,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Route::post('item-variations', [ItemVariationController::class, 'store'])->name('item-variations.store');
     // Route::put('item-variations/{itemVariation}', [ItemVariationController::class, 'update'])->name('item-variations.update');
     Route::delete('item-variations/{itemVariation}', [ItemVariationController::class, 'destroy'])->name('item-variations.destroy');
+
+    Route::delete('delete-item-image/{image}', [MenuItemController::class, 'destroyImage'])->name('delete-item-image');
     
     Route::get('gst-slabs', [GSTSlabController::class, 'index'])->name('gst-slabs');
     Route::post('gst-slabs', [GSTSlabController::class, 'store'])->name('gst-slabs.store');

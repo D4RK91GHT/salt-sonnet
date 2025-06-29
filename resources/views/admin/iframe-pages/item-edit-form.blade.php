@@ -149,17 +149,19 @@
                             Images</label>
                         <div class="mt-2 flex flex-col space-y-4">
                             <!-- Image preview container -->
-                            <div id="edit-image-preview"
-                                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                                 @foreach ($menuItem->images as $image)
-                                    <div class="relative">
+                                    <div class="relative img-item">
                                         <img src="{{ asset('storage/' . $image->image_path) }}" alt="Image"
                                             class="w-full h-48 object-cover">
-                                        <button type="button" onclick="removeImage(this)"
+                                        <button type="button" onclick="deleteImage(event, this, {{ $image }})"
                                             class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full">Remove</button>
                                     </div>
                                 @endforeach
-                                <!-- Preview items will be added here dynamically -->
+                            </div>
+
+                            <div id="edit-image-preview"
+                                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                             </div>
         
                             <!-- Upload area -->
@@ -254,18 +256,51 @@
             });
         }
 
+        const deleteImage = (event, element, image) => {
+            event.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                customClass: {
+                    confirmButton: 'px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700',
+                    cancelButton: 'px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 ml-2'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/admin/delete-item-image/${image.id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                    })
+                    .then(response => {
+                        console.log(response);
+                        if (response.ok) {
+                            element.closest('.img-item').remove();
+                        }
+                    })
+                }
+            });
+        }
         document.addEventListener('DOMContentLoaded', function() {
-            const fileInput = document.getElementById('image-upload');
-            const previewContainer = document.getElementById('image-preview');
+            const fileInput = document.getElementById('edit-image-upload');
+            const previewContainer = document.getElementById('edit-image-preview');
             const maxFiles = 10; // Maximum number of files allowed
 
             fileInput.addEventListener('change', function(e) {
                 const files = Array.from(e.target.files);
 
                 // Clear previous previews if not holding Ctrl key
-                if (!e.ctrlKey) {
-                    previewContainer.innerHTML = '';
-                }
+                // if (!e.ctrlKey) {
+                //     previewContainer.innerHTML = '';
+                // }
 
                 // Check total files won't exceed max
                 const currentFiles = previewContainer.querySelectorAll('.preview-item').length;
@@ -316,7 +351,7 @@
                             input.files = dt.files;
                         });
 
-                        previewContainer.appendChild(previewItem);
+                        previewContainer.insertAdjacentElement('beforeend', previewItem);
                     };
                     reader.readAsDataURL(file);
                 });

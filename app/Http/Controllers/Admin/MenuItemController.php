@@ -194,13 +194,15 @@ class MenuItemController extends Controller
                     }
                 }
 
-                foreach ($request->variations as $variation) {
-                    $variation['menu_item_id'] = $menuItem->id;
+                if (isset($request->variations) && count($request->variations) > 0) {
+                    foreach ($request->variations as $variation) {
+                        $variation['menu_item_id'] = $menuItem->id;
 
-                    if (isset($variation['id']) && $variation['id']) {
-                        ItemVariation::where('id', $variation['id'])->update($variation);
-                    } else {
-                        ItemVariation::create($variation);
+                        if (isset($variation['id']) && $variation['id']) {
+                            ItemVariation::where('id', $variation['id'])->update($variation);
+                        } else {
+                            ItemVariation::create($variation);
+                        }
                     }
                 }
                 
@@ -210,8 +212,6 @@ class MenuItemController extends Controller
                     ->route('admin.iframe-pages.item-edit-form', $menuItem->id)
                     ->with('success', 'Menu item updated successfully!');
             } catch (\Exception $e) {
-                dd($e->getMessage());
-
                 DB::rollBack();
                 Log::error('Controller Error updating menu item: ' . $e->getMessage());
 
@@ -220,13 +220,11 @@ class MenuItemController extends Controller
                     ->with('error', 'Failed to update menu item. Please try again. Error: ' . $e->getMessage());
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
-            dd($e->validator->errors());
             return back()
                 ->withErrors($e->validator)
                 ->withInput()
                 ->with('error', 'Validation failed. Please check the form and try again.');
         } catch (\Exception $e) {
-            dd($e->getMessage());
 
             Log::error('Controller Error Unexpected error in menu item update: ' . $e->getMessage());
 
@@ -241,12 +239,12 @@ class MenuItemController extends Controller
     {
         try {
             // Delete the file from storage
-            Storage::delete('public/' . $image->image_path);
+            Storage::disk('public')->delete($image->image_path);
             
             // Delete the image record
             $image->delete();
             
-            return response()->json(['success' => true]);
+            return response()->json(['success' => true, 'message' => 'Image deleted successfully!']);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
