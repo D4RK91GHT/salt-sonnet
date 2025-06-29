@@ -14,7 +14,7 @@
         class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 dark:text-gray-300 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer @error($name) border-red-500 @enderror">
         <option value="" selected disabled>Select Category</option>
         @foreach ($listArray as $item)
-            <option class="dark:text-gray-300 dark:bg-gray-800" {{ old($name) == $item->{$listValue} ? 'selected' : '' }} value="{{ $item->{$listValue} }}">
+            <option class="dark:text-gray-300 dark:bg-gray-800" {{ old($name, $value) == $item->{$listValue} ? 'selected' : '' }} value="{{ $item->{$listValue} }}">
                 {{ $item->{$listLabel} . $listLabelPostfix }}</option>
         @endforeach
     </select>
