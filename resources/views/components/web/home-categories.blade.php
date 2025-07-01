@@ -10,8 +10,8 @@
         <div class="item_version_2">
             <a href="grid-listing-filterscol.html">
                 <figure>
-                    <span>98</span>
-                    <img src="{{ asset('assets/web/img/home_cat_hamburgher.jpg') }}" alt=""
+                    <span>{{ $category->menu_items_count ?? 0 }}</span>
+                    <img src="{{ asset('storage/' . $category->image) ?? asset('assets/web/img/home_cat_hamburgher.jpg') }}" alt=""
                         class="owl-lazy">
                     <div class="info">
                         <h3>{{ $category->name }}</h3>

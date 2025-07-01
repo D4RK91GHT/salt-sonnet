@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Services\MenuItemService;
 use App\Services\MenuCategoryService;
+use App\Models\MenuCategory;
 
 class HomePageController extends Controller
 {
@@ -21,7 +22,6 @@ class HomePageController extends Controller
     public function homePage()
     {
         try {
-
             $menuItems = $this->menuItemService->index();
             $categories = $this->menuCategoryService->index();
             
@@ -31,7 +31,6 @@ class HomePageController extends Controller
             ]);
             
         } catch (\Exception $e) {
-            dd($e->getMessage());
             Log::error('Failed to load home page data: ' . $e->getMessage());
             return view('web.home', [
                 'items' => [],
@@ -39,6 +38,5 @@ class HomePageController extends Controller
                 'error' => 'Unable to load menu data. Please try again later.'
             ]);
         }
-
     }
 }
