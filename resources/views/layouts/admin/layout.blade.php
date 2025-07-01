@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    
+    @yield('additional-meta')
     <x-admin.meta-tags />
     <x-admin.header-links />
 

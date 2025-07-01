@@ -22,6 +22,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
     Route::get('item-category', [MenuCategoryController::class, 'index'])->name('item-category');
     Route::post('item-category', [MenuCategoryController::class, 'store'])->name('item-category.store');
+    Route::get('item-category/{itemCategory}', [MenuCategoryController::class, 'show'])->name('item-category.show');
+    Route::put('item-category/{itemCategory}', [MenuCategoryController::class, 'update'])->name('item-category.update');
+    Route::delete('item-category/{itemCategory}', [MenuCategoryController::class, 'destroy'])->name('item-category.destroy');
     
     Route::get('item-variation-types', [ItemVariationTypeController::class, 'index'])->name('item-variation-types');
     Route::post('item-variation-types', [ItemVariationTypeController::class, 'store'])->name('item-variation-types.store');
