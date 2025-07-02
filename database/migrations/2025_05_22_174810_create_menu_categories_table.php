@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('menu_categories', function (Blueprint $table) {
             $table->id(); // unsigned big integer, primary key
             $table->string('name');
+            $table->string('slug');
             $table->string('description', 555)->nullable();
             $table->string('image')->nullable();
             $table->boolean('status')->default(true);

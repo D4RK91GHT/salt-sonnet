@@ -11,7 +11,7 @@ class MenuCategory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'image', 'status',
+        'name', 'slug', 'description', 'image', 'status',
     ];
     
     public function items()
