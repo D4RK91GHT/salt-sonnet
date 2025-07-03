@@ -49,6 +49,14 @@ class MenuItemService
         ->get();
 
     }
+    public function mostOrderedItems()
+    {
+        return MenuItem::with('images')
+        ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
+        ->select('menu_items.*', 'menu_categories.name as category_name')
+        ->orderBy('menu_items.id', 'desc')
+        ->paginate(8);
+    }
     public function store(Request $request)
     {
         try {

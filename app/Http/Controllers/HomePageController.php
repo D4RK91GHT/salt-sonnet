@@ -24,10 +24,11 @@ class HomePageController extends Controller
         try {
             $menuItems = $this->menuItemService->index();
             $categories = $this->menuCategoryService->index();
-            // dd($categories);
+            $mostOrderedItems = $this->menuItemService->mostOrderedItems();
             return view('web.home', [
                 'items' => $menuItems['menuItems'],
-                'categories' => $categories
+                'categories' => $categories,
+                'mostOrderedItems' => $mostOrderedItems
             ]);
             
         } catch (\Exception $e) {
