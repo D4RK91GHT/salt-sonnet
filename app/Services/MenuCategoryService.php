@@ -9,10 +9,18 @@ class MenuCategoryService
 {
     public function index()
     {
-        $categories = MenuCategory::all();
-        return compact('categories');
+        return MenuCategory::all();
     }
 
+    public function show($id)
+    {
+        return MenuCategory::findOrFail($id);
+    }
+
+    public function showBySlug($slug)
+    {
+        return MenuCategory::where('slug', $slug)->first();
+    }
     
     public function store(Request $request)
     {
