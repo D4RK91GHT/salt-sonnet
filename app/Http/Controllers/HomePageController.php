@@ -24,13 +24,14 @@ class HomePageController extends Controller
         try {
             $menuItems = $this->menuItemService->index();
             $categories = $this->menuCategoryService->index();
-            
+            // dd($categories);
             return view('web.home', [
                 'items' => $menuItems['menuItems'],
-                'categories' => $categories['categories']
+                'categories' => $categories
             ]);
             
         } catch (\Exception $e) {
+            dd($e->getMessage());
             Log::error('Failed to load home page data: ' . $e->getMessage());
             return view('web.home', [
                 'items' => [],

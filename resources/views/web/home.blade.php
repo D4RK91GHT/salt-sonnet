@@ -6,7 +6,6 @@
 @section('main')
     <x-web.home-hero />
 
-
     <x-web.home-categories :categories="$categories" />
 
     <div class="bg_gray">

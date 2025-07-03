@@ -8,7 +8,7 @@
     <div class="owl-carousel owl-theme categories_carousel">
         @foreach ($categories as $category)
         <div class="item_version_2">
-            <a href="grid-listing-filterscol.html">
+            <a href="{{ route('category-details', $category->slug) }}">
                 <figure>
                     <span>{{ $category->menu_items_count ?? 0 }}</span>
                     <img src="{{ asset('storage/' . $category->image) ?? asset('assets/web/img/home_cat_hamburgher.jpg') }}" alt=""
