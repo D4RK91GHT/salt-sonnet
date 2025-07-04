@@ -2,7 +2,7 @@
 /* Detail page */
 /*============================================================================================*/
 /*-------- Page head --------*/
-.detail_page_head .title {
+/* .detail_page_head .title {
   float: left;
 }
 @media (max-width: 767px) {
@@ -49,7 +49,7 @@
 }
 .detail_page_head .title ul.tags li a:hover {
   color: #e54750;
-}
+} 
 .detail_page_head .rating {
   float: right;
 }
@@ -187,9 +187,9 @@
   -o-transform: translate(-50%, -50%) scale(1.05);
   transform: translate(-50%, -50%) scale(1.05);
 }
-
+*/
 /*-------- Fixed Booking Panel--------*/
-.box_order {
+/* .box_order {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -342,7 +342,7 @@
     display: block;
   }
 }
-
+*/
 .secondary_nav {
   width: 100%;
   background-color: #fff;
@@ -390,7 +390,7 @@
   display: inline-block;
   margin-right: 15px;
 }
-.secondary_nav ul li:last-child {
+/* .secondary_nav ul li:last-child {
   margin-right: 0;
   border-left: 1px solid #ededed;
   padding-left: 18px;
@@ -400,15 +400,17 @@
   background-color: transparent;
   padding: 3px 12px;
   border: 1px solid #d2d8dd;
-}
+} */
 .secondary_nav ul li a {
   color: #444;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   -ms-border-radius: 20px;
   border-radius: 20px;
-  background-color: black;
-  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid #d2d8dd;
+
+  /* background-color: black;
+  background-color: rgba(0, 0, 0, 0.05); */
   padding: 5px 15px;
 }
 .secondary_nav ul li a.active, .secondary_nav ul li a:hover {
@@ -430,7 +432,7 @@
 }
 
 /*-------- Menu list --------*/
-.table_wrapper {
+/* .table_wrapper {
   background-color: #fff;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -439,7 +441,7 @@
   -webkit-box-shadow: 0px 22px 24px 0px rgba(46, 51, 51, 0.05);
   -moz-box-shadow: 0px 22px 24px 0px rgba(46, 51, 51, 0.05);
   box-shadow: 0px 22px 24px 0px rgba(46, 51, 51, 0.05);
-}
+} */
 
 a.menu_item {
   background-color: #fff;
@@ -499,7 +501,7 @@ a.menu_item:hover h3 {
   color: #e54750;
 }
 
-.table.cart-list {
+/* .table.cart-list {
   border-bottom: none;
   background-color: transparent;
 }
@@ -605,7 +607,7 @@ a.menu_item:hover h3 {
   float: right;
   font-size: 13px;
   font-size: 0.8125rem;
-}
+} 
 
 #message {
   position: fixed;
@@ -635,8 +637,8 @@ a.menu_item:hover h3 {
   top: 7px;
   line-height: 1;
 }
-
-.reviews #review_summary {
+*/
+/* .reviews #review_summary {
   text-align: center;
   background-color: #66cc66;
   color: #fff;
@@ -677,8 +679,8 @@ a.menu_item:hover h3 {
   position: relative;
   top: -8px;
 }
-
-.review_card {
+*/
+/* /* .review_card {
   background-color: #fff;
   border: 1px solid #ededed;
   -webkit-border-radius: 3px;
@@ -878,9 +880,9 @@ a.menu_item:hover h3 {
     display: block;
     margin-top: 10px;
   }
-}
+} */
 
-.dropdown {
+/* .dropdown {
   border: 1px dotted #c8c8c8;
   padding: 0;
   margin-bottom: 5px;
@@ -948,9 +950,9 @@ a.menu_item:hover h3 {
   font-family: "ElegantIcons";
   content: "\e023";
   font-weight: 300;
-}
+} */
 
-.radio_select ul {
+/* .radio_select ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -1006,7 +1008,7 @@ a.menu_item:hover h3 {
 }
 .radio_select input[type="radio"]:checked + label em {
   color: #ffff66;
-}
+} */
 
 /*-------- Modal Order --------*/
 #modal-dialog .content {
