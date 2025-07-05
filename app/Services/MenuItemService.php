@@ -27,15 +27,39 @@ class MenuItemService
         return compact('menuItems');
     }
 
-    public function show(MenuItem $menuItem)
+    public function show($id)
     {
-        $menuItem = MenuItem::with('images')
-        ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
-        ->select('menu_items.*', 'menu_categories.name as category_name')->where('menu_items.id', $menuItem->id)
-        ->first();
+        $menuItem = MenuItem::with(['images', 'variations.variationType'])
+            ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
+            ->select('menu_items.*', 'menu_categories.name as category_name')
+            ->where('menu_items.id', $id)
+            ->first();
 
-        // return view('admin.menu-items', compact('menuItem'));
-        return response()->json($menuItem);
+        if ($menuItem && $menuItem->variations) {
+            $groupedVariations = [];
+            foreach ($menuItem->variations as $variation) {
+                $typeId = $variation->variation_type_id;
+                $typeName = $variation->variationType->name ?? 'Uncategorized';
+                
+                if (!isset($groupedVariations[$typeId])) {
+                    $groupedVariations[$typeId] = [
+                        'variation_type_id' => $typeId,
+                        'variation_type_name' => $typeName,
+                        'variations' => []
+                    ];
+                }
+                
+                $groupedVariations[$typeId]['variations'][] = $variation;
+            }
+            
+            // Convert to sequential array and add to menu item
+            $menuItem->grouped_variations = array_values($groupedVariations);
+            
+            // Optionally remove the original variations to avoid confusion
+            unset($menuItem->variations);
+        }
+
+        return $menuItem;
     }
     
     public function itemsByCategory($CategoryId)

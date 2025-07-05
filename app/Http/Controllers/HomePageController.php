@@ -25,10 +25,15 @@ class HomePageController extends Controller
             $menuItems = $this->menuItemService->index();
             $categories = $this->menuCategoryService->index();
             $mostOrderedItems = $this->menuItemService->mostOrderedItems();
+            $categoryWithItems = MenuCategory::with(['items' => function($query) {
+                $query->with('images')->orderBy('id', 'desc')->limit(4);
+            }])->get();
+            
             return view('web.home', [
                 'items' => $menuItems['menuItems'],
                 'categories' => $categories,
-                'mostOrderedItems' => $mostOrderedItems
+                'mostOrderedItems' => $mostOrderedItems,
+                'categoryWithItems' => $categoryWithItems
             ]);
             
         } catch (\Exception $e) {
@@ -38,6 +43,24 @@ class HomePageController extends Controller
                 'items' => [],
                 'categories' => [],
                 'error' => 'Unable to load menu data. Please try again later.'
+            ]);
+        }
+    }
+
+    public function itemDetails($id)
+    {
+        try {
+            $menuItem = $this->menuItemService->show($id);
+            if (!$menuItem) {
+                return response()->json([
+                    'error' => 'Item not found.'
+                ], 404);
+            }
+            return response()->json($menuItem);
+        } catch (\Exception $e) {
+            Log::error('Failed to load item details: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Unable to load item details. Please try again later.'
             ]);
         }
     }

@@ -10,6 +10,7 @@ Route::get('/', [HomePageController::class, 'homePage'])->name('home');
 Route::get('/categories', [CategoryPageController::class, 'categoryPage'])->name('categories');
 Route::get('/category/{category:slug}', [CategoryPageController::class, 'categoryDetails'])->name('category-details');
 Route::get('/checkout', [CheckoutPageController::class, 'checkoutPage'])->name('checkout');
+Route::get('/item/{id}', [HomePageController::class, 'itemDetails'])->name('item-details');
 // Route::get('/item/{id}', [HomePageController::class, 'item'])->name('item');
 // Route::get('/cart', [HomePageController::class, 'cart'])->name('cart');
 // Route::get('/checkout', [HomePageController::class, 'checkout'])->name('checkout');
