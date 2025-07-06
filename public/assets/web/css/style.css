@@ -2861,6 +2861,20 @@ ul#top_menu li a.login:before {
   box-shadow: none;
 }
 
+.logout-item {
+  padding: 12px 15px;
+  display: block;
+  font-size: 13px;
+  font-size: 0.8125rem;
+}
+
+.logout-item i {
+  margin-right: 8px;
+}
+
+.logout-item:hover {
+  color: #e54750;
+}
 /*-------- 1.5 Drop down cart --------*/
 .dropdown-cart .dropdown-menu,
 .dropdown.user .dropdown-menu {
@@ -3098,7 +3112,7 @@ header.black_nav .dropdown.user > a {
   margin: 0;
   line-height: 1;
   margin-top: -2px;
-  margin-left: 5px;
+  margin-left: -5px;
   float: right;
 }
 @media (max-width: 767px) {

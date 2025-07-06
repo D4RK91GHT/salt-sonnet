@@ -6,8 +6,7 @@
             </a>
         </div>
         <div class="layer"></div><!-- Opacity Mask Menu Mobile -->
-        <ul id="top_menu">
-            <li><a href="#sign-in-dialog" id="sign-in" class="login">Sign In</a></li>
+        <ul id="top_menu" class="drop_user">
             <li>
                 <div class="dropdown dropdown-cart">
                     <a href="{{ route('checkout') }}" class="cart_bt"><strong>2</strong></a>
@@ -38,6 +37,35 @@
                 </div>
                 <!-- /dropdown-cart-->
             </li>
+
+            @auth
+            <li>
+                <div class="dropdown user clearfix">
+                    <a href="#" data-bs-toggle="dropdown">
+                        <figure><img src="{{ asset('assets/web/img/avatar.jpg') }}" alt=""></figure>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-menu-content">
+                            <ul>
+                                <li><a href="#0"><i class="icon_cog"></i>Dashboard</a></li>
+                                <li><a href="#0"><i class="icon_document"></i>Bookings</a></li>
+                                <li><a href="#0"><i class="icon_heart"></i>Wish List</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item logout-item"> <i class="icon_key"></i> Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /dropdown -->
+            </li>
+            @else
+            <li><a href="#sign-in-dialog" id="sign-in" class="login">Sign In</a></li>
+            @endauth
         </ul>
         <!-- /top_menu -->
         <a href="#0" class="open_close">

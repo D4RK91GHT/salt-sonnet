@@ -32,7 +32,8 @@
         <div class="modal_header">
             <h3>Sign In</h3>
         </div>
-        <form>
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
         <div class="sign-in-wrapper">
             <a href="#0" class="social_bt facebook">Login with Facebook</a>
             <a href="#0" class="social_bt google">Login with Google</a>
