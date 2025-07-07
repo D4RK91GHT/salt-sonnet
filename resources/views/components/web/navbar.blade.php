@@ -50,7 +50,7 @@
                                 <li><a href="#0"><i class="icon_cog"></i>Dashboard</a></li>
                                 <li><a href="#0"><i class="icon_document"></i>Bookings</a></li>
                                 <li><a href="#0"><i class="icon_heart"></i>Wish List</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li><hr class="dropdown-divider m-0"></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
