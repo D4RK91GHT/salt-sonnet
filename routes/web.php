@@ -19,7 +19,7 @@ Route::get('/item/{id}', [HomePageController::class, 'itemDetails'])->name('item
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('web.user-portal.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
