@@ -35,8 +35,8 @@ return new class extends Migration
 
         Schema::create('cart_item_variations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_id')->constrained()->onDelete('cascade');
-            $table->foreignId('variation_id')->constrained()->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('cart_items')->onDelete('cascade');
+            $table->foreignId('variation_id')->constrained('item_variations')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -46,8 +46,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carts');
-        Schema::dropIfExists('cart_items');
         Schema::dropIfExists('cart_item_variations');
+        Schema::dropIfExists('cart_items');
+        Schema::dropIfExists('carts');
     }
 };

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('mrp', 10, 2)->default(0);
             $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('rate', 10, 2)->virtualAs('mrp - (mrp * (discount / 100))');
-            $table->integer('gst', 2)->default(0);
+            $table->unsignedTinyInteger('gst')->default(0);
             $table->decimal('price', 8, 2)->virtualAs('LEAST(rate + (rate * (gst / 100)), mrp)');
             $table->boolean('is_available')->default(true);
             $table->string('image')->nullable();
