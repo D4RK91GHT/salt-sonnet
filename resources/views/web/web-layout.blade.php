@@ -79,6 +79,9 @@
 <!-- COMMON SCRIPTS -->
 <x-web.footer-js-links />
 
+<!-- Global Toast Component -->
+<x-web.component.toast />
+
 @yield('custom-js')
 
 <!-- Autocomplete -->

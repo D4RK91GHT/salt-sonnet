@@ -2,6 +2,38 @@
 @section('header')
     <link href="{{ asset('assets/web/css/home.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/web/css/detail-page.css') }}" rel="stylesheet">
+    {{-- <style>
+        /* Ensure toast sits above Magnific Popup (.mfp-wrap/.mfp-bg z-index: 999999) */
+        #liveToastContainer { 
+            z-index: 2147483647 !important; /* max 32-bit */
+            position: fixed; 
+            top: 0; 
+            right: 0; 
+            pointer-events: none; /* container ignores clicks */
+        }
+        #liveToastContainer .toast { 
+            pointer-events: auto; /* but toast remains clickable */
+            position: relative;
+            z-index: inherit;
+        }
+        /* Counter Magnific Popup blur rule: .mfp-wrap ~ * { filter: blur(...) } */
+        .mfp-wrap ~ #liveToastContainer { 
+            -webkit-filter: none !important; 
+            -moz-filter: none !important; 
+            -o-filter: none !important; 
+            -ms-filter: none !important; 
+            filter: none !important; 
+            backdrop-filter: none !important;
+        }
+        .mfp-wrap ~ #liveToastContainer * { 
+            -webkit-filter: none !important; 
+            -moz-filter: none !important; 
+            -o-filter: none !important; 
+            -ms-filter: none !important; 
+            filter: none !important; 
+            backdrop-filter: none !important;
+        }
+      </style> --}}
 @endsection
 @section('main')
     <x-web.home-hero />
@@ -174,7 +206,14 @@ document.getElementById('add-to-cart').addEventListener('click', function() {
     // Validation: require at least one variation OR price > 0
     const totalNumber = parseFloat(total);
     if ((variations.length === 0) && (!Number.isFinite(totalNumber) || totalNumber <= 0)) {
-        alert('Please select at least one variation or ensure the price is greater than 0.');
+        // Show Bootstrap toast (fallback to alert if Bootstrap is unavailable)
+        const message = 'Please select at least one variation or ensure the price is more than 0.';
+        try {
+            window.showToast(message, { variant: 'danger', delay: 4000 }); // default 3000ms
+        } catch (e) {
+            // Fallback if Bootstrap is not loaded
+            alert(message);
+        }
         return;
     }
 
