@@ -29,13 +29,13 @@
         <div class="content">
             <h5>Quantity</h5>
             <div class="numbers-row">
-                <input type="text" value="1" id="qty_1" class="qty2 form-control" name="quantity">
+                <input type="text" value="1" oninput="updateTotalPrice()" onchange="updateTotalPrice()" id="item_qty" class="qty2 form-control" name="quantity">
             </div>
             <div id="modal-variation-list" class="ul-box">
             </div>
             <div class="bg-body-secondary d-flex justify-content-between rounded px-2 py-3 mb-2">
                 <h5 class="mb-0">Total</h5>
-                <h5 class="mb-0">@php echo $_ENV['CURRENCY'] @endphp <span id="total">0</span></h5>
+                <h5 class="mb-0">@php echo config('app.currency') @endphp <span id="total">0</span></h5>
             </div>
         </div>
         <div class="footer">
@@ -44,7 +44,7 @@
                     <button type="reset" class="btn_1 outline full-width mb-mobile">Cancel</button>
                 </div>
                 <div class="col-md-8">
-                    <button type="reset" class="btn_1 full-width">Add to cart</button>
+                    <button type="reset" class="btn_1 full-width" id="add-to-cart">Add to cart</button>
                 </div>
             </div>
             <!-- /Row -->
@@ -55,125 +55,6 @@
 
 @section('custom-js')
 <script>
-
-    // function showItemDetails(itemId) {
-    //     fetch(`/item/${itemId}`)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         document.getElementById('modal-item-name').textContent = data.name;
-    //         const variationList = document.getElementById('modal-variation-list');
-    //         variationList.innerHTML = '';
-            
-    //         data.grouped_variations.forEach(variation => {
-    //             // Create variation type heading
-    //             const heading = document.createElement('h5');
-    //             heading.textContent = variation.variation_type_name;
-                
-    //             // Create UL for variation options
-    //             const ul = document.createElement('ul');
-    //             ul.className = 'clearfix';
-                
-    //             // Add radio buttons for each variation option
-    //             variation.variations.forEach(eachvariation => {
-    //                 const li = document.createElement('li');
-    //                 li.innerHTML = `
-    //                     <label class="container_radio">
-    //                         ${eachvariation.name}
-    //                         <span>+ @php echo $_ENV['CURRENCY'] @endphp ${eachvariation.price}</span>
-    //                         <input type="radio" value="${eachvariation.id}" name="variation_${variation.variation_type_id}" onchange="updateTotal(${eachvariation.price}, this)">
-    //                         <span class="checkmark"></span>
-    //                     </label>`;
-    //                 ul.appendChild(li);
-    //             });
-                
-    //             // Append heading and list to the container
-    //             variationList.appendChild(heading);
-    //             variationList.appendChild(ul);
-    //         });
-    //     })
-    //     .catch(error => {
-    //         console.error('Error:', error);
-    //     });
-    // }
-
-    // const updateTotal = (price, element) => {
-    //     if (element.checked) {
-    //         const total = document.getElementById('total');
-    //         total.textContent = parseInt(total.textContent) + parseInt(price);
-    //     }
-    // }
-
-    // =========================================================================
-
-    // Track selected prices by variation group
-    // const selectedPrices = {};
-
-    // function showItemDetails(itemId) {
-    //     // Reset selected prices when showing new item
-    //     Object.keys(selectedPrices).forEach(key => delete selectedPrices[key]);
-    //     document.getElementById('total').textContent = '0.00';
-        
-    //     fetch(`/item/${itemId}`)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         document.getElementById('modal-item-name').textContent = data.name;
-    //         const variationList = document.getElementById('modal-variation-list');
-    //         variationList.innerHTML = '';
-            
-    //         data.grouped_variations.forEach(variation => {
-    //             // Create variation type heading
-    //             const heading = document.createElement('h5');
-    //             heading.textContent = variation.variation_type_name;
-                
-    //             // Create UL for variation options
-    //             const ul = document.createElement('ul');
-    //             ul.className = 'clearfix';
-                
-    //             // Add radio buttons for each variation option
-    //             variation.variations.forEach(eachvariation => {
-    //                 const li = document.createElement('li');
-    //                 li.innerHTML = `
-    //                     <label class="container_radio">
-    //                         ${eachvariation.name}
-    //                         <span>+ @php echo $_ENV['CURRENCY'] @endphp ${parseFloat(eachvariation.price).toFixed(2)}</span>
-    //                         <input type="radio" 
-    //                             value="${eachvariation.id}" 
-    //                             name="variation_${variation.variation_type_id}" 
-    //                             data-price="${eachvariation.price}"
-    //                             onchange="updateTotal('${variation.variation_type_id}', this)">
-    //                         <span class="checkmark"></span>
-    //                     </label>`;
-    //                 ul.appendChild(li);
-    //             });
-                
-    //             // Append heading and list to the container
-    //             variationList.appendChild(heading);
-    //             variationList.appendChild(ul);
-    //         });
-    //     })
-    //     .catch(error => {
-    //         console.error('Error:', error);
-    //     });
-    // }
-
-    // function updateTotal(variationTypeId, element) {
-    //     const totalElement = document.getElementById('total');
-    //     const newPrice = parseFloat(element.dataset.price) || 0;
-    //     const currentTotal = parseFloat(totalElement.textContent) || 0;
-        
-    //     // If there was a previous selection for this variation type, subtract its price
-    //     if (selectedPrices[variationTypeId] !== undefined) {
-    //         totalElement.textContent = (currentTotal - selectedPrices[variationTypeId] + newPrice).toFixed(2);
-    //     } else {
-    //         // No previous selection, just add the new price
-    //         totalElement.textContent = (currentTotal + newPrice).toFixed(2);
-    //     }
-        
-    //     // Update the selected price for this variation type
-    //     selectedPrices[variationTypeId] = newPrice;
-    // }
-
-    // =========================================================================
 
     // Track selected prices by variation group
 const selectedPrices = {};
@@ -187,6 +68,7 @@ function showItemDetails(itemId) {
     .then(response => response.json())
     .then(data => {
         document.getElementById('modal-item-name').textContent = data.name;
+        document.getElementById('modal-item-name').dataset.productId = data.id;
         const variationList = document.getElementById('modal-variation-list');
         variationList.innerHTML = '';
         
@@ -226,6 +108,29 @@ function showItemDetails(itemId) {
     });
 }
 
+function updateTotalPrice() {
+    const quantity = parseInt(document.getElementById('item_qty').value) || 1;
+    const totalElement = document.getElementById('total');
+    
+    // Calculate sum of all selected variation prices
+    let variationsTotal = 0;
+    const variationInputs = document.querySelectorAll('input[name^="variation_"]:checked');
+    variationInputs.forEach(input => {
+        // console.log(input.dataset.price);
+        variationsTotal += parseFloat(input.dataset.price) || 0;
+    });
+    
+    // const variationsTotal = Array.from(variationInputs).map(input => ({
+    //     variation_type_id: input.name.split('_')[1], // Extract the ID after the underscore,
+    //     variation_id: input.value
+    // }));
+
+    console.log((quantity+1) * variationsTotal);
+    // Calculate new total (base price + variations) * quantity
+    // const newTotal = (basePrice + variationsTotal) * quantity;
+    // totalElement.textContent = newTotal.toFixed(2);
+}
+
 function handleVariationClick(event, variationTypeId, element) {
     const totalElement = document.getElementById('total');
     const currentTotal = parseFloat(totalElement.textContent) || 0;
@@ -251,6 +156,56 @@ function handleVariationClick(event, variationTypeId, element) {
     // Update the selected price for this variation type
     selectedPrices[variationTypeId] = newPrice;
 }
+
+
+document.getElementById('add-to-cart').addEventListener('click', function() {
+    const itemId = document.getElementById('modal-item-name').dataset.productId;
+    const quantity = document.getElementById('item_qty').value;
+    const total = document.getElementById('total').textContent;
+    
+    // Get all checked variation inputs
+    const variationInputs = document.querySelectorAll('input[name^="variation_"]:checked');
+
+    const variations = Array.from(variationInputs).map(input => ({
+        variation_type_id: input.name.split('_')[1], // Extract the ID after the underscore,
+        variation_id: input.value
+    }));
+
+    // Validation: require at least one variation OR price > 0
+    const totalNumber = parseFloat(total);
+    if ((variations.length === 0) && (!Number.isFinite(totalNumber) || totalNumber <= 0)) {
+        alert('Please select at least one variation or ensure the price is greater than 0.');
+        return;
+    }
+
+    const itemDetails = {
+        item_id: itemId,
+        total: total,
+        quantity: quantity,
+        variation: variations,
+    };
+    console.log('Item Details:', itemDetails);
+    
+    // fetch(`/cart/add`, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //         item_id: itemId,
+    //         total: total,
+    //         quantity: quantity,
+    //         variation: variation,
+    //     }),
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //     console.log(data);
+    // })
+    // .catch(error => {
+    //     console.error('Error:', error);
+    // });
+});
 
 </script>
     <script src="{{ asset('assets/web/js/sticky_sidebar.min.js') }}"></script>
