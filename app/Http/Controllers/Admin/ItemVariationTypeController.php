@@ -44,29 +44,29 @@ class ItemVariationTypeController extends Controller
 
     public function destroy(ItemVariationType $variationType)
     {
-    try {
-        // Try to find the model fresh from database
-        $model = ItemVariationType::find($variationType->id);
-        
-        if (!$model) {
-            return redirect()->back()->with('error', 'Record not found');
-        }
-
-        // Try to delete
-        $deleted = $model->delete();
-        
-        if ($deleted) {
-            return redirect()->route('admin.item-variation-types')
-                ->with('success', 'Item variation type deleted successfully');
-        }
-        
-        return redirect()->back()
-            ->with('error', 'Failed to delete item variation type');
+        try {
+            // Try to find the model fresh from database
+            $model = ItemVariationType::find($variationType->id);
             
-    } catch (\Exception $e) {
-        Log::error('Delete error: ' . $e->getMessage());
-        return redirect()->back()
-            ->with('error', 'Error: ' . $e->getMessage());
-    }
+            if (!$model) {
+                return redirect()->back()->with('error', 'Record not found');
+            }
+
+            // Try to delete
+            $deleted = $model->delete();
+            
+            if ($deleted) {
+                return redirect()->route('admin.item-variation-types')
+                    ->with('success', 'Item variation type deleted successfully');
+            }
+            
+            return redirect()->back()
+                ->with('error', 'Failed to delete item variation type');
+                
+        } catch (\Exception $e) {
+            Log::error('Delete error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 }

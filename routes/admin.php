@@ -28,8 +28,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     
     Route::get('item-variation-types', [ItemVariationTypeController::class, 'index'])->name('item-variation-types');
     Route::post('item-variation-types', [ItemVariationTypeController::class, 'store'])->name('item-variation-types.store');
-    Route::put('item-variation-types/{itemVariationType}', [ItemVariationTypeController::class, 'update'])->name('item-variation-types.update');
-    Route::delete('item-variation-types/{itemVariationType}', [ItemVariationTypeController::class, 'destroy'])->name('item-variation-types.destroy');
+    Route::put('item-variation-types/{variationType}', [ItemVariationTypeController::class, 'update'])->name('item-variation-types.update');
+    Route::delete('item-variation-types/{variationType}', [ItemVariationTypeController::class, 'destroy'])->name('item-variation-types.destroy');
     
     // Route::get('item-variations', [ItemVariationController::class, 'index'])->name('item-variations');
     // Route::post('item-variations', [ItemVariationController::class, 'store'])->name('item-variations.store');
