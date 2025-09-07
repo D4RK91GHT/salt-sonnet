@@ -9,6 +9,7 @@ use Database\Seeders\AdminSeeder;
 use Database\Seeders\MenuCatecorySeeder;
 use Database\Seeders\MenuItemSeeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\VariationTypeSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
             MenuItemSeeder::class,
             GstSlabSeeder::class,
             UserSeeder::class,
+            VariationTypeSeeder::class,
         ]);
     }
 }
