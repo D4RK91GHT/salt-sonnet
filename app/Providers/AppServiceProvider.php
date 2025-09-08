@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(base_path('routes/web.php'));
         // $this->loadRoutesFrom(base_path('routes/auth.php'));
         \Illuminate\Support\Facades\Route::middleware('web')->group(base_path('routes/admin.php'));
-        \Illuminate\Support\Facades\Route::middleware('web')->group(base_path('routes/api.php'));
+        // \Illuminate\Support\Facades\Route::middleware('web')->group(base_path('routes/api.php'));
         \Illuminate\Support\Facades\Route::middleware('web')->group(base_path('routes/console.php'));
         // \Illuminate\Support\Facades\Route::middleware('web')->group(base_path('routes/web.php'));
         // \Illuminate\Support\Facades\Route::middleware('web')->group(base_path('routes/auth.php'));
