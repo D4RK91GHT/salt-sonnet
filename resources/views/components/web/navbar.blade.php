@@ -9,27 +9,13 @@
         <ul id="top_menu" class="drop_user">
             <li>
                 <div class="dropdown dropdown-cart">
-                    <a href="{{ route('checkout') }}" class="cart_bt"><strong>2</strong></a>
+                    <a href="{{ route('checkout') }}" class="cart_bt"><strong>0</strong></a>
                     <div class="dropdown-menu">
                         <ul>
-                            <li>
-                                <figure><img src="img/menu-thumb-placeholder.jpg" data-src="{{ asset('assets/web/img/menu-thumb-1.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
-                                <strong><span>1x Pizza Napoli</span>$12.00</strong>
-                                <a href="#0" class="action"><i class="icon_trash_alt"></i></a>
-                            </li>
-                             <li>
-                                <figure><img src="img/menu-thumb-placeholder.jpg" data-src="{{ asset('assets/web/img/menu-thumb-2.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
-                                <strong><span>1x Hamburgher Maxi</span>$10.00</strong>
-                                <a href="#0" class="action"><i class="icon_trash_alt"></i></a>
-                            </li>
-                             <li>
-                                <figure><img src="img/menu-thumb-placeholder.jpg" data-src="{{ asset('assets/web/img/menu-thumb-3.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
-                                <strong><span>1x Red Wine Bottle</span>$20.00</strong>
-                                <a href="#0" class="action"><i class="icon_trash_alt"></i></a>
-                            </li>
+                            {{-- Cart Items Goes Here --}}
                         </ul>
                         <div class="total_drop">
-                            <div class="clearfix add_bottom_15"><strong>Total</strong><span>$32.00</span></div>
+                            <div class="clearfix add_bottom_15"><strong>Total</strong><span id="cart_total">$32.00</span></div>
                             <a href="{{ route('checkout') }}" class="btn_1 outline">View Cart</a>
                             <a href="{{ route('checkout') }}" class="btn_1">Checkout</a>
                         </div>
@@ -159,3 +145,67 @@
         </nav>
     </div>
 </header>
+<script>
+    async function fetchCartAndRender() {
+        try {
+            const cartToken = localStorage.getItem('cart_token');
+            const res = await fetch('/api/cart/items', {
+                headers: {
+                    ...(cartToken ? { 'X-Guest-Id': cartToken } : {}),
+                }
+            });
+            console.log(cartToken);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to fetch cart');
+
+            // render cart
+            document.querySelector('.cart_bt strong').textContent = data.count;
+            const listEl = document.querySelector('.dropdown-menu ul');
+            if (listEl) listEl.innerHTML = '';
+            let cartTotal = 0;
+            data.items.forEach(item => {
+              const firstImage = (item.menu_item?.images?.[0]?.image_path) || 'placeholder/placeholder.jpg';
+              const name = item.menu_item?.name || 'Item';
+              const quantity = item.quantity || 1;
+              const price = (item.variations?.[0]?.price) ?? 0;
+              cartTotal += price * quantity;
+
+              if (listEl) listEl.innerHTML += `
+              <li>
+                <figure><img src="{{ asset('storage/${firstImage}') }}" data-src="{{ asset('storage/${firstImage}') }}" alt="" width="50" height="50" class="lazy"></figure>
+                    <strong><span>${quantity}x ${name}</span>{{ config('app.currency') }}${price}</strong>
+                        <a href="#0" class="action" data-cart-id="${item.id}"><i class="icon_trash_alt"></i></a>
+              </li>`;
+            })
+            document.getElementById('cart_total').textContent = `{{config('app.currency')}}${cartTotal}`;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    fetchCartAndRender();
+
+    document.addEventListener('click', async (e) => {
+        const a = e.target.closest('a.action[data-cart-id]');
+        if (!a) return;
+        e.preventDefault();
+        try {
+            const id = a.getAttribute('data-cart-id');
+            const cartToken = localStorage.getItem('cart_token');
+            const res = await fetch(`/api/cart/items/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    ...(cartToken ? { 'X-Guest-Id': cartToken } : {}),
+                }
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || 'Failed to remove');
+            window.showToast('Item removed from cart', { variant: 'warning', delay: 1500 });
+            fetchCartAndRender();
+        } catch (err) {
+            console.error(err);
+            window.showToast('Could not remove item', { variant: 'danger' });
+        }
+    });
+</script>

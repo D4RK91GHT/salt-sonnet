@@ -190,62 +190,67 @@ function handleVariationClick(event, variationTypeId, element) {
 }
 
 
-document.getElementById('add-to-cart').addEventListener('click', function() {
-    const itemId = document.getElementById('modal-item-name').dataset.productId;
-    const quantity = document.getElementById('item_qty').value;
-    const total = document.getElementById('total').textContent;
-    
-    // Get all checked variation inputs
-    const variationInputs = document.querySelectorAll('input[name^="variation_"]:checked');
+    document.getElementById('add-to-cart').addEventListener('click', function() {
+        const itemId = document.getElementById('modal-item-name').dataset.productId;
+        const quantity = document.getElementById('item_qty').value;
+        const total = document.getElementById('total').textContent;
+        
+        // Get all checked variation inputs
+        const variationInputs = document.querySelectorAll('input[name^="variation_"]:checked');
 
-    const variations = Array.from(variationInputs).map(input => ({
-        variation_type_id: input.name.split('_')[1], // Extract the ID after the underscore,
-        variation_id: input.value
-    }));
+        const variations = Array.from(variationInputs).map(input => ({
+            variation_type_id: input.name.split('_')[1], // Extract the ID after the underscore,
+            variation_id: input.value
+        }));
 
-    // Validation: require at least one variation OR price > 0
-    const totalNumber = parseFloat(total);
-    if ((variations.length === 0) && (!Number.isFinite(totalNumber) || totalNumber <= 0)) {
-        // Show Bootstrap toast (fallback to alert if Bootstrap is unavailable)
-        const message = 'Please select at least one variation or ensure the price is more than 0.';
-        try {
-            window.showToast(message, { variant: 'danger', delay: 4000 }); // default 3000ms
-        } catch (e) {
-            // Fallback if Bootstrap is not loaded
-            alert(message);
+        // Validation: require at least one variation OR price > 0
+        const totalNumber = parseFloat(total);
+        if ((variations.length === 0) && (!Number.isFinite(totalNumber) || totalNumber <= 0)) {
+            // Show Bootstrap toast (fallback to alert if Bootstrap is unavailable)
+            const message = 'Please select at least one variation or ensure the price is more than 0.';
+            try {
+                window.showToast(message, { variant: 'danger', delay: 4000 }); // default 3000ms
+            } catch (e) {
+                // Fallback if Bootstrap is not loaded
+                alert(message);
+            }
+            return;
         }
-        return;
-    }
 
-    const itemDetails = {
-        item_id: itemId,
-        total: total,
-        quantity: quantity,
-        variation: variations,
-    };
-    console.log('Item Details:', itemDetails);
-    
-    // fetch(`/cart/add`, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         item_id: itemId,
-    //         total: total,
-    //         quantity: quantity,
-    //         variation: variation,
-    //     }),
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     console.log(data);
-    // })
-    // .catch(error => {
-    //     console.error('Error:', error);
-    // });
-});
-
+        (async () => {
+            try {
+                // Ensure guest id exists before request
+                const existing = localStorage.getItem('cart_token');
+                const guestId = existing || (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
+                if (!existing) localStorage.setItem('cart_token', guestId);
+                console.log(guestId);
+                const res = await fetch('/api/cart/items', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        ...(guestId ? { 'X-Guest-Id': guestId } : {}),
+                    },
+                    body: JSON.stringify({
+                        menu_item_id: parseInt(itemId),
+                        quantity: parseInt(quantity) || 1,
+                        variation_ids: variations.map(v => parseInt(v.variation_id)),
+                    }),
+                });
+                const contentType = res.headers.get('content-type') || '';
+                const data = contentType.includes('application/json') ? await res.json() : { message: await res.text() };
+                if (!res.ok || data.success === false) {
+                    throw new Error(data.message || 'Failed to add to cart');
+                }
+                // Notify UI
+                window.showToast('Added to cart', { variant: 'success', delay: 2000 });
+                window.dispatchEvent(new CustomEvent('cart:updated'));
+            } catch (err) {
+                console.error(err);
+                window.showToast('Could not add to cart', { variant: 'danger' });
+            }
+        })();
+    });
 </script>
     <script src="{{ asset('assets/web/js/sticky_sidebar.min.js') }}"></script>
     <script src="{{ asset('assets/web/js/sticky-kit.min.js') }}"></script>
