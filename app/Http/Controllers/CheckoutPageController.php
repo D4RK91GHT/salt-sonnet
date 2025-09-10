@@ -27,8 +27,10 @@ class CheckoutPageController extends Controller
             if ($cart) {
                 $items = $cart->items;
                 // Calculate cart total
+
+                
                 $cartTotal = $items->sum(function($item) {
-                    return $item->quantity * $item->menuItem->price;
+                    return $item->quantity * $item->variations->first()->price;
                 });
             }
         }

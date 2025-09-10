@@ -35,7 +35,7 @@
 									@endif
 								</div>
 							</div>
-							<span>{{ $item->quantity }} x <b>{{ number_format($item->menuItem->price * $item->quantity, 2) }}</b></span>
+							<span>{{ $item->quantity }} x <b>{{ number_format($item->variations->first()->price * $item->quantity, 2) }}</b></span>
 						</div>
 						@empty
 						<div class="text-center py-3">Your cart is empty</div>
