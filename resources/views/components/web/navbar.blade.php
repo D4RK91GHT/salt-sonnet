@@ -146,15 +146,21 @@
     </div>
 </header>
 <script>
+    // Helper: read cookie by name
+    function getCookie(name) {
+        const match = document.cookie.split('; ').find(row => row.startsWith(name + '='));
+        return match ? decodeURIComponent(match.split('=')[1]) : null;
+    }
+
     async function fetchCartAndRender() {
         try {
-            const cartToken = localStorage.getItem('cart_token');
+            const guestId = getCookie('guest_identifier');
             const res = await fetch('/api/cart/items', {
                 headers: {
-                    ...(cartToken ? { 'X-Guest-Id': cartToken } : {}),
+                    ...(guestId ? { 'X-Guest-Id': guestId } : {}),
                 }
             });
-            console.log(cartToken);
+            console.log(guestId);
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || 'Failed to fetch cart');
 
@@ -191,12 +197,12 @@
         e.preventDefault();
         try {
             const id = a.getAttribute('data-cart-id');
-            const cartToken = localStorage.getItem('cart_token');
+            const guestId = getCookie('guest_identifier');
             const res = await fetch(`/api/cart/items/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
-                    ...(cartToken ? { 'X-Guest-Id': cartToken } : {}),
+                    ...(guestId ? { 'X-Guest-Id': guestId } : {}),
                 }
             });
             const data = await res.json();

@@ -61,7 +61,7 @@
         <div class="content">
             <h5>Quantity</h5>
             <div class="numbers-row">
-                <input type="text" value="1" oninput="updateTotalPrice()" onchange="updateTotalPrice()" id="item_qty" class="qty2 form-control" name="quantity">
+                <input type="text" value="1" onchange="updateTotalPrice()" id="item_qty" class="qty2 form-control" name="quantity">
             </div>
             <div id="modal-variation-list" class="ul-box">
             </div>
@@ -141,7 +141,8 @@ function showItemDetails(itemId) {
 }
 
 function updateTotalPrice() {
-    const quantity = parseInt(document.getElementById('item_qty').value) || 1;
+    const quantity = parseInt(document.getElementById('item_qty').value);
+    console.log(quantity);
     const totalElement = document.getElementById('total');
     
     // Calculate sum of all selected variation prices
@@ -219,11 +220,21 @@ function handleVariationClick(event, variationTypeId, element) {
 
         (async () => {
             try {
-                // Ensure guest id exists before request
-                const existing = localStorage.getItem('cart_token');
-                const guestId = existing || (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
-                if (!existing) localStorage.setItem('cart_token', guestId);
-                console.log(guestId);
+                // Ensure guest id exists before request (use cookie instead of localStorage)
+                const getCookie = (name) => {
+                    const match = document.cookie.split('; ').find(row => row.startsWith(name + '='));
+                    return match ? decodeURIComponent(match.split('=')[1]) : null;
+                };
+                const setCookie = (name, value, days) => {
+                    const d = new Date();
+                    d.setTime(d.getTime() + (days*24*60*60*1000));
+                    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+                };
+                let guestId = getCookie('guest_identifier');
+                if (!guestId) {
+                    guestId = (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
+                    setCookie('guest_identifier', guestId, 30);
+                }
                 const res = await fetch('/api/cart/items', {
                     method: 'POST',
                     headers: {

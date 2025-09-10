@@ -9,7 +9,54 @@
 @section('main')
 <div class="container margin_60_20 mt-6">
 	<div class="row justify-content-center">
-		<div class="col-xl-6 col-lg-8">
+		<div class="col-xl-4 col-lg-6" id="sidebar_fixed">
+			<div class="box_order">
+				<div class="head">
+					<h3>Order Summary</h3>
+				</div>
+				<!-- /head -->
+				<div class="main d-flex flex-column justify-content-between">
+					<div class="items-area">
+						@forelse($items as $item)
+						<div class="checkout-item d-flex justify-content-between align-items-center mb-3">
+							<div class="d-flex">
+								<figure class="me-2">
+									<img class="img-fluid object-fit-cover" src="{{ asset('storage/' . $item->menuItem->images->first()->image_path) }}" alt="">
+								</figure>
+								<div>
+									<p class="fw-semibold mb-0">{{ $item->menuItem->name }}</p>
+									@if($item->variations->isNotEmpty())
+										<small class="text-nowrap item-variation-name">
+											@foreach($item->variations as $variation)
+											{{ $variation->name }}
+											@if(!$loop->last), @endif
+											@endforeach
+										</small>
+									@endif
+								</div>
+							</div>
+							<span>{{ $item->quantity }} x <b>{{ number_format($item->menuItem->price * $item->quantity, 2) }}</b></span>
+						</div>
+						@empty
+						<div class="text-center py-3">Your cart is empty</div>
+						@endforelse
+					</div>
+					
+					<div class="summary-area">
+						<ul class="clearfix">
+							<li>Subtotal<span id="checkout_subtotal">{{ config('app.currency') }}{{ number_format($cartTotal, 2) }}</span></li>
+							<li class="total">Total<span id="checkout_total">{{ config('app.currency') }}{{ number_format($cartTotal, 2) }}</span></li>
+						</ul>
+						<a href="#" class="btn_1 gradient full-width mb_5">Order Now</a>
+						<div class="text-center"><small>Or Call Us at <strong>0432 48432854</strong></small></div>
+					</div>
+				</div>
+			</div>
+			<!-- /box_booking -->
+		</div>
+		<!-- /col -->
+
+		<div class="col-xl-6 col-lg-6">
 			<div class="box_order_form">
 				<div class="head">
 					<div class="title">
@@ -106,7 +153,7 @@
 										</div>
 									</div>
 									<div class="col-md-8 col-6">
-										<img src="img/icon_ccv.gif" width="50" height="29" alt="ccv"><small>Last 3 digits</small>
+										<img src="{{ asset('assets/web/img/icon_ccv.gif') }}" width="50" height="29" alt="ccv"><small>Last 3 digits</small>
 									</div>
 								</div>
 							</div>
@@ -131,39 +178,6 @@
 			<!-- /box_order_form -->
 		</div>
 		<!-- /col -->
-		<div class="col-xl-4 col-lg-4" id="sidebar_fixed">
-			<div class="box_order">
-				<div class="head">
-					<h3>Order Summary</h3>
-					<div>Pizzeria da Alfredo</div>
-				</div>
-				<!-- /head -->
-				<div class="main">
-					<ul>
-						<li>Date<span>Today 23/11/2019</span></li>
-						<li>Hour<span>08.30pm</span></li>
-						<li>Type<span>Delivery</span></li>
-					</ul>
-					<hr>
-					<ul class="clearfix">
-						<li><a href="#0">1x Enchiladas</a><span>$11</span></li>
-						<li><a href="#0">2x Burrito</a><span>$14</span></li>
-						<li><a href="#0">1x Chicken</a><span>$18</span></li>
-						<li><a href="#0">2x Corona Beer</a><span>$9</span></li>
-						<li><a href="#0">2x Cheese Cake</a><span>$11</span></li>
-					</ul>
-					
-					<ul class="clearfix">
-						<li>Subtotal<span>$56</span></li>
-						<li>Delivery fee<span>$10</span></li>
-						<li class="total">Total<span>$66</span></li>
-					</ul>
-					<a href="confirm.html" class="btn_1 gradient full-width mb_5">Order Now</a>
-					<div class="text-center"><small>Or Call Us at <strong>0432 48432854</strong></small></div>
-				</div>
-			</div>
-			<!-- /box_booking -->
-		</div>
 
 	</div>
 	<!-- /row -->
