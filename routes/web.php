@@ -31,3 +31,12 @@ Route::middleware('auth')->group(function () {
 // Route::apiResource('home', App\Http\Controllers\API\HomeController::class);
 
 require __DIR__.'/auth.php';
+
+Route::get('/404', function () {
+    return view('web.404');
+})->name('404');
+
+Route::get('/order-placed', function () {
+    return view('web.confirm');
+})->name('order-placed');
+

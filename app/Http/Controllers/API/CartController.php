@@ -46,22 +46,56 @@ class CartController extends Controller
         ]);
 
         $cart = $this->getOrCreateCart($request, true);
+        $guestIdentifier = $this->guestIdentifier($request) ?? (string) Str::uuid();
 
-        $item = $cart->items()->create([
-            'menu_item_id' => $data['menu_item_id'],
-            'quantity' => $data['quantity'],
-            'guest_identifier' => $this->guestIdentifier($request) ?? (string) Str::uuid(),
-        ]);
+        // Get the variation IDs, if any
+        $variationIds = $data['variation_ids'] ?? [];
+        sort($variationIds); // Sort to ensure consistent comparison
 
+        // Check if an item with the same menu_item_id, variations, and guest_identifier exists
+        $existingItem = $cart->items()
+            ->where('menu_item_id', $data['menu_item_id'])
+            ->where('guest_identifier', $guestIdentifier)
+            ->with('variations')
+            ->get()
+            ->filter(function ($item) use ($variationIds) {
+                // Get the item's variation IDs and sort them
+                $itemVariationIds = $item->variations->pluck('id')->sort()->values()->toArray();
+                
+                // Compare the variation IDs
+                return $itemVariationIds === $variationIds;
+            })
+            ->first();
+
+        if ($existingItem) {
+            // Update quantity if item with same variations already exists
+            $existingItem->update([
+                'quantity' => $existingItem->quantity + $data['quantity']
+            ]);
+            
+            $item = $existingItem;
+        } else {
+            // Create new cart item if it doesn't exist with these variations
+            $item = $cart->items()->create([
+                'menu_item_id' => $data['menu_item_id'],
+                'quantity' => $data['quantity'],
+                'guest_identifier' => $guestIdentifier,
+            ]);
+        }
+
+        // Sync variations if provided
         if (!empty($data['variation_ids'])) {
             $item->variations()->sync($data['variation_ids']);
         }
 
+        // Reload the item with relationships
+        $item->load(['menuItem', 'variations']);
+
         return response()->json([
             'success' => true,
-            'message' => 'Item added to cart',
+            'message' => $existingItem ? 'Cart item updated' : 'Item added to cart',
             'cart_id' => $cart->id,
-            'item' => $item->load(['menuItem', 'variations']),
+            'item' => $item,
         ], 201)->withHeaders($this->cartHeaders($cart));
     }
 
