@@ -16,7 +16,6 @@
                         </ul>
                         <div class="total_drop">
                             <div class="clearfix add_bottom_15"><strong>Total</strong><span id="cart_total">$32.00</span></div>
-                            <a href="{{ route('checkout') }}" class="btn_1 outline">View Cart</a>
                             <a href="{{ route('checkout') }}" class="btn_1">Checkout</a>
                         </div>
                     </div>

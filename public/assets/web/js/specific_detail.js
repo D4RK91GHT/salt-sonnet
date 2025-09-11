@@ -98,12 +98,12 @@
 
     if ($button.text() == "+") {
       var newVal = parseFloat(oldValue) + 1;
-	  updateTotalPrice();
+	  updateTotalPrice(newVal);
     } else {
       // Don't allow decrementing below zero
       if (oldValue > 1) {
         var newVal = parseFloat(oldValue) - 1;
-		updateTotalPrice();
+		updateTotalPrice(newVal);
       } else {
         newVal = 1;
       }
