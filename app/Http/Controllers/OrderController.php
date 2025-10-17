@@ -35,10 +35,17 @@ class OrderController extends Controller
         try {
             DB::beginTransaction();
 
+            if (Auth::check()) {
+                $guestId = Auth::id();    
+            } else {
+                // Get the guest identifier from the cookie
+                $guestId = $request->cookie('guest_identifier');
+            }
+            
             // Get guest identifier
-            $guestIdentifier = $request->header('X-Guest-Id') ?? $request->cookie('guest_identifier');
+            // $guestIdentifier = $request->header('X-Guest-Id') ?? $request->cookie('guest_identifier');
 
-            if (!$guestIdentifier) {
+            if (!$guestId) {
                 return response()->json([
                     'success' => false,
                     'message' => 'No cart found. Please add items to cart first.'
@@ -47,7 +54,7 @@ class OrderController extends Controller
 
             // Get cart with items and variations
             $cart = Cart::with(['items.menuItem', 'items.variations'])
-                ->where('guest_identifier', $guestIdentifier)
+                ->where('guest_identifier', $guestId)
                 ->first();
 
             if (!$cart || $cart->items->isEmpty()) {
@@ -86,7 +93,7 @@ class OrderController extends Controller
             // Create order
             $order = Order::create([
                 'user_id' => Auth::id(), // Will be null for guest users
-                'guest_identifier' => $guestIdentifier,
+                'guest_identifier' => $guestId,
                 'status' => Order::STATUS_PENDING,
                 'subtotal' => $subtotal,
                 'tax_amount' => $taxAmount,

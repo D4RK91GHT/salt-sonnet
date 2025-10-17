@@ -218,7 +218,21 @@
 @section('custom-js')
 <script src="{{ asset('assets/web/js/sticky_sidebar.min.js') }}"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
 <script>
+	const isLoggedIn = {{ Auth::check() ? Auth::check() : false }};
+    const headers = {
+        'Content-Type': 'application/json',
+		'X-CSRF-TOKEN': getCSRFToken(),
+    };
+    
+    if (isLoggedIn) {
+        headers['X-User-Id'] = '{{ Auth::id() }}';
+    } else {
+        headers['X-Guest-Id'] = guestId;
+    }
+
 	$('#sidebar_fixed').theiaStickySidebar({
 		minWidth: 991,
 		updateSidebarHeight: false,
@@ -343,11 +357,7 @@
 
 		const response = await fetch('/api/orders/checkout', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRF-TOKEN': getCSRFToken(),
-				'X-Guest-Id': getCookie('guest_identifier')
-			},
+			headers: headers,
 			body: JSON.stringify(orderData)
 		});
 
@@ -368,11 +378,7 @@
 		// First create Razorpay order
 		const orderResponse = await fetch('/api/razorpay/create-order', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRF-TOKEN': getCSRFToken(),
-				'X-Guest-Id': getCookie('guest_identifier')
-			},
+			headers: headers,
 			body: JSON.stringify({
 				amount: {{ $cartTotal }},
 				currency: 'INR'
@@ -413,11 +419,7 @@
 
 				const orderResponse = await fetch('/api/orders/checkout', {
 					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRF-TOKEN': getCSRFToken(),
-						'X-Guest-Id': getCookie('guest_identifier')
-					},
+					headers: headers,
 					body: JSON.stringify(orderData)
 				});
 
