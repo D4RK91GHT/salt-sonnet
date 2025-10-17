@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     @yield('additional-meta')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <x-admin.meta-tags />
     <x-admin.header-links />
 

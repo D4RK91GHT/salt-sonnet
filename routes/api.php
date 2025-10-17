@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\ItemController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RazorpayController;
+use App\Http\Controllers\RazorpayWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +33,15 @@ Route::get('/cart/items', [CartController::class, 'index']);
 Route::post('/cart/items', [CartController::class, 'store']);
 Route::delete('/cart/items/{id}', [CartController::class, 'destroy']);
 
-// You can add more API routes here as needed
+// Razorpay routes
+Route::post('/razorpay/create-order', [RazorpayController::class, 'createOrder']);
+
+// Order routes
+Route::post('/orders/checkout', [OrderController::class, 'checkout']);
+Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/orders/{id}', [OrderController::class, 'show']);
+Route::put('/orders/{id}/status', [OrderController::class, 'updateStatus']);
+
+// Razorpay webhook (should be excluded from CSRF protection)
+Route::post('/razorpay/webhook', [RazorpayWebhookController::class, 'handle'])
+    ->middleware('throttle:60,1');

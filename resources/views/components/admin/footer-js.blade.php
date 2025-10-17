@@ -10,12 +10,3 @@
 
 <!-- App Js (Mandatory in All Pages) -->
 <script src="{{ admin_asset('js/app.js') }}"></script>
-
-<!-- Apexcharts js -->
-<script src="{{ admin_asset('libs/apexcharts/apexcharts.min.js') }}"></script>
-
-<!-- Vector Map Js -->
-<script src="{{ admin_asset('libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
-
-<!-- Dashboard Project Page js -->
-<script src="{{ admin_asset('js/pages/dashboard.js') }}"></script>

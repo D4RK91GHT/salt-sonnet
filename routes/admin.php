@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\GSTSlabController;
 use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\ItemVariationTypeController;
 use App\Http\Controllers\Admin\ItemVariationController;
+use App\Http\Controllers\Admin\OrderController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
@@ -18,7 +19,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Protected admin routes
     Route::middleware(['auth:admin'])->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        // Add other admin routes here
+
+        // Order Management Routes
+        Route::get('orders', [OrderController::class, 'index'])->name('orders');
+        Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::put('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+        Route::put('orders/{order}/payment-received', [OrderController::class, 'markPaymentReceived'])->name('orders.payment-received');
+        Route::get('orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');
+        Route::get('orders-export', [OrderController::class, 'exportOrders'])->name('orders.export');
     });
     Route::get('item-category', [MenuCategoryController::class, 'index'])->name('item-category');
     Route::post('item-category', [MenuCategoryController::class, 'store'])->name('item-category.store');
