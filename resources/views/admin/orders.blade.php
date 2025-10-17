@@ -19,11 +19,11 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <!-- Total Orders Card -->
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border-l-4 border-blue-500 dark:border-2 dark:border-gray-400 ">
             <div class="flex items-center">
                 <div class="flex-1">
-                    <p class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Total Orders</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $stats['total_orders'] }}</p>
+                    <p class="text-xs font-semibold text-blue-600 dark:text-gray-400 uppercase tracking-wider">Total Orders</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-gray-200">{{ $stats['total_orders'] }}</p>
                 </div>
                 <div class="ml-4">
                     <i class="fas fa-shopping-bag text-3xl text-gray-300"></i>
@@ -32,11 +32,11 @@
         </div>
 
         <!-- Delivered Card -->
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border-l-4 border-green-500 dark:border-2 dark:border-gray-400">
             <div class="flex items-center">
                 <div class="flex-1">
                     <p class="text-xs font-semibold text-green-600 uppercase tracking-wider">Delivered</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $stats['delivered_orders'] }}</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-gray-200">{{ $stats['delivered_orders'] }}</p>
                 </div>
                 <div class="ml-4">
                     <i class="fas fa-check-circle text-3xl text-gray-300"></i>
@@ -45,11 +45,11 @@
         </div>
 
         <!-- Pending Card -->
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-500">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border-l-4 border-yellow-500 dark:border-2 dark:border-gray-400">
             <div class="flex items-center">
                 <div class="flex-1">
                     <p class="text-xs font-semibold text-yellow-600 uppercase tracking-wider">Pending</p>
-                    <p class="text-2xl font-bold text-gray-800">{{ $stats['pending_orders'] }}</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-gray-200">{{ $stats['pending_orders'] }}</p>
                 </div>
                 <div class="ml-4">
                     <i class="fas fa-clock text-3xl text-gray-300"></i>
@@ -58,11 +58,11 @@
         </div>
 
         <!-- Total Revenue Card -->
-        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-cyan-500">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border-l-4 border-cyan-500 dark:border-2 dark:border-gray-400">
             <div class="flex items-center">
                 <div class="flex-1">
                     <p class="text-xs font-semibold text-cyan-600 uppercase tracking-wider">Total Revenue</p>
-                    <p class="text-2xl font-bold text-gray-800">₹{{ number_format($stats['total_revenue'], 2) }}</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-gray-200">₹{{ number_format($stats['total_revenue'], 2) }}</p>
                 </div>
                 <div class="ml-4">
                     <i class="fas fa-rupee-sign text-3xl text-gray-300"></i>
@@ -72,9 +72,9 @@
     </div>
 
     <!-- Filters -->
-    <div class="bg-white dark:bg-grey-800 rounded-lg shadow mb-6 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h6 class="text-base font-semibold text-gray-800">Filters</h6>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow dark:border-gray-700 dark:border-2 mb-6 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h6 class="text-base font-semibold text-gray-800 dark:text-gray-200">Filters</h6>
         </div>
         <div class="p-6">
             <form method="GET" action="{{ route('admin.orders') }}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
@@ -114,17 +114,17 @@
     </div>
 
     <!-- Orders Table -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-            <h6 class="text-base font-semibold text-gray-800">Orders List</h6>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h6 class="text-base font-semibold text-gray-800 dark:text-gray-200">Orders List</h6>
             <span class="px-3 py-1 text-sm font-semibold text-white bg-blue-600 rounded-full">
                 {{ $orders->total() }} orders found
             </span>
         </div>
         <div class="overflow-x-auto">
             <div class="align-middle inline-block min-w-full">
-                <table class="min-w-full divide-y divide-gray-200" id="ordersTable">
-                    <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700" id="ordersTable">
+                    <thead class="bg-gray-50 dark:bg-gray-900">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Order #
@@ -152,29 +152,26 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
                         @forelse($orders as $order)
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $order->order_number }}</div>
-                                @if($order->guest_identifier)
-                                    <div class="text-sm text-gray-500">Guest Order</div>
-                                @endif
+                                <div class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ $order->order_number }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($order->user)
-                                    <div class="text-sm font-medium text-gray-900">{{ $order->user->name }}</div>
-                                    <div class="text-sm text-gray-500">{{ $order->user->email }}</div>
+                                    <div class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ $order->user->name }}</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ $order->user->email }}</div>
                                 @else
-                                    <div class="text-sm text-gray-500">Guest</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-200">Guest</div>
                                 @endif
-                                <div class="text-sm text-gray-500">{{ $order->delivery_phone }}</div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">{{ $order->delivery_phone }}</div>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                     {{ $order->items->count() }} items
                                 </span>
-                                <div class="text-sm text-gray-500 mt-1">
+                                <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                     @foreach($order->items->take(2) as $item)
                                         {{ $item->menuItem->name }}{{ !$loop->last ? ', ' : '' }}
                                     @endforeach
@@ -184,7 +181,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">₹{{ number_format($order->total_amount, 2) }}</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-gray-200">₹{{ number_format($order->total_amount, 2) }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @php
@@ -212,11 +209,11 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $paymentStatusColors }}">
                                     {{ ucfirst($order->payment_status) }}
                                 </span>
-                                <div class="text-xs text-gray-500 mt-1">{{ strtoupper($order->payment_method) }}</div>
+                                {{-- <div class="text-xs text-gray-500 mt-1">{{ strtoupper($order->payment_method) }}</div> --}}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $order->created_at->format('M d, Y') }}</div>
-                                <div class="text-sm text-gray-500">{{ $order->created_at->format('H:i') }}</div>
+                                <div class="text-sm text-gray-900 dark:text-gray-200">{{ $order->created_at->format('M d, Y') }}</div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">{{ $order->created_at->format('H:i') }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex space-x-2">

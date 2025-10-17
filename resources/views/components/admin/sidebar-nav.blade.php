@@ -67,6 +67,22 @@
                 </div>
             </li>
 
+            <li class="menu-item">
+                <a href="{{ route('admin.orders') }}"
+                    class="group flex items-center gap-x-4 rounded-md px-3 py-2 text-sm font-medium text-default-700 dark:text-gray-400 transition-all hover:bg-default-900/5 hs-accordion-active:bg-default-900/5 hs-accordion-active:text-default-700">
+                    <i data-lucide="grid-3x3" class="size-5"></i>
+                    <span class="menu-text"> Orders </span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="{{ route('admin.customers') }}"
+                    class="group flex items-center gap-x-4 rounded-md px-3 py-2 text-sm font-medium text-default-700 dark:text-gray-400 transition-all hover:bg-default-900/5 hs-accordion-active:bg-default-900/5 hs-accordion-active:text-default-700">
+                    <i data-lucide="grid-3x3" class="size-5"></i>
+                    <span class="menu-text"> Customers </span>
+                </a>
+            </li>
+
             <li class="px-5 py-2 text-sm font-medium text-default-600">Elements</li>
 
             <li class="menu-item hs-accordion">

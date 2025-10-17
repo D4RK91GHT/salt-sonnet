@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MenuItemController;
 use App\Http\Controllers\Admin\ItemVariationTypeController;
 use App\Http\Controllers\Admin\ItemVariationController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\CustomerController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
@@ -27,6 +28,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('orders/{order}/payment-received', [OrderController::class, 'markPaymentReceived'])->name('orders.payment-received');
         Route::get('orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');
         Route::get('orders-export', [OrderController::class, 'exportOrders'])->name('orders.export');
+
+        // Customer Management Routes
+        Route::get('customers', [CustomerController::class, 'index'])->name('customers');
     });
     Route::get('item-category', [MenuCategoryController::class, 'index'])->name('item-category');
     Route::post('item-category', [MenuCategoryController::class, 'store'])->name('item-category.store');
