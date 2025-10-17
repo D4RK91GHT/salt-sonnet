@@ -208,13 +208,22 @@
                     guestId = (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
                     setCookie('guest_identifier', guestId, 30);
                 }
+
+                const isLoggedIn = {{ Auth::check() ? Auth::check() : false }};
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                };
+                
+                if (isLoggedIn) {
+                    headers['X-User-Id'] = '{{ Auth::id() }}';
+                } else {
+                    headers['X-Guest-Id'] = guestId;
+                }
+                
                 const res = await fetch('/api/cart/items', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        ...(guestId ? { 'X-Guest-Id': guestId } : {}),
-                    },
+                    headers: headers,
                     body: JSON.stringify({
                         menu_item_id: parseInt(itemId),
                         quantity: parseInt(quantity) || 1,

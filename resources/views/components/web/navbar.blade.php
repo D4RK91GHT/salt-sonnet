@@ -15,7 +15,7 @@
                             {{-- Cart Items Goes Here --}}
                         </ul>
                         <div class="total_drop">
-                            <div class="clearfix add_bottom_15"><strong>Total</strong><span id="cart_total">$32.00</span></div>
+                            <div class="clearfix add_bottom_15"><strong>Total</strong><span id="cart_total"></span></div>
                             <a href="{{ route('checkout') }}" class="btn_1">Checkout</a>
                         </div>
                     </div>
@@ -151,15 +151,25 @@
         return match ? decodeURIComponent(match.split('=')[1]) : null;
     }
 
+    const isLoggedIn = {{ Auth::check() ? Auth::check() : false }};
+    const headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    };
+    
+    if (isLoggedIn) {
+        headers['X-User-Id'] = '{{ Auth::id() }}';
+    } else {
+        headers['X-Guest-Id'] = guestId;
+    }
+
     async function fetchCartAndRender() {
         try {
             const guestId = getCookie('guest_identifier');
             const res = await fetch('/api/cart/items', {
-                headers: {
-                    ...(guestId ? { 'X-Guest-Id': guestId } : {}),
-                }
+                headers: headers,
             });
-            console.log(guestId);
+            
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || 'Failed to fetch cart');
 
@@ -199,10 +209,7 @@
             const guestId = getCookie('guest_identifier');
             const res = await fetch(`/api/cart/items/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Accept': 'application/json',
-                    ...(guestId ? { 'X-Guest-Id': guestId } : {}),
-                }
+                headers: headers,
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || 'Failed to remove');

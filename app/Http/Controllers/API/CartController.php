@@ -76,11 +76,19 @@ class CartController extends Controller
             $item = $existingItem;
         } else {
             // Create new cart item if it doesn't exist with these variations
-            $item = $cart->items()->create([
-                'menu_item_id' => $data['menu_item_id'],
-                'quantity' => $data['quantity'],
-                'guest_identifier' => $guestIdentifier,
-            ]);
+            if ($request->header('X-User-Id')) {
+                $item = $cart->items()->create([
+                    'menu_item_id' => $data['menu_item_id'],
+                    'quantity' => $data['quantity'],
+                    'user_id' => $request->header('X-User-Id'),
+                ]);
+            }else {
+                $item = $cart->items()->create([
+                    'menu_item_id' => $data['menu_item_id'],
+                    'quantity' => $data['quantity'],
+                    'guest_identifier' => $guestIdentifier,
+                ]);
+            }
         }
 
         // Sync variations if provided
@@ -118,24 +126,21 @@ class CartController extends Controller
 
     private function getOrCreateCart(Request $request, bool $create = true): ?Cart
     {
-        $userId = Auth::id();
-        // Avoid accessing session in API (no StartSession middleware by default)
-        $sessionId = method_exists($request, 'hasSession') && $request->hasSession()
-            ? $request->session()->getId()
-            : null;
-        // Prefer explicit guest id, generate if missing (kept in localStorage and sent via header)
-        $guestId = $this->guestIdentifier($request) ?? (string) Str::uuid();
-
+        if ($request->header('X-User-Id')) {
+            $userId = $request->header('X-User-Id');
+        }
+        
+        if ($request->header('X-Guest-Id')) {
+            $guestId = $request->header('X-Guest-Id');
+        }else{
+            $guestId = $this->guestIdentifier($request);
+        }
         $query = Cart::query();
         if ($userId) {
             $query->where('user_id', $userId);
         } else {
-            $query->where(function ($q) use ($guestId, $sessionId) {
+            $query->where(function ($q) use ($guestId) {
                 $q->where('guest_identifier', $guestId);
-                // Keep backward-compatibility: also try session id if it exists
-                if ($sessionId) {
-                    $q->orWhere('session_id', $sessionId);
-                }
             });
         }
 
@@ -143,7 +148,6 @@ class CartController extends Controller
         if (!$cart && $create) {
             $cart = Cart::create([
                 'user_id' => $userId,
-                'session_id' => $userId ? null : $sessionId,
                 'guest_identifier' => $guestId,
             ]);
         }
@@ -153,9 +157,12 @@ class CartController extends Controller
     private function guestIdentifier(Request $request): ?string
     {
         // Accept a custom guest header or cookie, fallback to null - we generate if needed
-        return $request->header('X-Guest-Id')
-            ?? $request->cookie('guest_identifier')
-            ?? null;
+        return $request->header('X-User-Id') ?? $request->header('X-Guest-Id') ?? $request->cookie('guest_identifier') ?? null;
+        
+        // $guestId = $request->header('X-Guest-Id')
+        //     ?? $request->cookie('guest_identifier')
+        //     ?? null;
+        // return $guestId;
     }
 
     private function cartHeaders(Cart $cart): array

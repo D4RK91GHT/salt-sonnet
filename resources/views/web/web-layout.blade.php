@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="FooYes - Quality delivery or takeaway food">
     <meta name="author" content="Ansonika">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>FooYes - Quality delivery or takeaway food</title>
 
     <x-web.header-link />
@@ -59,7 +60,7 @@
             </div>
             <div class="text-center">
                 <input type="submit" value="Log In" class="btn_1 full-width mb_5">
-                Don’t have an account? <a href="register.html">Sign up</a>
+                Don't have an account? <a href="register.html">Sign up</a>
             </div>
             <div id="forgot_pw">
                 <div class="form-group">

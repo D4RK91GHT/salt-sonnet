@@ -4,14 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 
 class CheckoutPageController extends Controller
 {
     public function checkoutPage(Request $request)
     {
-        // Get the guest identifier from the cookie
-        $guestId = $request->cookie('guest_identifier');
+
+        if (Auth::check()) {
+            $guestId = Auth::id();    
+        } else {
+            // Get the guest identifier from the cookie
+            $guestId = $request->cookie('guest_identifier');
+        }
         
         // Initialize empty cart data
         $cart = null;
