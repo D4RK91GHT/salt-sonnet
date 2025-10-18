@@ -17,13 +17,40 @@ use App\Http\Controllers\Admin\ItemVariationController;
 
 class MenuItemController extends Controller
 {
+    // public function index()
+    // {
+    //     $menuItems = MenuItem::with('images')
+    //     ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
+    //     ->select('menu_items.*', 'menu_categories.name as category_name')
+    //     ->orderBy('menu_items.id', 'desc')
+    //     ->paginate(10);
+
+    //     // dd($menuItems);
+    //     $categories = MenuCategory::all();
+    //     $gstSlabs = GSTSlab::all();
+    //     $variationTypes = ItemVariationType::all();
+
+    //     return view('admin.menu-items', compact('menuItems', 'categories', 'gstSlabs', 'variationTypes'));
+    // }
+
     public function index()
     {
-        $menuItems = MenuItem::with('images')
+        $query = MenuItem::with('images')
         ->join('menu_categories', 'menu_items.category_id', '=', 'menu_categories.id')
-        ->select('menu_items.*', 'menu_categories.name as category_name')
-        ->orderBy('menu_items.id', 'desc')
-        ->paginate(10);
+        ->select('menu_items.*', 'menu_categories.name as category_name');
+
+        if (request()->has('search') && !empty(request('search'))) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('menu_items.name', 'like', '%' . $search . '%')
+                ->orWhere('menu_items.includes', 'like', '%' . $search . '%')
+                ->orWhere('menu_items.description', 'like', '%' . $search . '%');
+            });
+        }
+
+        $menuItems = $query->orderBy('menu_items.id', 'desc')
+                    ->paginate(10)
+                    ->withQueryString();
 
         // dd($menuItems);
         $categories = MenuCategory::all();
