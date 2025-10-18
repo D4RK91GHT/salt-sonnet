@@ -54,7 +54,7 @@
     <div class="d-flex justify-content-between flex-wrap mb-4">
         <h3>Dashboard</h3>
         <div>
-            <a href="#" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+            <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary btn-sm">Edit Profile</a>
         </div>
     </div>
     
