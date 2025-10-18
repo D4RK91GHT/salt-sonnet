@@ -6,7 +6,7 @@
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">Order Details</h1>
-            <p class="text-gray-300 mt-1">Order Information</p>
+            <p class="text-lg font-semibold text-gray-300 mt-1">Order Information</p>
         </div>
         <div>
             <a href="{{ route('admin.orders') }}" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors inline-flex items-center">
@@ -18,19 +18,19 @@
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <!-- Order Information -->
         <div class="lg:col-span-3">
-            <div class="bg-white rounded-lg shadow-md mb-6 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h6 class="text-lg font-semibold text-gray-800">#{{ $order->order_number }}</h6>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md mb-6 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h6 class="text-lg font-semibold text-gray-800 dark:text-gray-200">#{{ $order->order_number }}</h6>
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <table class="w-full text-gray-800">
-                                <tr class="border-b">
+                            <table class="w-full text-gray-800 dark:text-gray-200">
+                                <tr class="border-b dark:border-gray-700">
                                     <td class="py-2 pr-4 font-medium">Order Date:</td>
                                     <td class="py-2">{{ $order->created_at->format('M d, Y H:i') }}</td>
                                 </tr>
-                                <tr class="border-b">
+                                <tr class="border-b dark:border-gray-700">
                                     <td class="py-2 pr-4 font-medium">Status:</td>
                                     <td class="py-2">
                                         @php
@@ -48,7 +48,7 @@
                                         </span>
                                     </td>
                                 </tr>
-                                <tr class="border-b">
+                                <tr class="border-b dark:border-gray-700">
                                     <td class="py-2 pr-4 font-medium">Payment Status:</td>
                                     <td class="py-2">
                                         @php
@@ -70,20 +70,20 @@
                             </table>
                         </div>
                         <div>
-                            <table class="w-full">
-                                <tr class="border-b">
+                            <table class="w-full dark:text-gray-200">
+                                <tr class="border-b dark:border-gray-700">
                                     <td class="py-2 pr-4 font-medium">Subtotal:</td>
                                     <td class="py-2 text-right">₹{{ number_format($order->subtotal, 2) }}</td>
                                 </tr>
-                                <tr class="border-b">
+                                <tr class="border-b dark:border-gray-700">
                                     <td class="py-2 pr-4 font-medium">Tax Amount:</td>
                                     <td class="py-2 text-right">₹{{ number_format($order->tax_amount, 2) }}</td>
                                 </tr>
-                                <tr class="border-b">
+                                <tr class="border-b dark:border-gray-700">
                                     <td class="py-2 pr-4 font-medium">Delivery Fee:</td>
                                     <td class="py-2 text-right">₹{{ number_format($order->delivery_fee, 2) }}</td>
                                 </tr>
-                                <tr class="border-b font-semibold">
+                                <tr class="border-b font-semibold dark:border-gray-700">
                                     <td class="py-2 pr-4">Total Amount:</td>
                                     <td class="py-2 text-right">₹{{ number_format($order->total_amount, 2) }}</td>
                                 </tr>
@@ -94,14 +94,14 @@
             </div>
 
             <!-- Order Items -->
-            <div class="bg-white rounded-lg shadow-md mb-6 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h6 class="text-lg font-semibold text-gray-800">Order Items</h6>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md mb-6 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h6 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Order Items</h6>
                 </div>
                 <div class="p-6">
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Variations</th>
@@ -110,9 +110,9 @@
                                     <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @foreach($order->items as $item)
-                                <tr class="hover:bg-gray-50">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             @if($item->menuItem->images->first())
@@ -121,9 +121,9 @@
                                                      class="w-12 h-12 rounded object-cover mr-3">
                                             @endif
                                             <div>
-                                                <div class="font-medium text-gray-900">{{ $item->menuItem->name }}</div>
+                                                <div class="font-medium">{{ $item->menuItem->name }}</div>
                                                 @if($item->special_instructions)
-                                                    <div class="text-sm text-gray-500 mt-1">{{ $item->special_instructions }}</div>
+                                                    <div class="text-sm mt-1">{{ $item->special_instructions }}</div>
                                                 @endif
                                             </div>
                                         </div>
@@ -138,7 +138,7 @@
                                                 @endforeach
                                             </div>
                                         @else
-                                            <span class="text-sm text-gray-500">No variations</span>
+                                            <span class="text-sm">No variations</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -161,61 +161,11 @@
 
         <!-- Customer & Delivery Information -->
         <div class="lg:col-span-1 space-y-6">
-            <!-- Customer Information -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h6 class="text-lg font-semibold text-gray-800">Customer Information</h6>
-                </div>
-                <div class="p-6">
-                    @if($order->user)
-                        <div class="mb-2">
-                            <p class="text-sm font-medium text-gray-500">Name</p>
-                            <p class="text-gray-900">{{ $order->user->name }}</p>
-                        </div>
-                        <div class="mb-2">
-                            <p class="text-sm font-medium text-gray-500">Email</p>
-                            <p class="text-gray-900">{{ $order->user->email }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Phone</p>
-                            <p class="text-gray-900">{{ $order->delivery_phone }}</p>
-                        </div>
-                    @else
-                        <div class="mb-2">
-                            <p class="font-medium text-gray-900">Guest Order</p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Phone</p>
-                            <p class="text-gray-900">{{ $order->delivery_phone }}</p>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Delivery Information -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h6 class="text-lg font-semibold text-gray-800">Delivery Information</h6>
-                </div>
-                <div class="p-6">
-                    <div class="mb-4">
-                        <p class="text-sm font-medium text-gray-500">Address</p>
-                        <p class="text-gray-900 whitespace-pre-line">{{ $order->delivery_address }}</p>
-                    </div>
-                    
-                    @if($order->delivery_instructions)
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Instructions</p>
-                            <p class="text-gray-900 whitespace-pre-line">{{ $order->delivery_instructions }}</p>
-                        </div>
-                    @endif
-                </div>
-            </div>
 
             <!-- Order Actions -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h6 class="text-lg font-semibold text-gray-800">Order Actions</h6>
+            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h6 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Order Actions</h6>
                 </div>
                 <div class="p-6">
                     <div class="space-y-3">
@@ -239,11 +189,62 @@
                 </div>
             </div>
 
+            <!-- Customer Information -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h6 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Customer Information</h6>
+                </div>
+                <div class="p-6">
+                    @if($order->user)
+                        <div class="mb-2">
+                            <p class="text-sm font-medium text-gray-500">Name</p>
+                            <p class="dark:text-gray-200">{{ $order->user->name }}</p>
+                        </div>
+                        <div class="mb-2">
+                            <p class="text-sm font-medium text-gray-500">Email</p>
+                            <p class="dark:text-gray-200">{{ $order->user->email }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Phone</p>
+                            <p class="dark:text-gray-200">{{ $order->delivery_phone }}</p>
+                        </div>
+                    @else
+                        <div class="mb-2">
+                            <p class="font-medium dark:text-gray-200">Guest Order</p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Phone</p>
+                            <p class="dark:text-gray-200">{{ $order->delivery_phone }}</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Delivery Information -->
+            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h6 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Delivery Information</h6>
+                </div>
+                <div class="p-6">
+                    <div class="mb-4">
+                        <p class="text-sm font-medium text-gray-500">Address</p>
+                        <p class="dark:text-gray-200 whitespace-pre-line">{{ $order->delivery_address }}</p>
+                    </div>
+                    
+                    @if($order->delivery_instructions)
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Instructions</p>
+                            <p class="text-gray-900 whitespace-pre-line">{{ $order->delivery_instructions }}</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             <!-- Payment Information -->
             @if($order->payment_method !== 'cod')
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h6 class="text-lg font-semibold text-gray-800">Payment Information</h6>
+            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h6 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Payment Information</h6>
                 </div>
                 <div class="p-6">
                     <div class="mb-2">
@@ -274,21 +275,21 @@
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="inline-block align-bottom bg-white dark:bg-gray-700 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white dark:bg-gray-700 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-200" id="modal-title">
                             Update Order Status
                         </h3>
                         <div class="mt-5">
                             <form id="status-update-form">
                                 <input type="hidden" id="update-order-id">
                                 <div class="mb-4">
-                                    <label for="new-status" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <label for="new-status" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                                         New Status
                                     </label>
-                                    <select class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md" 
+                                    <select class="mt-1 dark:bg-gray-600 dark:text-gray-200 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md" 
                                             id="new-status" required>
                                         <option value="pending">Pending</option>
                                         <option value="confirmed">Confirmed</option>
@@ -303,14 +304,14 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+            <div class="bg-gray-50 dark:bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button type="button" 
                         class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
                         onclick="updateOrderStatus()">
                     Update Status
                 </button>
                 <button type="button" 
-                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                         onclick="document.getElementById('statusUpdateModal').classList.add('hidden')">
                     Cancel
                 </button>

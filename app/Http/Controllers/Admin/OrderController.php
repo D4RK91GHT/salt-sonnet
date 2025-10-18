@@ -64,7 +64,7 @@ class OrderController extends Controller
         $statusList = $this->statusList();
         $paymentMethods = $this->paymentMethods();
         $paymentStatusList = $this->paymentStatusList();
-        return view('admin.orders', compact('orders', 'stats', 'statusList', 'paymentMethods', 'paymentStatusList'));
+        return view('admin.orders.orders', compact('orders', 'stats', 'statusList', 'paymentMethods', 'paymentStatusList'));
     }
 
     public function show($id)
@@ -72,7 +72,7 @@ class OrderController extends Controller
         $order = Order::with(['user', 'items.menuItem', 'items.variations'])
             ->findOrFail($id);
 
-        return view('admin.order-details', compact('order'));
+        return view('admin.orders.order-details', compact('order'));
     }
 
     public function updateStatus(Request $request, $id)
@@ -121,7 +121,7 @@ class OrderController extends Controller
         $order = Order::with(['user', 'items.menuItem', 'items.variations'])
             ->findOrFail($id);
 
-        return view('admin.order-print', compact('order'));
+        return view('admin.orders.order-print', compact('order'));
     }
 
     public function getOrderStats()

@@ -7,9 +7,6 @@
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
             <h6 class="text-base font-semibold text-gray-800 dark:text-gray-200">Customer List</h6>
-            <span class="px-3 py-1 text-sm font-semibold text-white bg-blue-600 rounded-full">
-                {{ $customers->total() }} customers found
-            </span>
         </div>
         <div class="overflow-x-auto">
             <div class="align-middle inline-block min-w-full">
@@ -39,7 +36,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse($customers as $customer)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-6 py-4 whitespace-nowrap">
