@@ -15,11 +15,12 @@ class Dashboard extends Controller
         if(Auth::check()){
             $orders = Order::with('items.menuItem.primaryImage')->where('user_id', Auth::user()->id)->paginate(10);
 
+            // dd($orders);
             // foreach($orders as $order){
-            //     // dd($order->items);
+            //     dd($order->items);
             //     foreach ($order->items as $eachitem) {
-            //         // print_r($item);
-            //         dd($eachitem->menuItem->primaryImage->image_path);
+            //         // dd($eachitem);
+            //         // dd($eachitem->menuItem->primaryImage->image_path);
             //     }
             // }
             return view('web.user-portal.dashboard', compact('orders'));

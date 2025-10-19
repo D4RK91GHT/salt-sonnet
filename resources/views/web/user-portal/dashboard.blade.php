@@ -153,18 +153,15 @@
 
                                 <div class="row align-items-center mb-3">
                                     <div class="col-md-4">
-                                        @foreach ($orders as $order)
-                                            <div class="d-flex gap-2 gap-lg-3 gap-xl-4 gap-xxl-5 justify-content-start">
-                                                @foreach ($order->items as $eachitem)
-                                                    <img class="rounded w-25"
-                                                        src="{{ asset('storage/' . $eachitem->menuItem->primaryImage->image_path) }}"
-                                                        alt="">
-                                                    @if ($loop->iteration == 4)
-                                                        @break
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                        @endforeach
+                                        <div class="d-flex gap-2 gap-lg-3 gap-xl-4 gap-xxl-5 justify-content-start">
+                                            @foreach ($order->items as $eachitem)
+                                                <img class="rounded w-25"
+                                                    src="{{ asset('storage/' . $eachitem->menuItem->primaryImage->image_path) }}" alt="">
+                                                @if ($loop->iteration == 4)
+                                                    @break
+                                                @endif
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
 
