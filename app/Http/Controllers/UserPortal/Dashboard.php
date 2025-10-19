@@ -27,4 +27,8 @@ class Dashboard extends Controller
         }
 
     }
+
+    public function support(){
+        return view('web.user-portal.support');
+    }
 }

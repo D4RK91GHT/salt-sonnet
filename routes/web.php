@@ -27,10 +27,18 @@ Route::get('/order-placed', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
+    Route::get('/support', [Dashboard::class, 'support'])->name('support');
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::post('/profile/avatar/update', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+    Route::post('/profile/two-factor/update', [ProfileController::class, 'updateTwoFactor'])->name('profile.two-factor.update');
+    // route("profile.two-factor.update")
 });
 
 // Route::apiResource('home', App\Http\Controllers\API\HomeController::class);

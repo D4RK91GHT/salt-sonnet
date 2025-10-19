@@ -13,6 +13,105 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+
+    public function index(Request $request)
+    {
+            $orders = Order::with('items.menuItem.primaryImage', 'items.variations')->where('user_id', Auth::user()->id)->paginate(10);
+
+            // dd($orders);
+        // $query = Order::with(['user', 'items.menuItem', 'items.variations']);
+
+        // // Filter by user if authenticated
+        // if (Auth::check()) {
+        //     $query->where('user_id', Auth::id());
+        // } elseif ($request->has('guest_identifier')) {
+        //     $query->where('guest_identifier', $request->guest_identifier);
+        // }
+
+        // // Filter by status if provided
+        // if ($request->has('status')) {
+        //     $query->where('status', $request->status);
+        // }
+
+        // // Filter by payment method if provided
+        // if ($request->has('payment_method')) {
+        //     $query->where('payment_method', $request->payment_method);
+        // }
+
+        // $orders = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // return response()->json([
+        //     'success' => true,
+        //     'orders' => $orders
+        // ]);
+        return view('web.user-portal.orders.index', compact('orders'));
+    }
+
+    public function show($id)
+    {
+        $order = Order::with(['items.menuItem', 'items.variations'])
+            ->findOrFail($id);
+
+        // Check if user can view this order
+        if (Auth::check() && $order->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        return response()->json([
+            'success' => true,
+            'order' => $order
+        ]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,confirmed,preparing,ready,delivered,cancelled',
+        ]);
+
+        $order = Order::findOrFail($id);
+
+        $order->update([
+            'status' => $request->status
+        ]);
+
+        // Log status update
+        Log::info('Order status updated', [
+            'order_id' => $order->id,
+            'order_number' => $order->order_number,
+            'old_status' => $order->getOriginal('status'),
+            'new_status' => $request->status,
+            'updated_by' => Auth::id() ?? 'system'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order status updated successfully',
+            'order' => $order
+        ]);
+    }
+
+    /**
+     * Get COD orders for admin
+     */
+    public function getCODOrders(Request $request)
+    {
+        $query = Order::with(['user', 'items.menuItem', 'items.variations'])
+            ->where('payment_method', 'cod');
+
+        // Filter by status if provided
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        return response()->json([
+            'success' => true,
+            'orders' => $orders
+        ]);
+    }
+
     public function checkout(Request $request)
     {
         $request->validate([
@@ -273,99 +372,5 @@ class OrderController extends Controller
             'payment_id' => $paymentId,
             'response' => $gatewayResponse,
         ];
-    }
-
-    public function index(Request $request)
-    {
-        $query = Order::with(['user', 'items.menuItem', 'items.variations']);
-
-        // Filter by user if authenticated
-        if (Auth::check()) {
-            $query->where('user_id', Auth::id());
-        } elseif ($request->has('guest_identifier')) {
-            $query->where('guest_identifier', $request->guest_identifier);
-        }
-
-        // Filter by status if provided
-        if ($request->has('status')) {
-            $query->where('status', $request->status);
-        }
-
-        // Filter by payment method if provided
-        if ($request->has('payment_method')) {
-            $query->where('payment_method', $request->payment_method);
-        }
-
-        $orders = $query->orderBy('created_at', 'desc')->paginate(10);
-
-        return response()->json([
-            'success' => true,
-            'orders' => $orders
-        ]);
-    }
-
-    public function show($id)
-    {
-        $order = Order::with(['items.menuItem', 'items.variations'])
-            ->findOrFail($id);
-
-        // Check if user can view this order
-        if (Auth::check() && $order->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized');
-        }
-
-        return response()->json([
-            'success' => true,
-            'order' => $order
-        ]);
-    }
-
-    public function updateStatus(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|in:pending,confirmed,preparing,ready,delivered,cancelled',
-        ]);
-
-        $order = Order::findOrFail($id);
-
-        $order->update([
-            'status' => $request->status
-        ]);
-
-        // Log status update
-        Log::info('Order status updated', [
-            'order_id' => $order->id,
-            'order_number' => $order->order_number,
-            'old_status' => $order->getOriginal('status'),
-            'new_status' => $request->status,
-            'updated_by' => Auth::id() ?? 'system'
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Order status updated successfully',
-            'order' => $order
-        ]);
-    }
-
-    /**
-     * Get COD orders for admin
-     */
-    public function getCODOrders(Request $request)
-    {
-        $query = Order::with(['user', 'items.menuItem', 'items.variations'])
-            ->where('payment_method', 'cod');
-
-        // Filter by status if provided
-        if ($request->has('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $orders = $query->orderBy('created_at', 'desc')->paginate(10);
-
-        return response()->json([
-            'success' => true,
-            'orders' => $orders
-        ]);
     }
 }

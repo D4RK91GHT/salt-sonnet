@@ -16,7 +16,6 @@
             @method('patch')
 
             <div class="mb-3">
-                <label for="name" class="form-label">{{ __('Name') }}</label>
                 <input type="text" 
                        class="form-control @error('name') is-invalid @enderror" 
                        id="name" 
@@ -24,7 +23,8 @@
                        value="{{ old('name', $user->name) }}" 
                        required 
                        autofocus 
-                       autocomplete="name">
+                       autocomplete="name"
+                       placeholder="Enter your name">
                 @error('name')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -33,19 +33,6 @@
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">{{ __('Email') }}</label>
-                <input type="email" 
-                       class="form-control @error('email') is-invalid @enderror" 
-                       id="email" 
-                       name="email" 
-                       value="{{ old('email', $user->email) }}" 
-                       required 
-                       autocomplete="username">
-                @error('email')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
 
                 @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                     <div class="alert alert-warning mt-2">
