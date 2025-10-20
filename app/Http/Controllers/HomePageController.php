@@ -68,4 +68,8 @@ class HomePageController extends Controller
     public function aboutPage(){
         return view('web.about');
     }
+    
+    public function contactPage(){
+        return view('web.contact');
+    }
 }

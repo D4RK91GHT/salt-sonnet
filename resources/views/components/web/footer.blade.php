@@ -8,11 +8,9 @@
                 <div class="collapse dont-collapse-sm links" id="collapse_1">
                     <ul>
                         <li><a href="{{ route('about') }}">About us</a></li>
-                        <li><a href="submit-restaurant.html">Add your restaurant</a></li>
                         <li><a href="help.html">Help</a></li>
-                        <li><a href="register.html">My account</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="contacts.html">Contacts</a></li>
+                        <li><a href="{{ route('login') }}">My account</a></li>
+                        <li><a href="{{ route('contact') }}">Contacts</a></li>
                     </ul>
                 </div>
             </div>

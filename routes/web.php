@@ -10,7 +10,7 @@ use App\Http\Controllers\UserPortal\Dashboard;
 
 Route::get('/', [HomePageController::class, 'homePage'])->name('home');
 Route::get('/about', [HomePageController::class, 'aboutPage'])->name('about');
-// Route::get('/contact', [HomePageController::class, 'contactPage'])->name('contact');
+Route::get('/contact', [HomePageController::class, 'contactPage'])->name('contact');
 // Route::get('/privacy-policy', [HomePageController::class, 'privacyPolicyPage'])->name('privacy-policy');
 // Route::get('/terms-conditions', [HomePageController::class, 'termsConditionsPage'])->name('terms-conditions');
 // Route::get('/return-policy', [HomePageController::class, 'returnPolicyPage'])->name('return-policy');
