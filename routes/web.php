@@ -9,6 +9,16 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserPortal\Dashboard;
 
 Route::get('/', [HomePageController::class, 'homePage'])->name('home');
+Route::get('/about', [HomePageController::class, 'aboutPage'])->name('about');
+// Route::get('/contact', [HomePageController::class, 'contactPage'])->name('contact');
+// Route::get('/privacy-policy', [HomePageController::class, 'privacyPolicyPage'])->name('privacy-policy');
+// Route::get('/terms-conditions', [HomePageController::class, 'termsConditionsPage'])->name('terms-conditions');
+// Route::get('/return-policy', [HomePageController::class, 'returnPolicyPage'])->name('return-policy');
+// Route::get('/shipping-policy', [HomePageController::class, 'shippingPolicyPage'])->name('shipping-policy');
+// Route::get('/refund-policy', [HomePageController::class, 'refundPolicyPage'])->name('refund-policy');
+// Route::get('/faq', [HomePageController::class, 'faqPage'])->name('faq');
+
+
 Route::get('/categories', [CategoryPageController::class, 'categoryPage'])->name('categories');
 Route::get('/category/{category:slug}', [CategoryPageController::class, 'categoryDetails'])->name('category-details');
 Route::get('/checkout', [CheckoutPageController::class, 'checkoutPage'])->name('checkout');

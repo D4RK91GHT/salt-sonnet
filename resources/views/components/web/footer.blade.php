@@ -7,7 +7,7 @@
                 <h3 data-bs-target="#collapse_1">Quick Links</h3>
                 <div class="collapse dont-collapse-sm links" id="collapse_1">
                     <ul>
-                        <li><a href="about.html">About us</a></li>
+                        <li><a href="{{ route('about') }}">About us</a></li>
                         <li><a href="submit-restaurant.html">Add your restaurant</a></li>
                         <li><a href="help.html">Help</a></li>
                         <li><a href="register.html">My account</a></li>

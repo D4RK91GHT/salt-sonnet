@@ -64,4 +64,8 @@ class HomePageController extends Controller
             ]);
         }
     }
+
+    public function aboutPage(){
+        return view('web.about');
+    }
 }
