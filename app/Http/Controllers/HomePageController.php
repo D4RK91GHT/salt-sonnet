@@ -76,4 +76,9 @@ class HomePageController extends Controller
     public function privacyPolicyPage(){
         return view('web.privacy-policy');
     }
+
+    public function termsConditionsPage(){
+        return view('web.terms');
+    }
+    
 }

@@ -88,9 +88,9 @@
             </div>
             <div class="col-lg-6">
                 <ul class="additional_links">
-                    <li><a href="{{ route('privacy-policy') }}">Terms and conditions</a></li>
+                    <li><a href="{{ route('terms-conditions') }}">Terms and conditions</a></li>
                     <li><a href="{{ route('privacy-policy') }}">Privacy</a></li>
-                    <li><span>© FooYes</span></li>
+                    <li><span>© Bistro</span></li>
                 </ul>
             </div>
         </div>
