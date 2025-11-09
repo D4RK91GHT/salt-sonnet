@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryPageController;
 use App\Http\Controllers\CheckoutPageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserPortal\Dashboard;
+use App\Http\Controllers\UserPortal\PasswordController;
 
 Route::get('/', [HomePageController::class, 'homePage'])->name('home');
 Route::get('/about', [HomePageController::class, 'aboutPage'])->name('about');
@@ -40,12 +41,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/support', [Dashboard::class, 'support'])->name('support');
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('/privacy', [ProfileController::class, 'privacy'])->name('user.privacy');
+    Route::get('/passwords', [PasswordController::class, 'index'])->name('user.password');
 
-    
+
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     Route::post('/profile/avatar/update', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
     Route::post('/profile/two-factor/update', [ProfileController::class, 'updateTwoFactor'])->name('profile.two-factor.update');
     // route("profile.two-factor.update")

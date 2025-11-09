@@ -32,7 +32,7 @@
                                         class="lazy"></figure>
                                 <h3>{{ $item->name }}</h3>
                                 <p>{{ $item->description }}</p>
-                                <strong>{{ $_ENV['CURRENCY'] }}{{ $item->price }}</strong>
+                                <strong>{{ config('app.currency') }}{{ $item->price }}</strong>
                             </a>
                         </div>
                         @endforeach
@@ -238,7 +238,7 @@
                                 <strong>$3.40</strong>
                             </a>
                         </div>
-                    </div> 
+                    </div>
                     <!-- /row -->
                 </section> --}}
                 <!-- /section -->

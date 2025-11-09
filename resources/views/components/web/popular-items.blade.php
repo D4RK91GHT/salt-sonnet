@@ -23,7 +23,7 @@
                                 <small>{{ $item->description }}</small>
                                 <ul>
                                     <li><span class="ribbon off">-{{ $item->discount }}%</span></li>
-                                    <li>Average price {{ $_ENV['CURRENCY'] }}{{ $item->mrp }}</li>
+                                    <li>Average price {{ env('CURRENCY') }}{{ $item->mrp }}</li>
                                 </ul>
                             </a>
                         </li>

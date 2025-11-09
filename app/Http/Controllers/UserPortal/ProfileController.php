@@ -42,6 +42,11 @@ class ProfileController extends Controller
         return back()->with('status', 'profile-updated');
     }
 
+    public function privacy(): View
+    {
+        return view('web.user-portal.privacy');
+    }
+
     /**
      * Delete the user's account.
      */

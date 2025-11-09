@@ -4,33 +4,33 @@
     <link href="{{ asset('assets/web/css/detail-page.css') }}" rel="stylesheet">
     {{-- <style>
         /* Ensure toast sits above Magnific Popup (.mfp-wrap/.mfp-bg z-index: 999999) */
-        #liveToastContainer { 
+        #liveToastContainer {
             z-index: 2147483647 !important; /* max 32-bit */
-            position: fixed; 
-            top: 0; 
-            right: 0; 
+            position: fixed;
+            top: 0;
+            right: 0;
             pointer-events: none; /* container ignores clicks */
         }
-        #liveToastContainer .toast { 
+        #liveToastContainer .toast {
             pointer-events: auto; /* but toast remains clickable */
             position: relative;
             z-index: inherit;
         }
         /* Counter Magnific Popup blur rule: .mfp-wrap ~ * { filter: blur(...) } */
-        .mfp-wrap ~ #liveToastContainer { 
-            -webkit-filter: none !important; 
-            -moz-filter: none !important; 
-            -o-filter: none !important; 
-            -ms-filter: none !important; 
-            filter: none !important; 
+        .mfp-wrap ~ #liveToastContainer {
+            -webkit-filter: none !important;
+            -moz-filter: none !important;
+            -o-filter: none !important;
+            -ms-filter: none !important;
+            filter: none !important;
             backdrop-filter: none !important;
         }
-        .mfp-wrap ~ #liveToastContainer * { 
-            -webkit-filter: none !important; 
-            -moz-filter: none !important; 
-            -o-filter: none !important; 
-            -ms-filter: none !important; 
-            filter: none !important; 
+        .mfp-wrap ~ #liveToastContainer * {
+            -webkit-filter: none !important;
+            -moz-filter: none !important;
+            -o-filter: none !important;
+            -ms-filter: none !important;
+            filter: none !important;
             backdrop-filter: none !important;
         }
       </style> --}}
@@ -41,14 +41,14 @@
     <x-web.home-categories :categories="$categories" />
 
     <x-web.popular-items :items="$mostOrderedItems" />
-    
+
     <x-web.first-banner />
 
     <x-web.large-cards-slider />
 
     {{-- @dd($categoryWithItems) --}}
     <x-web.item-list :categorywithitems="$categoryWithItems" />
-    
+
 
 @endsection
 
@@ -96,7 +96,7 @@
         // Reset selected prices when showing new item
         Object.keys(selectedPrices).forEach(key => delete selectedPrices[key]);
         document.getElementById('total').textContent = '0.00';
-        
+
         fetch(`/item/${itemId}`)
         .then(response => response.json())
         .then(data => {
@@ -104,33 +104,33 @@
             document.getElementById('modal-item-name').dataset.productId = data.id;
             const variationList = document.getElementById('modal-variation-list');
             variationList.innerHTML = '';
-            
+
             data.grouped_variations.forEach(variation => {
                 // Create variation type heading
                 const heading = document.createElement('h5');
                 heading.textContent = variation.variation_type_name;
-                
+
                 // Create UL for variation options
                 const ul = document.createElement('ul');
                 ul.className = 'clearfix';
-                
+
                 // Add radio buttons for each variation option
                 variation.variations.forEach(eachvariation => {
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <label class="container_radio">
                             ${eachvariation.name}
-                            <span>+ @php echo $_ENV['CURRENCY'] @endphp ${parseFloat(eachvariation.price).toFixed(2)}</span>
-                            <input type="radio" 
-                                value="${eachvariation.id}" 
-                                name="variation_${variation.variation_type_id}" 
+                            <span>+ @php echo config('app.currency') @endphp ${parseFloat(eachvariation.price).toFixed(2)}</span>
+                            <input type="radio"
+                                value="${eachvariation.id}"
+                                name="variation_${variation.variation_type_id}"
                                 data-price="${eachvariation.price}"
                                 onclick="handleVariationClick(event, '${variation.variation_type_id}', this)">
                             <span class="checkmark"></span>
                         </label>`;
                     ul.appendChild(li);
                 });
-                
+
                 // Append heading and list to the container
                 variationList.appendChild(heading);
                 variationList.appendChild(ul);
@@ -143,7 +143,7 @@
 
     function updateTotalPrice(quantity) {
         const qty = parseInt(quantity) || 1;
-        
+
         // Calculate sum of all selected variation prices
         let variationsTotal = 0;
         const variationInputs = document.querySelectorAll('input[name^="variation_"]:checked');
@@ -154,7 +154,7 @@
         // Calculate total (variations * quantity)
         const newTotal = variationsTotal * qty;
         totalElement.textContent = newTotal.toFixed(2);
-        
+
     }
 
     function handleVariationClick(event, variationTypeId, element) {
@@ -168,7 +168,7 @@
         const itemId = document.getElementById('modal-item-name').dataset.productId;
         const quantity = document.getElementById('item_qty').value;
         const total = document.getElementById('total').textContent;
-        
+
         // Get all checked variation inputs
         const variationInputs = document.querySelectorAll('input[name^="variation_"]:checked');
 
@@ -214,13 +214,13 @@
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 };
-                
+
                 if (isLoggedIn) {
                     headers['X-User-Id'] = '{{ Auth::id() }}';
                 } else {
                     headers['X-Guest-Id'] = guestId;
                 }
-                
+
                 const res = await fetch('/api/cart/items', {
                     method: 'POST',
                     headers: headers,
