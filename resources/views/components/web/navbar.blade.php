@@ -151,8 +151,8 @@
         return match ? decodeURIComponent(match.split('=')[1]) : null;
     }
 
-    const isLoggedIn = {{ Auth::check() ? Auth::check() : false }};
-    const headers = {
+    const isLoggedIn = {{ Auth::check() ? Auth::check() : 'false' }};
+    let headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     };
@@ -160,7 +160,7 @@
     if (isLoggedIn) {
         headers['X-User-Id'] = '{{ Auth::id() }}';
     } else {
-        headers['X-Guest-Id'] = guestId;
+        headers['X-Guest-Id'] = getCookie('guest_identifier');
     }
 
     async function fetchCartAndRender() {

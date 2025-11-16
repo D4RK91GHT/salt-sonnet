@@ -126,30 +126,30 @@ class CartController extends Controller
 
     private function getOrCreateCart(Request $request, bool $create = true): ?Cart
     {
-        if ($request->header('X-User-Id')) {
-            $userId = $request->header('X-User-Id');
-        }
-        
-        if ($request->header('X-Guest-Id')) {
-            $guestId = $request->header('X-Guest-Id');
-        }else{
-            $guestId = $this->guestIdentifier($request);
-        }
+        $isLoggedIn = $request->header('X-User-Id') ? true : false;
+        $userId = $isLoggedIn ? $request->header('X-User-Id') : $request->header('X-Guest-Id');
+                
         $query = Cart::query();
-        if ($userId) {
+        
+        if ($isLoggedIn) {
             $query->where('user_id', $userId);
         } else {
-            $query->where(function ($q) use ($guestId) {
-                $q->where('guest_identifier', $guestId);
+            $query->where(function ($q) use ($userId) {
+                $q->where('guest_identifier', $userId);
             });
         }
 
         $cart = $query->first();
         if (!$cart && $create) {
-            $cart = Cart::create([
-                'user_id' => $userId,
-                'guest_identifier' => $guestId,
-            ]);
+            if ($isLoggedIn) {
+                $cart = Cart::create([
+                    'user_id' => $userId
+                ]);
+            }else {
+                $cart = Cart::create([
+                    'guest_identifier' => $userId
+                ]);
+            }
         }
         return $cart;
     }

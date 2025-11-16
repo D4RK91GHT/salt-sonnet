@@ -76,7 +76,7 @@
                     <button type="reset" class="btn_1 outline full-width mb-mobile">Cancel</button>
                 </div>
                 <div class="col-md-8">
-                    <button type="button" class="btn_1 full-width" id="add-to-cart" onclick="addToCart()">Add to cart</button>
+                    <button type="button" class="btn_1 full-width" id="add-to-cart">Add to cart</button>
                 </div>
             </div>
             <!-- /Row -->
@@ -209,8 +209,8 @@
                     setCookie('guest_identifier', guestId, 30);
                 }
 
-                const isLoggedIn = {{ Auth::check() ? Auth::check() : false }};
-                const headers = {
+                // const isLoggedIn = {{ Auth::check() ? Auth::check() : false }};
+                let headers = {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 };
@@ -236,6 +236,7 @@
                     throw new Error(data.message || 'Failed to add to cart');
                 }
                 // Notify UI
+                fetchCartAndRender();
                 window.showToast('Added to cart', { variant: 'success', delay: 2000 });
                 window.dispatchEvent(new CustomEvent('cart:updated'));
             } catch (err) {

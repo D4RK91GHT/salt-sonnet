@@ -221,16 +221,12 @@
 
 
 <script>
-	const isLoggedIn = {{ Auth::check() ? Auth::check() : false }};
-    const headers = {
-        'Content-Type': 'application/json',
-		'X-CSRF-TOKEN': getCSRFToken(),
-    };
+	headers['X-CSRF-TOKEN'] = getCSRFToken();
     
-    if (isLoggedIn) {
+	if (isLoggedIn) {
         headers['X-User-Id'] = '{{ Auth::id() }}';
     } else {
-        headers['X-Guest-Id'] = guestId;
+        headers['X-Guest-Id'] = getCookie('guest_identifier');
     }
 
 	$('#sidebar_fixed').theiaStickySidebar({
