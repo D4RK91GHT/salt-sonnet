@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Exception;
+use App\Http\Exceptions\NotAuthenticated;
 use App\Services\PaymentService;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -114,24 +116,32 @@ class OrderController extends Controller
 
     public function checkout(Request $request)
     {
-        $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'customer_email' => 'required|email|max:255',
-            'customer_phone' => 'required|string|max:20',
-            'delivery_address' => 'required|string',
-            'city' => 'required|string|max:100',
-            'postal_code' => 'required|string|max:20',
-            'delivery_instructions' => 'nullable|string',
-            'payment_method' => 'required|in:cod,card,upi,netbanking,wallet',
-            'payment_gateway' => 'nullable|string',
-            'payment_id' => 'nullable|string',
-            'razorpay_order_id' => 'nullable|string',
-            'razorpay_payment_id' => 'nullable|string',
-            'razorpay_signature' => 'nullable|string',
-            'gateway_response' => 'nullable|array',
-        ]);
-
         try {
+
+            // Check if user is authenticated, if not, redirect to login with checkout intent
+            if (!Auth::check()) {
+                // Store the current URL in the session to redirect back after login
+                session(['url.intended' => route('checkout')]); // Make sure 'checkout.page' matches your actual checkout route name
+                throw new NotAuthenticated("User is not authenticated", 1); 
+            }
+            
+            $request->validate([
+                'customer_name' => 'required|string|max:255',
+                'customer_email' => 'required|email|max:255',
+                'customer_phone' => 'required|string|max:20',
+                'delivery_address' => 'required|string',
+                'city' => 'required|string|max:100',
+                'postal_code' => 'required|string|max:20',
+                'delivery_instructions' => 'nullable|string',
+                'payment_method' => 'required|in:cod,card,upi,netbanking,wallet',
+                'payment_gateway' => 'nullable|string',
+                'payment_id' => 'nullable|string',
+                'razorpay_order_id' => 'nullable|string',
+                'razorpay_payment_id' => 'nullable|string',
+                'razorpay_signature' => 'nullable|string',
+                'gateway_response' => 'nullable|array',
+            ]);
+
             DB::beginTransaction();
 
             if (Auth::check()) {
@@ -141,9 +151,6 @@ class OrderController extends Controller
                 $guestId = $request->cookie('guest_identifier');
             }
             
-            // Get guest identifier
-            // $guestIdentifier = $request->header('X-Guest-Id') ?? $request->cookie('guest_identifier');
-
             if (!$guestId) {
                 return response()->json([
                     'success' => false,
@@ -154,6 +161,7 @@ class OrderController extends Controller
             // Get cart with items and variations
             $cart = Cart::with(['items.menuItem', 'items.variations'])
                 ->where('guest_identifier', $guestId)
+                ->orWhere('user_id', $guestId)
                 ->first();
 
             if (!$cart || $cart->items->isEmpty()) {
@@ -191,8 +199,7 @@ class OrderController extends Controller
 
             // Create order
             $order = Order::create([
-                'user_id' => Auth::id(), // Will be null for guest users
-                'guest_identifier' => $guestId,
+                'user_id' => $guestId,
                 'status' => Order::STATUS_PENDING,
                 'subtotal' => $subtotal,
                 'tax_amount' => $taxAmount,
@@ -265,6 +272,12 @@ class OrderController extends Controller
                 ]
             ], 201);
 
+        } catch (NotAuthenticated $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'redirect' => route('login')
+            ], 401);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Order creation failed: ' . $e->getMessage(), [

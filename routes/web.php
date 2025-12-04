@@ -22,8 +22,7 @@ Route::get('/terms-conditions', [HomePageController::class, 'termsConditionsPage
 
 Route::get('/categories', [CategoryPageController::class, 'categoryPage'])->name('categories');
 Route::get('/category/{category:slug}', [CategoryPageController::class, 'categoryDetails'])->name('category-details');
-Route::get('/checkout', [CheckoutPageController::class, 'checkoutPage'])->name('checkout');
-Route::post('/checkout/process', [OrderController::class, 'checkout'])->name('checkout.process');
+
 Route::get('/item/{id}', [HomePageController::class, 'itemDetails'])->name('item-details');
 Route::get('/order-placed', function () {
     return view('web.confirm');
@@ -38,6 +37,10 @@ Route::get('/order-placed', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
+
+    Route::get('/checkout', [CheckoutPageController::class, 'checkoutPage'])->name('checkout');
+    Route::post('/checkout/process', [OrderController::class, 'checkout'])->name('checkout.process');
+
     Route::get('/support', [Dashboard::class, 'support'])->name('support');
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');

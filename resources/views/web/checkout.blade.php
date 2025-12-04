@@ -366,6 +366,9 @@
 				window.location.href = '/order-placed?order=' + result.order.order_number + '&payment=cod';
 			}, 2000);
 		} else {
+			if (result.redirect) {
+				window.location.href = result.redirect;
+			}
 			showError(result.message || 'Failed to place order. Please try again.');
 		}
 	}
