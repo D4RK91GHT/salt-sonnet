@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Exception;
 use App\Http\Exceptions\NotAuthenticated;
 use App\Services\PaymentService;
+use App\Services\MailService;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Cart;
@@ -118,8 +119,12 @@ class OrderController extends Controller
     {
         try {
 
+            
+            // X-User-Id header should be sent by frontend
+            $userId = $request->header('X-User-Id');
+            
             // Check if user is authenticated, if not, redirect to login with checkout intent
-            if (!Auth::check()) {
+            if (!$userId) {
                 // Store the current URL in the session to redirect back after login
                 session(['url.intended' => route('checkout')]); // Make sure 'checkout.page' matches your actual checkout route name
                 throw new NotAuthenticated("User is not authenticated", 1); 
@@ -144,14 +149,8 @@ class OrderController extends Controller
 
             DB::beginTransaction();
 
-            if (Auth::check()) {
-                $guestId = Auth::id();    
-            } else {
-                // Get the guest identifier from the cookie
-                $guestId = $request->cookie('guest_identifier');
-            }
             
-            if (!$guestId) {
+            if (!$userId) {
                 return response()->json([
                     'success' => false,
                     'message' => 'No cart found. Please add items to cart first.'
@@ -160,8 +159,7 @@ class OrderController extends Controller
 
             // Get cart with items and variations
             $cart = Cart::with(['items.menuItem', 'items.variations'])
-                ->where('guest_identifier', $guestId)
-                ->orWhere('user_id', $guestId)
+                ->where('user_id', $userId)
                 ->first();
 
             if (!$cart || $cart->items->isEmpty()) {
@@ -199,7 +197,7 @@ class OrderController extends Controller
 
             // Create order
             $order = Order::create([
-                'user_id' => $guestId,
+                'user_id' => $userId,
                 'status' => Order::STATUS_PENDING,
                 'subtotal' => $subtotal,
                 'tax_amount' => $taxAmount,
@@ -247,6 +245,10 @@ class OrderController extends Controller
             $cart->delete();
 
             DB::commit();
+
+            // Send order confirmation email
+            $mailService = new MailService();
+            $mailService->sendOrderConfirmationAsync($order, $request->customer_email, $request->customer_name);
 
             // Log successful order creation
             Log::info('Order created successfully', [
